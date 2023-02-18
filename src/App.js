@@ -1,5 +1,13 @@
 import logo from './logo.svg';
 import './App.css';
+import io from 'socket.io-client'
+
+const isDev = process.env.NODE_ENV !== 'production'
+const socketUrl = isDev ? 'http://localhost:8080' : '/'
+
+const socket = io(socketUrl);
+socket.on('connection', () => console.log('me, client, have connected to the server socket'))
+socket.on('ping', (message) => console.log(message))
 
 function App() {
   return (
