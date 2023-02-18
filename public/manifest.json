@@ -2,5 +2,5 @@
   "short_name": "Agile Poker App",
   "name": "Agile Poker App",
   "start_url": ".",
-  "display": "standalone",
+  "display": "standalone"
 }
