@@ -1,13 +1,14 @@
 {
   "name": "poker",
   "version": "0.1.0",
+  "license": "MIT",
   "scripts": {
     "start": "NODE_ENV=production node build/server.js",
     "build": "yarn install && concurrently \"yarn build:client\" \"yarn build:server\"",
     "build:client": "react-scripts build",
     "build:server": "npx tsc",
     "dev:client": "react-scripts start",
-    "dev:server": "concurrently \"npx tsc --watch\" \"nodemon -q dist/index.js\"",
+    "dev:server": "concurrently \"npx tsc --watch\" \"nodemon -q build/server.js\"",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },
@@ -24,6 +25,7 @@
     "express": "^4.18.2",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
+    "react-router-dom": "^6.8.1",
     "react-scripts": "5.0.1",
     "socket.io": "^4.6.0",
     "socket.io-client": "^4.6.0",
