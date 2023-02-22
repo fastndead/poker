@@ -3,12 +3,12 @@
   "version": "0.1.0",
   "license": "MIT",
   "scripts": {
-    "start": "NODE_ENV=production node build/server.js",
+    "start": "NODE_ENV=production node build/server/index.js",
     "build": "yarn install && concurrently \"yarn build:client\" \"yarn build:server\"",
     "build:client": "react-scripts build",
     "build:server": "npx tsc",
     "dev:client": "react-scripts start",
-    "dev:server": "concurrently \"npx tsc --watch\" \"nodemon -q build/server.js\"",
+    "dev:server": "concurrently \"npx tsc --watch\" \"nodemon -q build/server/index.js\"",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },
