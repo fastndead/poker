@@ -1,4 +1,4 @@
-import React, { SyntheticEvent, useEffect, useState, useCallback } from 'react'
+import React, {  useState, useCallback } from 'react'
 import { useParams } from 'react-router-dom'
 import { socket } from 'sockets/socket'
 

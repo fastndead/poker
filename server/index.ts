@@ -10,17 +10,17 @@ const port = 8080
 const app: Express = express()
 
 app.use(cors())
-app.use(express.static(path.join(__dirname)))
+app.use(express.static(path.join(__dirname, '..')))
 const sessionMiddleware = session({
   secret: 'changeit',
   resave: false,
-  saveUninitialized: true, 
+  saveUninitialized: true,
 })
 
 app.use(sessionMiddleware)
 
 app.get('/*', (_req: Request, res: Response) => {
-  res.sendFile(path.join(__dirname, 'index.html'))
+  res.sendFile(path.join(__dirname, '..', 'index.html'))
 })
 
 const server = app.listen(port, () => {
@@ -29,8 +29,8 @@ const server = app.listen(port, () => {
 
 const io = new Server(server, {
   cors: {
-    // добавить развилку:
-    // origin в проде будет отличася от локалхоста 
+    // todo добавить развилку:
+    // origin в проде будет отличася от локалхоста
     origin: 'http://localhost:3000',
     methods: ['GET', 'POST'],
     credentials: true
@@ -45,23 +45,23 @@ const rooms: Record<string, string[]> = {}
 
 io.on('connection', (socket) => {
 
-  socket.on('mynameis', ({name}: {name: string}) => {
-    users[socket.request.session.id] = name 
+  socket.on('mynameis', ({ name }: {name: string}) => {
+    users[socket.request.session.id] = name
   })
 
 
-  socket.on('join', ({roomName}: {roomName: string}) => {
+  socket.on('join', ({ roomName }: {roomName: string}) => {
     const name = users[socket.request.session.id] || 'anonymous'
     if(rooms[roomName]) {
-      socket.broadcast.in(roomName).emit('new_member', {name})
+      socket.broadcast.in(roomName).emit('new_member', { name })
     }
 
     socket.join(roomName)
   })
 
-  socket.on('create_room', ({roomName}: {roomName:string}) => {
+  socket.on('create_room', ({ roomName }: {roomName:string}) => {
     if(rooms[roomName]) {
-      socket.to(socket.id).emit('create_room', {error: 'Room already exists'})
+      socket.to(socket.id).emit('create_room', { error: 'Room already exists' })
       return
     }
 
@@ -69,4 +69,3 @@ io.on('connection', (socket) => {
     socket.join(roomName)
   })
 })
-
