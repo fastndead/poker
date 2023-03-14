@@ -18,9 +18,15 @@ module.exports = {
   },
   'plugins': [
     'react',
-    '@typescript-eslint'
+    '@typescript-eslint',
   ],
   'rules': {
+    'react/jsx-first-prop-new-line': ['error', 'always'],
+    'object-curly-spacing': ['error', 'always'],
+    'react/jsx-max-props-per-line': ['error', { 'maximum': 1, 'when': 'always' }],
+    'react/jsx-closing-bracket-location':  ['error', 'tag-aligned'],
+    'react/jsx-closing-tag-location': ['error'],
+    'react/jsx-child-element-spacing': ['error'],
     'indent': [
       'error',
       2

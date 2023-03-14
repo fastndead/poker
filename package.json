@@ -8,11 +8,12 @@
     "build:client": "react-scripts build",
     "build:server": "npx tsc",
     "dev:client": "react-scripts start",
-    "dev:server": "concurrently \"npx tsc --watch\" \"nodemon -q build/server/index.js\"",
+    "dev:server": "npx tsc --watch & nodemon -q build/server/index.js && fg",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },
   "dependencies": {
+    "@react-spring/web": "^9.7.1",
     "@testing-library/jest-dom": "^5.16.5",
     "@testing-library/react": "^13.4.0",
     "@testing-library/user-event": "^13.5.0",
@@ -21,8 +22,10 @@
     "@types/node": "^18.14.0",
     "@types/react": "^18.0.28",
     "@types/react-dom": "^18.0.11",
+    "classnames": "^2.3.2",
     "cors": "^2.8.5",
     "express": "^4.18.2",
+    "express-session": "^1.17.3",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-router-dom": "^6.8.1",
@@ -33,12 +36,15 @@
     "web-vitals": "^2.1.4"
   },
   "devDependencies": {
+    "@types/express-session": "^1.17.6",
     "@typescript-eslint/eslint-plugin": "^5.52.0",
     "@typescript-eslint/parser": "^5.52.0",
     "concurrently": "^7.6.0",
     "eslint": "^8.34.0",
     "eslint-plugin-react": "^7.32.2",
     "nodemon": "^2.0.20",
+    "stylelint": "^15.2.0",
+    "stylelint-config-standard": "^30.0.1",
     "tailwindcss": "^3.2.7"
   },
   "eslintConfig": {
