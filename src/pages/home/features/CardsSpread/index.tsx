@@ -1,10 +1,16 @@
-import React from 'react'
+import React, { useCallback, useEffect } from 'react'
 import { animated, useSpring } from '@react-spring/web'
 
 const springConfig = {
   mass: 10,
   tension: 200,
   friction: 20
+}
+
+const springConfigRigid = {
+  mass: 10,
+  tension: 60,
+  friction: 40
 }
 
 const cardsSize = {
@@ -19,27 +25,80 @@ const xOffsetHalfway = 45
 const rotate = 20
 const rotateHalfway = 10
 
+const from = {
+  x: 0,
+  y: 0,
+  rotate: 0
+}
+
 function getCardsSpreadSpringConfig(toX: number, toY: number, rotate: number) {
   return {
-    from: {
-      x: 0,
-      y: 0,
-      rotate: 0
-    },
-    to: {
-      x: toX,
-      y: toY,
-      rotate: rotate
-    },
+    from,
+    to: getToState(toX, toY, rotate),
+  }
+}
+
+function getToState(toX: number, toY: number, rotate: number) {
+  return  {
+    x: toX,
+    y: toY,
+    rotate: rotate,
     config: springConfig,
   }
 }
 
 export default function CardsSpread() {
-  const springsToLeft = useSpring(getCardsSpreadSpringConfig(xOffset, yOffset, rotate))
-  const springsToRight = useSpring(getCardsSpreadSpringConfig(-xOffset, yOffset, -rotate))
-  const springsToRightHalfway = useSpring(getCardsSpreadSpringConfig(-xOffsetHalfway, yOffsetHalfway, -rotateHalfway))
-  const springsToLeftHalfway = useSpring(getCardsSpreadSpringConfig(xOffsetHalfway, yOffsetHalfway, rotateHalfway))
+  const [springsToLeft, springsToLeftApi] = useSpring(() => getCardsSpreadSpringConfig(xOffset, yOffset, rotate))
+  const [springsToRight, springsToRightApi] = useSpring(() => getCardsSpreadSpringConfig(-xOffset, yOffset, -rotate))
+  const [springsToRightHalfway, springsToRightHalfwayApi] = useSpring(() => getCardsSpreadSpringConfig(-xOffsetHalfway, yOffsetHalfway, -rotateHalfway))
+  const [springsToLeftHalfway, springsToLeftHalfwayApi] = useSpring(() => getCardsSpreadSpringConfig(xOffsetHalfway, yOffsetHalfway, rotateHalfway))
+
+  const startAnimation = useCallback(
+    () => {
+      springsToLeftApi.start(getToState(xOffset, yOffset, rotate))
+      springsToRightApi.start(getToState(-xOffset, yOffset, -rotate))
+      springsToRightHalfwayApi.start(getToState(-xOffsetHalfway, yOffsetHalfway, -rotateHalfway))
+      springsToLeftHalfwayApi.start(getToState(xOffsetHalfway, yOffsetHalfway, rotateHalfway))
+    },
+    [
+      springsToLeftApi,
+      springsToRightApi,
+      springsToRightHalfwayApi,
+      springsToLeftHalfwayApi,
+    ]
+  )
+
+  useEffect(() => {
+    startAnimation()
+  },[])
+
+  const handleHover = useCallback(
+    () => {
+      springsToLeftApi.start({
+        ...from,
+        config: springConfigRigid
+      })
+      springsToRightApi.start({
+        ...from,
+        config: springConfigRigid
+      })
+      springsToRightHalfwayApi.start({
+        ...from,
+        config: springConfigRigid
+      })
+      springsToLeftHalfwayApi.start({
+        ...from,
+        config: springConfigRigid
+      })
+    },
+    [
+      springsToLeftApi,
+      springsToRightApi,
+      springsToRightHalfwayApi,
+      springsToLeftHalfwayApi,
+    ]
+  )
+
 
   return (
     <div
@@ -47,6 +106,8 @@ export default function CardsSpread() {
     >
       <div
         className='absolute inset-x-2/4 w-28 translate-x-negative-1/2'
+        onMouseOver={handleHover}
+        onMouseLeave={startAnimation}
       >
         <animated.div
           className='absolute border border-primary-emphasis rounded-lg bg-secondary-emphasis'
