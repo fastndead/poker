@@ -20,6 +20,9 @@ module.exports = {
         'button-primary-emphasis': '0px 2px 2px 1px',
         'input-border': '0px 0px 0px 1px',
         'input-border-hover': '0px 0px 0px 2px'
+      },
+      spacing: {
+        'negative-1/2': '-50%',
       }
     }
   },

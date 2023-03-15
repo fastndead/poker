@@ -12,7 +12,7 @@ export default function TextInput({ placeholder, onChange, className }:Props) {
     <input
       placeholder={placeholder}
       onChange={onChange}
-      className={classNames(className, 'text-input')}
+      className={classNames(className, 'text-input', 'border-none', 'outline-none')}
       tabIndex={0}
     />
   )

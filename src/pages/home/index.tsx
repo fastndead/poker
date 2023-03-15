@@ -10,17 +10,20 @@ export function Home() {
         className="container mx-auto min-h-screen"
       >
         <div
-          className='w-80 m-auto space-y-3 min-h-full'
+          className='w-80 m-auto  min-h-full'
         >
           <CardsSpread />
           <TextInput
+            className='mt-6'
             placeholder='User name'
           />
           <Button
+            className='mt-2.5'
             label='Start a new game'
             type='primary'
           />
           <Button
+            className='mt-2.5'
             label='Join the room'
             type='secondary'
           />

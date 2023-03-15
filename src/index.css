@@ -31,7 +31,7 @@ code {
   }
 
   .text-input {
-    @apply shadow-input-border shadow-grey text-2xl px-14 py-4 rounded-3xl block w-full p-2.5 box-border text-center hover:shadow-input-border-hover hover:shadow-primary-emphasis transition-all;
+    @apply shadow-input-border shadow-grey text-2xl px-14 py-4 rounded-3xl block w-full p-2.5 box-border text-center border-none outline-none focus:shadow-primary-emphasis focus:shadow-input-border-hover hover:shadow-input-border-hover hover:shadow-primary-emphasis transition-all;
   }
 }
 
