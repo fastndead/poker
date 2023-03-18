@@ -10,6 +10,7 @@
     "dev:client": "react-scripts start",
     "dev:server": "npx tsc --watch & nodemon -q build/server/index.js && fg",
     "test": "react-scripts test",
+    "lint": "eslint src/**/*.{ts,tsx} --fix",
     "eject": "react-scripts eject"
   },
   "dependencies": {

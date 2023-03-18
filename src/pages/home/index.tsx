@@ -7,7 +7,7 @@ export function Home() {
   return (
     <>
       <div
-        className="container mx-auto min-h-screen"
+        className='container mx-auto min-h-screen'
       >
         <div
           className='w-80 m-auto  min-h-full'

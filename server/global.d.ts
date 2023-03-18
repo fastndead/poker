@@ -1,9 +1,5 @@
 import { Session, SessionOptions } from 'express-session'
-
-declare module '*.svg' {
-  const content: React.FunctionComponent<React.SVGAttributes<SVGElement>>
-  export default content
-}
+import { IncomingMessage, ServerResponse } from 'http'
 
 declare module 'http' {
     interface IncomingMessage {
@@ -16,5 +12,6 @@ declare module 'http' {
 declare type Middleware = (req: IncomingMessage, res: ServerResponse, next: () => void) => void;
 
 declare module 'express-session' {
-  export default (options: SessionOptions) => Middleware
+  const content: (options: SessionOptions) => Middleware
+  export default content
 }

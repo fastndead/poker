@@ -21,6 +21,15 @@ module.exports = {
     '@typescript-eslint',
   ],
   'rules': {
+    '@typescript-eslint/quotes': [
+      'error',
+      'single',
+      {
+        'avoidEscape': true,
+        'allowTemplateLiterals': true
+      }
+    ],
+    'jsx-quotes': ['error', 'prefer-single'],
     'react/jsx-first-prop-new-line': ['error', 'always'],
     'object-curly-spacing': ['error', 'always'],
     'react/jsx-max-props-per-line': ['error', { 'maximum': 1, 'when': 'always' }],
