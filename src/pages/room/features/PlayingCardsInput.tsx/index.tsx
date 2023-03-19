@@ -1,6 +1,6 @@
-import React from 'react'
+import React, { useCallback, useRef } from 'react'
 import { ReactComponent as CardsMount } from 'assets/cardsMount.svg'
-import { animated, useSpring, useSprings } from '@react-spring/web'
+import { animated, useSprings } from '@react-spring/web'
 
 type Props = {
   cards: string[]
@@ -30,19 +30,40 @@ function getValue(maxValue: number, isCenter:boolean, index: number, length: num
   return absoluteResult
 }
 
+function getCardConfigFactory(selectedIndex: number, cardsAmount: number){
+  return (index: number) =>  {
+    const isSelected = selectedIndex === index
+    const realIndex = index + 1
+    const length = cardsAmount
+    const isOdd = length % 2 !== 0
+    const isCenter = isOdd && Math.ceil(length/2) === realIndex
+    const rotateValue = getValue(MAX_ROTATE_VALUE, isCenter, realIndex, length, true)
+    const xValue =  getValue(MAX_X_VALUE, isCenter, realIndex, length, true)
+    const yValue = getValue(MAX_Y_VALUE,isCenter, realIndex, length, false)
+
+    return {
+      y: isSelected ? yValue - 30 : yValue,
+      x: xValue,
+      rotate: rotateValue,
+      zIndex: index,
+    }
+  }
+}
+
 
 export default function PlayingCardsInput({ cards }:Props) {
-  const [springs, _api] = useSprings(
+  const [springs, api] = useSprings(
     cards.length,
-    () => ({
-      from: { opacity: 0 },
-      to: { opacity: 1 },
-      config:{
-        mass: 10
-      }
-    }),
-    []
+    getCardConfigFactory(-1, cards.length),
   )
+
+  const handleHover = useCallback((index: number) => () => {
+    api.start(getCardConfigFactory(index, cards.length))
+  }, [api])
+
+  const handleHoverEnd = useCallback(() => () => {
+    api.start(getCardConfigFactory(-1, cards.length))
+  }, [])
 
   return(
     <div
@@ -53,24 +74,15 @@ export default function PlayingCardsInput({ cards }:Props) {
       >
         {springs.map((springProps, index) => {
           const card = cards[index]
-          const realIndex = index + 1
-          const length = cards.length
-          const isOdd = length % 2 !== 0
-          const isCenter = isOdd && Math.ceil(length/2) === realIndex
-          const rotateValue = getValue(MAX_ROTATE_VALUE, isCenter, realIndex, length, true)
-          const xValue =  getValue(MAX_X_VALUE, isCenter, realIndex, length, true)
-          const yValue = getValue(MAX_Y_VALUE,isCenter, realIndex, length, false)
           return (
             <animated.div
+              onMouseEnter={handleHover(index)}
+              onMouseLeave={handleHoverEnd()}
               key={index}
-              className={'absolute border bg-white border-primary-emphasis rounded-lg shadow-card' + ' ' + index}
+              className={'absolute border cursor-pointer bg-white border-primary-emphasis rounded-lg shadow-card' + ' ' + index}
               style={{
                 width: '100px',
                 height: '160px',
-                x: xValue,
-                y: yValue,
-                rotate: rotateValue,
-                zIndex: index,
                 ...springProps
               }}
             >
