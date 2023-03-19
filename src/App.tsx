@@ -25,7 +25,7 @@ const router = createBrowserRouter([
 function App()  {
   return (
     <div
-      className='container mx-auto min-h-screen'
+      className='w-screen min-h-screen'
     >
       <RouterProvider
         router={router}

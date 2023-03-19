@@ -19,10 +19,10 @@ module.exports = {
       boxShadow: {
         'button-primary-emphasis': '0px 2px 2px 1px',
         'input-border': '0px 0px 0px 1px',
-        'input-border-hover': '0px 0px 0px 2px'
+        'input-border-hover': '0px 0px 0px 2px',
+        'card': '-2px 4px 2px rgba(0, 0, 0, 0.25)'
       },
       spacing: {
-        'negative-1/2': '-50%',
       }
     }
   },

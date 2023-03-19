@@ -102,10 +102,10 @@ export default function CardsSpread() {
 
   return (
     <div
-      className='relative h-48 mt-32 md:mt-72'
+      className='relative h-48 mt-32 xl:mt-72'
     >
       <div
-        className='absolute inset-x-2/4 w-28 translate-x-negative-1/2'
+        className='absolute inset-x-2/4 w-28 -translate-x-1/2'
         onMouseOver={handleHover}
         onMouseLeave={startAnimation}
       >

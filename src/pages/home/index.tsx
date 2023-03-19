@@ -7,10 +7,10 @@ export function Home() {
   return (
     <>
       <div
-        className='container mx-auto min-h-screen'
+        className='container mx-auto w-screen min-h-screen'
       >
         <div
-          className='w-80 m-auto  min-h-full'
+          className='w-80 m-auto min-h-full'
         >
           <CardsSpread />
           <TextInput
