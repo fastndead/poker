@@ -12,6 +12,7 @@ module.exports = {
         'secondary-idle':'#E7ECFC',
         'danger': '#BF4949',
         'grey': '#B3BACD',
+        'light-grey': '#D9D9D9',
       },
       borderRadius: {
         '3xl': '30px'

@@ -30,8 +30,15 @@ code {
     @apply bg-secondary-idle placeholder-white outline-0 text-primary-emphasis text-2xl px-14 py-4 rounded-3xl hover:shadow-button-primary-emphasis hover:shadow-primary-emphasis transition-shadow block w-full p-2.5;
   }
 
+  .card {
+    @apply rounded-lg bg-secondary-emphasis border border-solid border-primary-emphasis;
+
+    height: 80px;
+    width: 50px;
+
+  }
+
   .text-input {
     @apply shadow-input-border shadow-grey text-2xl px-14 py-4 rounded-3xl block w-full p-2.5 box-border text-center border-none outline-none focus:shadow-primary-emphasis focus:shadow-input-border-hover hover:shadow-input-border-hover hover:shadow-primary-emphasis transition-all;
   }
 }
-
