@@ -21,6 +21,7 @@ module.exports = {
     '@typescript-eslint',
   ],
   'rules': {
+    'no-debugger':'off',
     '@typescript-eslint/quotes': [
       'error',
       'single',

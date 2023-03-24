@@ -1,10 +1,9 @@
-import { useSprings } from '@react-spring/web'
-import React, { HTMLAttributes } from 'react'
-import Card from './components/Card'
-import PlayerName from './components/PlayerName'
+import { animated, useSprings } from '@react-spring/web'
+import React, { HTMLAttributes, useCallback, useEffect, useRef } from 'react'
 import { getCardStyle, getPlayerStyle } from './utils'
 
 type Player = {
+  id: number,
   isRevealed: boolean,
   value?: string,
   name: string,
@@ -15,11 +14,68 @@ type Props = {
 }
 
 export default function PlayingDesk({ players }: Props) {
+  const ref = useRef<HTMLDivElement>(null)
+  const [cardsSprings, cardSpringApi] = useSprings(
+    players.length,
+    (index: number) => getCardStyle({
+      containerHeight: ref.current?.offsetHeight,
+      containerWidth: ref.current?.offsetWidth,
+      amountOfPlayers: players.length,
+      index,
+      id: players?.[index].id
+    }),
+    [players.length]
+  )
+
+  const [playersSprings, playersSpringApi] = useSprings(
+    players.length,
+    (index: number) => getPlayerStyle({
+      containerHeight: ref.current?.offsetHeight,
+      containerWidth: ref.current?.offsetWidth,
+      amountOfPlayers: players.length,
+      index,
+      id: players?.[index].id
+    }),
+  )
+
+  const refreshAnimation = useCallback(() => {
+    cardSpringApi.start(
+      (index) => getCardStyle({
+        containerHeight: ref.current?.offsetHeight,
+        containerWidth: ref.current?.offsetWidth,
+        amountOfPlayers: players.length,
+        index,
+        id: players?.[index].id
+      }),
+    )
+
+    playersSpringApi.start(
+      (index) => getPlayerStyle({
+        containerHeight: ref.current?.offsetHeight,
+        containerWidth: ref.current?.offsetWidth,
+        amountOfPlayers: players.length,
+        index,
+        id: players?.[index].id
+      }),
+    )
+  }, [cardSpringApi, playersSpringApi, ref, players.length])
+
+  useEffect(() => {
+    refreshAnimation()
+  }, [players.length, refreshAnimation])
+
+  // we need to refresh animation when we get the ref's dimansions
+  useEffect(() => {
+    refreshAnimation()
+  }, [ref.current])
+
+
   return (
     <div
       className='h-full w-full flex relative justify-center items-center'
     >
       <div
+        ref={ref}
         className='-mb-20 bg-light-grey rounded-3xl'
         style={{
           width: 366,
@@ -28,25 +84,31 @@ export default function PlayingDesk({ players }: Props) {
       >
 
       </div>
-      {players.map(({ name, value, isRevealed }, index) => {
+      {players.map(({ id, name, value, isRevealed }, index) => {
         return (
-          <>
-            <Card
+          <React.Fragment
+            key={id}
+          >
+            <animated.div
+              className='absolute card'
               style={{
                 height: 80,
                 width: 50,
-                ...getCardStyle({ amountOfPlayers: players.length, index })
+                ...cardsSprings[index]
               }}
-              value={value}
-              isRevealed={isRevealed}
-            />
-            <PlayerName
-              name={name}
+            >
+            </animated.div>
+            <animated.div
+              className='absolute rounded-full bg-light-grey py-4 px-8 flex items-center justify-center'
               style={{
-                ...getPlayerStyle({ amountOfPlayers: players.length, index })
+                ...playersSprings[index]
               }}
-            />
-          </>
+            >
+              <span >
+                {name}
+              </span>
+            </animated.div>
+          </React.Fragment>
         )
       })}
 

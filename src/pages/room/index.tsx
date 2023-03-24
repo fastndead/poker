@@ -7,7 +7,8 @@ import Button from '../../components/Button'
 
 const testPlayers = [
   {
-    name: 'Asman',
+    id: 1,
+    name: 'Асман',
     isRevealed: false,
   },
 ]
@@ -16,20 +17,40 @@ const testPlayers = [
 export function Room() {
   const [players, setPlayers] = useState(testPlayers)
 
+  console.log(players)
 
   return (
     <div
       className='width-screen flex flex-row overflow-hidden'
     >
-      <Button
-        type='secondary'
-        label='Add player'
-        onClick={() => setPlayers((prev) => [...prev, {
-          name: 'Ksenia',
-          isRevealed: false,
-        }])}
-        className='fixed w-10 '
-      />
+      <div
+        className='fixed z-50 bottom-0'
+      >
+        <Button
+          type='secondary'
+          label='Add player'
+          onClick={() => setPlayers((prev) => {
+            const id = prev[prev.length - 1] ? prev[prev.length - 1]?.id + 1 : 0
+            return [...prev, {
+              id,
+              name: id % 2 === 0 ? 'Настёна':'Ксюша',
+              isRevealed: false,
+            }]})}
+        />
+        <Button
+          type='secondary'
+          label='remove player'
+          className='mt-2'
+          onClick={() => setPlayers((prev) => prev.slice(0, -1))}
+        />
+        <Button
+          type='secondary'
+          label='remove the first'
+          className='mt-2'
+          onClick={() => setPlayers((prev) => prev.slice(1, prev.length))}
+        />
+
+      </div>
       <Sidebar />
       <div
         className='container h-screen flex flex-col items-center justify-between relative w-full m-auto'
