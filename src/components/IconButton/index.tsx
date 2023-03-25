@@ -13,7 +13,7 @@ export default function IconButton({ icon, hoverIcon, onClick, className, label 
   const [isHovered, setHover] = useState(false)
 
   const currentIcon = useMemo(() => {
-    if(!hoverIcon) {
+    if (!hoverIcon) {
       return icon
     }
 

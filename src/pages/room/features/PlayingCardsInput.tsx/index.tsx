@@ -27,7 +27,7 @@ function getValue({
     step?: number
   }) {
 
-  if(isCenter) {
+  if (isCenter) {
     return 0
   }
 
@@ -42,7 +42,7 @@ function getValue({
 
   const absoluteResult = isAccelerated ? absoluteIndex * actualStep + ((absoluteIndex - 1) * 10) : absoluteIndex * actualStep
 
-  if(isSymmetrical) {
+  if (isSymmetrical) {
     return isLeftSide ? -absoluteResult : absoluteResult
   }
 
@@ -55,7 +55,7 @@ function getCardConfigFactory(selectedIndex: number, cardsAmount: number, cardSi
     const realIndex = index + 1
     const length = cardsAmount
     const isOdd = length % 2 !== 0
-    const isCenter = isOdd && Math.ceil(length/2) === realIndex
+    const isCenter = isOdd && Math.ceil(length / 2) === realIndex
 
     const widthForOneCard = cardSize.width - ((cardSize.width / 100) * 30)
     const maxWidth = (cardsAmount * widthForOneCard / 2) < MAX_X_VALUE ? (cardsAmount * widthForOneCard / 2) : MAX_X_VALUE
@@ -64,12 +64,12 @@ function getCardConfigFactory(selectedIndex: number, cardsAmount: number, cardSi
     const xValue =  getValue({ maxValue: maxWidth, isCenter, index: realIndex, length, isSymmetrical: true })
     const yValue = getValue({ maxValue: MAX_Y_VALUE, isCenter, index: realIndex, length, isSymmetrical: false, isAccelerated: true, step: 3 })
 
-    if(isSelected){
+    if (isSelected){
       const coef = 30
 
       return {
-        y: yValue - (coef * Math.cos(rotateValue * (Math.PI/180))),
-        x: xValue + (coef * Math.cos((90 - rotateValue) * (Math.PI/180))),
+        y: yValue - (coef * Math.cos(rotateValue * (Math.PI / 180))),
+        x: xValue + (coef * Math.cos((90 - rotateValue) * (Math.PI / 180))),
         rotate: rotateValue,
         zIndex: index,
       }
@@ -89,7 +89,7 @@ export default function PlayingCardsInput({ cards }:Props) {
   const matchMedia = window.matchMedia('(max-width: 1300px)')
   const cardSize = {
     width: matchMedia.matches ? 66 : 100,
-    height: matchMedia.matches ? 106: 160,
+    height: matchMedia.matches ? 106 : 160,
   }
 
   const [springs, api] = useSprings(
@@ -107,7 +107,7 @@ export default function PlayingCardsInput({ cards }:Props) {
   }, [])
 
 
-  return(
+  return (
     <div
       className='relative bottom-0'
       style={{
