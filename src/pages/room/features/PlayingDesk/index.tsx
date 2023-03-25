@@ -1,8 +1,8 @@
 import { animated, useSprings } from '@react-spring/web'
 import React, { HTMLAttributes, useCallback, useEffect, useRef } from 'react'
-import { getCardStyle, getPlayerStyle } from './utils'
+import { getCardStyle, getPlayerStyle, recalculateFromStateForPlayer } from './utils'
 
-type Player = {
+export type Player = {
   id: number,
   isRevealed: boolean,
   value?: string,
@@ -15,14 +15,18 @@ type Props = {
 
 export default function PlayingDesk({ players }: Props) {
   const ref = useRef<HTMLDivElement>(null)
+
+  useEffect(() => {
+    recalculateFromStateForPlayer(players)
+  }, [players])
+
   const [cardsSprings, cardSpringApi] = useSprings(
     players.length,
     (index: number) => getCardStyle({
       containerHeight: ref.current?.offsetHeight,
       containerWidth: ref.current?.offsetWidth,
-      amountOfPlayers: players.length,
       index,
-      id: players?.[index].id
+      players,
     }),
     [players.length]
   )
@@ -32,9 +36,8 @@ export default function PlayingDesk({ players }: Props) {
     (index: number) => getPlayerStyle({
       containerHeight: ref.current?.offsetHeight,
       containerWidth: ref.current?.offsetWidth,
-      amountOfPlayers: players.length,
       index,
-      id: players?.[index].id
+      players,
     }),
   )
 
@@ -43,9 +46,8 @@ export default function PlayingDesk({ players }: Props) {
       (index) => getCardStyle({
         containerHeight: ref.current?.offsetHeight,
         containerWidth: ref.current?.offsetWidth,
-        amountOfPlayers: players.length,
         index,
-        id: players?.[index].id
+        players,
       }),
     )
 
@@ -53,9 +55,8 @@ export default function PlayingDesk({ players }: Props) {
       (index) => getPlayerStyle({
         containerHeight: ref.current?.offsetHeight,
         containerWidth: ref.current?.offsetWidth,
-        amountOfPlayers: players.length,
         index,
-        id: players?.[index].id
+        players,
       }),
     )
   }, [cardSpringApi, playersSpringApi, ref, players.length])

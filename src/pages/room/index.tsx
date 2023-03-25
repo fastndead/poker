@@ -17,8 +17,6 @@ const testPlayers = [
 export function Room() {
   const [players, setPlayers] = useState(testPlayers)
 
-  console.log(players)
-
   return (
     <div
       className='width-screen flex flex-row overflow-hidden'

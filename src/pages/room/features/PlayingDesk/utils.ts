@@ -1,6 +1,6 @@
-import { SpringValue, SpringValues, UseSpringProps } from '@react-spring/web'
-
-type MappingsType = Record<number, Record<number, (containerHeight: number, containerWidth: number) => UseSpringProps>>
+import { UseSpringProps } from '@react-spring/web'
+import { Player } from '.'
+import { AMOUNT_OF_PLAYERS_TO_INDEX_TO_PLAYER_STYLE_MAP, AMOUNT_OF_PLAYERS_TO_INDEX_TO_CARD_STYLE_MAP } from './constants'
 
 
 const DEFAULT_INIT_STYLE = {
@@ -10,75 +10,54 @@ const DEFAULT_INIT_STYLE = {
   rotate: 0
 }
 
-const existingIndices: Record<string, boolean> = {}
-function getFrom(id: number, type: string) {
-  if (existingIndices[`${id}_${type}`]) {
+const renderedPlayerLabels: Record<string, boolean> = {}
+const renderedPlayerCards: Record<string, boolean> = {}
+
+export function recalculateFromStateForPlayer (players: Player[]) {
+  const amountOfPlayers = players.length
+
+  if (amountOfPlayers < Object.keys(renderedPlayerLabels).length) {
+    Object.keys(renderedPlayerLabels).forEach((playerId) => {
+      if (!players.find(({ id })=> String(id) === playerId)) {
+        delete renderedPlayerLabels[playerId]
+      }
+    })
+  }
+
+  if (amountOfPlayers < Object.keys(renderedPlayerCards).length) {
+    Object.keys(renderedPlayerCards).forEach((playerId) => {
+      if (!players.find(({ id })=> String(id) === playerId)) {
+        delete renderedPlayerCards[playerId]
+      }
+    })
+  }
+}
+
+function getFrom(id: number, existingIds: Record<string, boolean>) {
+  if (existingIds[id]) {
     return {}
   }
 
-  existingIndices[`${id}_${type}`] = true
+  existingIds[String(id)] = true
   return { ...DEFAULT_INIT_STYLE }
 }
 
-const AMOUNT_OF_PLAYERS_TO_INDEX_TO_PLAYER_STYLE_MAP: MappingsType = {
-  1: {
-    0: function(containerHeight: number, containerWidth: number){
-      return {
-        y: -(containerHeight / 2 + 136),
-        x: 0,
-      }
-    }
-  },
-  2: {
-    0: function(containerHeight: number, containerWidth: number){
-      return {
-        y: -(containerHeight / 2 + 42),
-        x: -(containerWidth / 2 + 110),
-      }
-    },
-    1: function(containerHeight: number, containerWidth: number){
-      return {
-        y: -(containerHeight / 2 + 42),
-        x: containerWidth / 2 + 110,
-      }
-    } },
-  3: {
-    0: function(containerHeight: number, containerWidth: number){
-      return {
-        y: -(containerHeight / 2 + 136),
-        x: 0,
-      }
-    },
-    1: function(containerHeight: number, containerWidth: number){
-      return {
-        y: 0,
-        x: containerWidth / 2 + 178,
-      }
-    },
-    2: function(containerHeight: number, containerWidth: number){
-      return {
-        y: 0,
-        x: -(containerWidth / 2 + 178),
-      }
-    }
-  }
-} as const
-
-export function getPlayerStyle({ 
+export function getPlayerStyle({
   containerHeight,
   containerWidth,
-  amountOfPlayers,
   index,
-  id,
+  players,
 }: {
   containerWidth: number | undefined,
   containerHeight: number | undefined,
-  amountOfPlayers: number,
   index: number
-  id: number
+  players: Player[]
 }): UseSpringProps {
+  const amountOfPlayers = players.length
+  const id = players[index].id
 
-  if(!containerWidth || !containerHeight){
+
+  if (!containerWidth || !containerHeight){
     return {
       opacity: 0,
       x: 0,
@@ -87,7 +66,7 @@ export function getPlayerStyle({
   }
 
   return {
-    from: getFrom(id, 'player'),
+    from: getFrom(id, renderedPlayerLabels),
     to: {
       opacity: 1,
       ...AMOUNT_OF_PLAYERS_TO_INDEX_TO_PLAYER_STYLE_MAP[amountOfPlayers][index](containerHeight, containerWidth)
@@ -95,76 +74,27 @@ export function getPlayerStyle({
   }
 }
 
-const AMOUNT_OF_PLAYERS_TO_INDEX_TO_CARD_STYLE_MAP: MappingsType = {
-  1: {
-    0: function(containerHeight: number, containerWidth: number){
-      return {
-        y: -(containerHeight / 2 + 40),
-        x: 0,
-        rotate: 0,
-      }
-    }
-  },
-  2: {
-    0: function(containerHeight: number, containerWidth: number){
-      return {
-        y: -(containerHeight / 2 + 0),
-        x: -(containerWidth / 2 + 16),
-        rotate: -45
-      }
-    },
-    1: function(containerHeight: number, containerWidth: number){
-      return {
-        y: -(containerHeight / 2 + 0),
-        x: (containerWidth / 2 + 16),
-        rotate: 45
-      }
-    },
-  },
-  3: {
-    0: function(containerHeight: number, containerWidth: number){
-      return {
-        y: -(containerHeight / 2 + 40),
-        x: 0,
-        rotate: 0,
-      }
-    },
-    1: function(containerHeight: number, containerWidth: number){
-      return {
-        y: 0,
-        x: (containerWidth / 2 + 69),
-        rotate: 90
-      }
-    },
-    2: function(containerHeight: number, containerWidth: number){
-      return {
-        y: 0,
-        x: -(containerWidth / 2 + 69),
-        rotate: -90 
-      }
-    },
-  }
-} as const
 
 export function getCardStyle({
   containerHeight,
   containerWidth,
-  amountOfPlayers,
   index,
-  id,
+  players
 }: {
   containerWidth: number | undefined,
   containerHeight: number | undefined,
-  amountOfPlayers: number,
   index: number
-  id: number
+  players: Player[]
 }): UseSpringProps {
-  if(!containerWidth || !containerHeight){
+  const amountOfPlayers = players.length
+  const id = players[index].id
+
+  if (!containerWidth || !containerHeight){
     return  { ...DEFAULT_INIT_STYLE }
   }
 
   return {
-    from: getFrom(id, 'card'),
+    from: getFrom(id, renderedPlayerCards),
     to: {
       opacity: 1,
       ...AMOUNT_OF_PLAYERS_TO_INDEX_TO_CARD_STYLE_MAP[amountOfPlayers][index](containerHeight, containerWidth),

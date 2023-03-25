@@ -22,6 +22,8 @@ module.exports = {
   ],
   'rules': {
     'no-debugger':'off',
+    'keyword-spacing': ['error'],
+    'space-infix-ops': ['error'],
     '@typescript-eslint/quotes': [
       'error',
       'single',
