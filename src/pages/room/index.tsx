@@ -29,7 +29,7 @@ export function Room() {
           label='Add player'
           onClick={() => setPlayers((prev) => {
             const id = prev[prev.length - 1] ? prev[prev.length - 1]?.id + 1 : 0
-            return prev.length < 6 ? [...prev, {
+            return prev.length < 7 ? [...prev, {
               id,
               name: id % 2 === 0 ? 'Настёна' : 'Ксюша',
               isRevealed: false,
