@@ -7,6 +7,7 @@
 # Planning Poker Web Application
 
 This is a web application built with Socket.io, React-Spring, and Tailwind CSS that allows software development teams to estimate tasks using the Planning Poker technique.
+Link to the WIP application: https://poker-p0x6.onrender.com/
 
 # What's plannig poker?
 Planning poker, also called Scrum poker, is a consensus-based, gamified technique for estimating, mostly used for timeboxing in Agile principles. You can read more on the topik on [wiki](https://en.wikipedia.org/wiki/Planning_poker).
