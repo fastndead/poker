@@ -8,7 +8,7 @@ const CARD_HEIGHT = 80
 const PLAYER_PLACEMENTS = {
   UP_MIDDLE: (containerHeight: number, containerWidth: number) => {
     return {
-      y: -(containerHeight / 2 + 85),
+      y: -(containerHeight / 2 + 83),
       x: 0,
     }
   },
@@ -21,19 +21,19 @@ const PLAYER_PLACEMENTS = {
   RIGHT_TOP: (containerHeight: number, containerWidth: number) => {
     return {
       y: -(containerHeight / 2 + 43),
-      x: containerWidth / 2 + 110,
+      x: containerWidth / 2 + 115,
     }
   },
   LEFT_MIDDLE: (containerHeight: number, containerWidth: number) => {
     return {
       y: 40,
-      x: -(containerWidth / 2 + 160),
+      x: -(containerWidth / 2 + 165),
     }
   },
   RIGHT_MIDDLE: (containerHeight: number, containerWidth: number) => {
     return {
       y: 40,
-      x: (containerWidth / 2 + 155),
+      x: (containerWidth / 2 + 165),
     }
   },
   LEFT_BOTTOM: (containerHeight: number, containerWidth: number)=>{
@@ -45,25 +45,25 @@ const PLAYER_PLACEMENTS = {
   RIGHT_BOTTOM: (containerHeight: number, containerWidth: number) => {
     return {
       y: (containerHeight / 2 + 70 + PLAYER_LABEL_HEIGHT),
-      x: (containerWidth / 2 + 110),
+      x: (containerWidth / 2 + 115),
     }
   },
   LEFT_TOP_30DEG: (containerHeight: number, containerWidth: number) => {
     return {
-      y: -(containerHeight / 2 + 10),
-      x: -(containerWidth / 2 + 130),
+      y: -(containerHeight / 2 + 15),
+      x: -(containerWidth / 2 + 135),
+    }
+  },
+  RIGHT_TOP_30DEG: (containerHeight: number, containerWidth: number) => {
+    return {
+      y: -(containerHeight / 2 + 15),
+      x: (containerWidth / 2 + 135),
     }
   },
   LEFT_BOTTOM_30DEG: (containerHeight: number, containerWidth: number) => {
     return {
       y: (containerHeight / 2 + 40 + PLAYER_LABEL_HEIGHT),
       x: -(containerWidth / 2 + 140),
-    }
-  },
-  RIGHT_TOP_30DEG: (containerHeight: number, containerWidth: number) => {
-    return {
-      y: -(containerHeight / 2 + 10),
-      x: (containerWidth / 2 + 130),
     }
   },
   RIGHT_BOTTOM_30DEG: (containerHeight: number, containerWidth: number) => {

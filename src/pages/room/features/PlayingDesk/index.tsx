@@ -100,13 +100,12 @@ export default function PlayingDesk({ players }: Props) {
             >
             </animated.div>
             <animated.div
-              className='absolute rounded-full bg-light-grey py-4 px-8 flex items-center justify-center'
+              className='absolute rounded-full w-36 bg-light-grey py-4 flex items-center justify-center'
               style={{
                 ...playersSprings[index]
               }}
             >
-              <span >
-                {name}
+              <span >                {name}
               </span>
             </animated.div>
           </React.Fragment>

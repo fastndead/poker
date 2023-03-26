@@ -8,7 +8,7 @@ import Button from '../../components/Button'
 const testPlayers = [
   {
     id: 1,
-    name: 'Асман',
+    name: 'Liyanamahadurag',
     isRevealed: false,
   },
 ]
