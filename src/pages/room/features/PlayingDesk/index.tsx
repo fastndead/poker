@@ -1,5 +1,6 @@
 import { animated, useSprings } from '@react-spring/web'
 import React, { HTMLAttributes, useCallback, useEffect, useRef } from 'react'
+import Card from './components/Card'
 import { getCardStyle, getPlayerStyle, recalculateFromStateForPlayer } from './utils'
 
 export type Player = {
@@ -90,22 +91,21 @@ export default function PlayingDesk({ players }: Props) {
           <React.Fragment
             key={id}
           >
-            <animated.div
-              className='absolute card'
-              style={{
-                height: 80,
-                width: 50,
+            <Card
+              value={value}
+              isRevealed={isRevealed}
+              animationProp={{
                 ...cardsSprings[index]
               }}
-            >
-            </animated.div>
+            />
             <animated.div
               className='absolute rounded-full w-36 bg-light-grey py-4 flex items-center justify-center'
               style={{
                 ...playersSprings[index]
               }}
             >
-              <span >                {name}
+              <span >
+                {name}
               </span>
             </animated.div>
           </React.Fragment>

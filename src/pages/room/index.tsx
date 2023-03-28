@@ -8,8 +8,9 @@ import Button from '../../components/Button'
 const testPlayers = [
   {
     id: 1,
-    name: 'Liyanamahadurag',
+    name: 'Liyanamahadug',
     isRevealed: false,
+    value: '3'
   },
 ]
 
@@ -32,6 +33,7 @@ export function Room() {
             return prev.length < 7 ? [...prev, {
               id,
               name: id % 2 === 0 ? 'Настёна' : 'Ксюша',
+              value: String(Math.floor(Math.random() * 10)),
               isRevealed: false,
             }] : prev})}
         />
@@ -43,9 +45,12 @@ export function Room() {
         />
         <Button
           type='secondary'
-          label='remove the first'
+          label='Reveal cards'
           className='mt-2'
-          onClick={() => setPlayers((prev) => prev.slice(1, prev.length))}
+          onClick={() => setPlayers((prev) => prev.map((player) => ({
+            ...player,
+            isRevealed: !player.isRevealed
+          })))}
         />
 
       </div>
