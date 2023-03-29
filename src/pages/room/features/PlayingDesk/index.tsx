@@ -1,20 +1,25 @@
-import { animated, useSprings } from '@react-spring/web'
-import React, { HTMLAttributes, useCallback, useEffect, useRef } from 'react'
+import { animated, useSprings, useSpring } from '@react-spring/web'
+import React, { CSSProperties, useCallback, useEffect, useRef } from 'react'
 import Card from './components/Card'
-import { getCardStyle, getPlayerStyle, recalculateFromStateForPlayer } from './utils'
+import { getCardStyle, getPlayerStyle, getUserCardStyle, recalculateFromStateForPlayer } from './utils'
+
+export type Card = {
+  isRevealed: boolean,
+  value?: string,
+}
 
 export type Player = {
   id: number,
-  isRevealed: boolean,
-  value?: string,
+  card: Card
   name: string,
 }
 
 type Props = {
   players: Player[]
+  userCard: Card | null 
 }
 
-export default function PlayingDesk({ players }: Props) {
+export default function PlayingDesk({ players, userCard }: Props) {
   const ref = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
@@ -31,6 +36,21 @@ export default function PlayingDesk({ players }: Props) {
     }),
     [players.length]
   )
+
+  const [userCardSpring, userCardSpringApi] = useSpring(() =>{
+    return userCard 
+      ? getUserCardStyle({
+        containerHeight: ref.current?.offsetHeight,
+        containerWidth: ref.current?.offsetWidth,
+      }) 
+      : {
+        to: {
+          opacity: 0,
+          x: 0,
+          y: 0
+        }
+      } 
+  }, [userCard]) 
 
   const [playersSprings, playersSpringApi] = useSprings(
     players.length,
@@ -86,7 +106,8 @@ export default function PlayingDesk({ players }: Props) {
       >
 
       </div>
-      {players.map(({ id, name, value, isRevealed }, index) => {
+      {players.map(({ id, name, card }, index) => {
+        const { value, isRevealed } = card
         return (
           <React.Fragment
             key={id}
@@ -112,6 +133,13 @@ export default function PlayingDesk({ players }: Props) {
         )
       })}
 
+      <Card
+        value={userCard?.value || ''}
+        isRevealed={userCard?.isRevealed}
+        animationProp={{
+          ...userCardSpring as unknown as CSSProperties
+        }}
+      />
     </div>
   )
 }

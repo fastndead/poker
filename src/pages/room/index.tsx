@@ -1,22 +1,28 @@
 import Sidebar from '../../components/Sidebar'
-import React, { useState } from 'react'
+import React, { useCallback, useState } from 'react'
 import { DEFAULT_CARD_SYSTEM } from './constants'
 import PlayingCardsInput from './features/PlayingCardsInput.tsx'
-import PlayingDesk from './features/PlayingDesk'
+import PlayingDesk, { Card } from './features/PlayingDesk'
 import Button from '../../components/Button'
 
 const testPlayers = [
   {
     id: 1,
     name: 'Liyanamahadug',
-    isRevealed: false,
-    value: '3'
+    card: {
+      isRevealed: false,
+      value: '3'
+    }
   },
 ]
 
-
 export function Room() {
   const [players, setPlayers] = useState(testPlayers)
+  const [userCard, setUserCard] = useState<Card | null>(null)
+
+  const handleUserCardChange = useCallback((card: Card) => {
+    setUserCard(card)
+  }, [setUserCard])
 
   return (
     <div
@@ -28,29 +34,42 @@ export function Room() {
         <Button
           type='secondary'
           label='Add player'
+          className=' text-xs p-3'
           onClick={() => setPlayers((prev) => {
             const id = prev[prev.length - 1] ? prev[prev.length - 1]?.id + 1 : 0
             return prev.length < 7 ? [...prev, {
               id,
+              card: {
+                value: String(Math.floor(Math.random() * 10)),
+                isRevealed: false,
+              },
               name: id % 2 === 0 ? 'Настёна' : 'Ксюша',
-              value: String(Math.floor(Math.random() * 10)),
-              isRevealed: false,
             }] : prev})}
         />
         <Button
           type='secondary'
           label='remove player'
-          className='mt-2'
+          className='mt-2 text-xs p-3'
           onClick={() => setPlayers((prev) => prev.slice(0, -1))}
         />
         <Button
           type='secondary'
           label='Reveal cards'
-          className='mt-2'
-          onClick={() => setPlayers((prev) => prev.map((player) => ({
-            ...player,
-            isRevealed: !player.isRevealed
-          })))}
+          className='mt-2 text-xs p-3'
+          onClick={() => {
+            setPlayers((prev) => prev.map((player) => ({
+              ...player,
+              card: {
+                ...player.card,
+                isRevealed: !player.card.isRevealed
+              }
+            })))
+            setUserCard((card)=>{
+              return { ...card, isRevealed: !card?.isRevealed }
+
+            })
+          }
+          }
         />
 
       </div>
@@ -60,8 +79,10 @@ export function Room() {
       >
         <PlayingDesk
           players={players}
+          userCard={userCard}
         />
         <PlayingCardsInput
+          onChange={handleUserCardChange}
           cards={DEFAULT_CARD_SYSTEM}
         />
       </div>

@@ -119,7 +119,7 @@ export const AMOUNT_OF_PLAYERS_TO_INDEX_TO_PLAYER_STYLE_MAP: MappingsType = {
   }
 } as const
 
-const CARD_PLACEMENTS = {
+export const CARD_PLACEMENTS = {
   UP_MIDDLE: (containerHeight: number, containerWidth: number) => {
     return {
       y: -(containerHeight / 2 + 10),
@@ -196,7 +196,15 @@ const CARD_PLACEMENTS = {
       x: (containerWidth / 2 + 35),
       rotate: -60,
     }
-  }
+  },
+  BOTTOM_MIDDLE: (containerHeight: number, containerWidth: number) => {
+    return {
+      y: (containerHeight / 2 + 10 + CARD_HEIGHT),
+      x: 0,
+      rotate: 0,
+    }
+  },
+
 }
 
 export const AMOUNT_OF_PLAYERS_TO_INDEX_TO_CARD_STYLE_MAP: MappingsType = {

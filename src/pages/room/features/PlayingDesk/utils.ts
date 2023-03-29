@@ -1,6 +1,6 @@
 import { UseSpringProps } from '@react-spring/web'
 import { Player } from '.'
-import { AMOUNT_OF_PLAYERS_TO_INDEX_TO_PLAYER_STYLE_MAP, AMOUNT_OF_PLAYERS_TO_INDEX_TO_CARD_STYLE_MAP } from './constants'
+import { AMOUNT_OF_PLAYERS_TO_INDEX_TO_PLAYER_STYLE_MAP, AMOUNT_OF_PLAYERS_TO_INDEX_TO_CARD_STYLE_MAP, CARD_PLACEMENTS } from './constants'
 
 
 const DEFAULT_INIT_STYLE = {
@@ -98,6 +98,31 @@ export function getCardStyle({
     to: {
       opacity: 1,
       ...AMOUNT_OF_PLAYERS_TO_INDEX_TO_CARD_STYLE_MAP[amountOfPlayers][index](containerHeight, containerWidth),
+    }
+  }
+}
+
+export function getUserCardStyle({
+  containerHeight,
+  containerWidth,
+}: {
+  containerHeight: number | undefined,
+  containerWidth: number | undefined,
+  }){
+
+  if (!containerWidth || !containerHeight){
+    return  { ...DEFAULT_INIT_STYLE }
+  }
+
+  return {
+    from: {
+      opacity: 0,
+      x: 0,
+      y: 0
+    },
+    to: {
+      opacity: 1,
+      ...CARD_PLACEMENTS.BOTTOM_MIDDLE(containerHeight, containerWidth)
     }
   }
 }

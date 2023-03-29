@@ -1,8 +1,10 @@
-import React, { useCallback } from 'react'
+import React, { useCallback, useState } from 'react'
 import { animated, useSprings } from '@react-spring/web'
+import { Card } from '../PlayingDesk'
 
 type Props = {
   cards: string[]
+  onChange(card: Card): void
 }
 
 // todo i really wish i would refactor this shit, but for now it works
@@ -49,9 +51,9 @@ function getValue({
   return absoluteResult
 }
 
-function getCardConfigFactory(selectedIndex: number, cardsAmount: number, cardSize: {width: number, height: number}){
+function getCardConfigFactory(selectedIndex: number | number[], cardsAmount: number, cardSize: {width: number, height: number}){
   return (index: number) =>  {
-    const isSelected = selectedIndex === index
+    const isSelected = Array.isArray(selectedIndex) ? selectedIndex.includes(index) : selectedIndex === index
     const realIndex = index + 1
     const length = cardsAmount
     const isOdd = length % 2 !== 0
@@ -85,26 +87,36 @@ function getCardConfigFactory(selectedIndex: number, cardsAmount: number, cardSi
   }
 }
 
-export default function PlayingCardsInput({ cards }:Props) {
+export default function PlayingCardsInput({ onChange, cards }: Props) {
   const matchMedia = window.matchMedia('(max-width: 1300px)')
   const cardSize = {
     width: matchMedia.matches ? 66 : 100,
     height: matchMedia.matches ? 106 : 160,
   }
+  const [chosenCardIndex, setChosenCardIndex] = useState<number>(-1)
 
   const [springs, api] = useSprings(
     cards.length,
-    getCardConfigFactory(-1, cards.length, cardSize),
+    getCardConfigFactory(chosenCardIndex, cards.length, cardSize),
+    [chosenCardIndex]
   )
 
 
   const handleHover = useCallback((index: number) => () => {
-    api.start(getCardConfigFactory(index, cards.length, cardSize))
-  }, [api])
+    api.start(getCardConfigFactory([index, chosenCardIndex], cards.length, cardSize))
+  }, [api, cards, cardSize])
 
   const handleHoverEnd = useCallback(() => () => {
-    api.start(getCardConfigFactory(-1, cards.length, cardSize))
-  }, [])
+    api.start(getCardConfigFactory(chosenCardIndex, cards.length, cardSize))
+  }, [api, cards, cardSize, chosenCardIndex])
+
+  const handleClick = useCallback((index: number) => () => {
+    onChange({
+      isRevealed: false,
+      value: cards[index]
+    })
+    setChosenCardIndex(index)
+  }, [api, cards, cardSize])
 
 
   return (
@@ -124,6 +136,7 @@ export default function PlayingCardsInput({ cards }:Props) {
             <animated.div
               onMouseEnter={handleHover(index)}
               onMouseLeave={handleHoverEnd()}
+              onClick={handleClick(index)}
               key={index}
               className={'absolute border cursor-pointer bg-white border-primary-emphasis rounded-lg shadow-card z-1'}
               style={{
