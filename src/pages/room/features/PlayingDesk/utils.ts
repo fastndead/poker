@@ -33,7 +33,7 @@ export function recalculateFromStateForPlayer (players: Player[]) {
   }
 }
 
-function getFrom(id: number, existingIds: Record<string, boolean>) {
+function getFrom(id: string, existingIds: Record<string, boolean>) {
   if (existingIds[id]) {
     return {}
   }

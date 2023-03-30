@@ -5,7 +5,7 @@ export type Card = {
 }
 
 export type Player = {
-  id: number,
+  id: string,
   card: Card
   name: string,
 }
