@@ -2,8 +2,9 @@ import Sidebar from '../../components/Sidebar'
 import React, { useCallback, useState } from 'react'
 import { DEFAULT_CARD_SYSTEM } from './constants'
 import PlayingCardsInput from './features/PlayingCardsInput.tsx'
-import PlayingDesk, { Card } from './features/PlayingDesk'
+import PlayingDesk from './features/PlayingDesk'
 import Button from '../../components/Button'
+import { Card } from './types'
 
 const testPlayers = [
   {

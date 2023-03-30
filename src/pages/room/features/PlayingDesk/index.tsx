@@ -1,22 +1,13 @@
-import { animated, useSprings, useSpring } from '@react-spring/web'
+import { animated, useSprings } from '@react-spring/web'
 import React, { CSSProperties, useCallback, useEffect, useRef } from 'react'
+import type { Player, Card as CardType } from '../../types'
 import Card from './components/Card'
-import { getCardStyle, getPlayerStyle, getUserCardStyle, recalculateFromStateForPlayer } from './utils'
-
-export type Card = {
-  isRevealed: boolean,
-  value?: string,
-}
-
-export type Player = {
-  id: number,
-  card: Card
-  name: string,
-}
+import { useUserCardSpring } from './hooks/useUserCardSprings'
+import { getCardStyle, getPlayerStyle, recalculateFromStateForPlayer } from './utils'
 
 type Props = {
   players: Player[]
-  userCard: Card | null 
+  userCard: CardType | null 
 }
 
 export default function PlayingDesk({ players, userCard }: Props) {
@@ -25,6 +16,12 @@ export default function PlayingDesk({ players, userCard }: Props) {
   useEffect(() => {
     recalculateFromStateForPlayer(players)
   }, [players])
+
+  const userCardSpring = useUserCardSpring({
+    userCard,
+    containerHeight: ref.current?.offsetHeight,
+    containerWidth: ref.current?.offsetWidth,
+  })
 
   const [cardsSprings, cardSpringApi] = useSprings(
     players.length,
@@ -36,21 +33,6 @@ export default function PlayingDesk({ players, userCard }: Props) {
     }),
     [players.length]
   )
-
-  const [userCardSpring, userCardSpringApi] = useSpring(() =>{
-    return userCard 
-      ? getUserCardStyle({
-        containerHeight: ref.current?.offsetHeight,
-        containerWidth: ref.current?.offsetWidth,
-      }) 
-      : {
-        to: {
-          opacity: 0,
-          x: 0,
-          y: 0
-        }
-      } 
-  }, [userCard]) 
 
   const [playersSprings, playersSpringApi] = useSprings(
     players.length,

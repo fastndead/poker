@@ -1,6 +1,6 @@
 import React, { useCallback, useState } from 'react'
 import { animated, useSprings } from '@react-spring/web'
-import { Card } from '../PlayingDesk'
+import { Card } from '../../types'
 
 type Props = {
   cards: string[]

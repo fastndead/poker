@@ -14,9 +14,6 @@ export default function Card({ isRevealed, animationProp, value }: Props) {
     config: { mass: 10, tension: 500, friction: 80 },
   })
 
-  console.log('rotateX', rotateY)
-  console.log('opacity', opacity)
-
   return (
     <animated.div
       className='absolute'

@@ -1,5 +1,5 @@
 import { UseSpringProps } from '@react-spring/web'
-import { Player } from '.'
+import { Player } from '../../types'
 import { AMOUNT_OF_PLAYERS_TO_INDEX_TO_PLAYER_STYLE_MAP, AMOUNT_OF_PLAYERS_TO_INDEX_TO_CARD_STYLE_MAP, CARD_PLACEMENTS } from './constants'
 
 
@@ -118,7 +118,7 @@ export function getUserCardStyle({
     from: {
       opacity: 0,
       x: 0,
-      y: 0
+      y: 600
     },
     to: {
       opacity: 1,
