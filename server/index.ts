@@ -40,13 +40,12 @@ const io = new Server(server, {
 io.engine.use(sessionMiddleware)
 
 export type Card = {
-  isRevealed: boolean,
   value?: string,
 }
 
 export type Player = {
   id: string,
-  card: Card
+  value: string | null 
   name: string,
 }
 
@@ -54,41 +53,46 @@ const users: Record<string, Player> = {}
 
 const rooms: Record<string, {[key: string]: Player}> = {}
 
-const DEFAULT_CARD = {
-  isRevealed: false,
-}
-
 const createNewUser = (name: string, id: string) => {
   users[id] = {
     id: id,
-    card: DEFAULT_CARD,
+    value: null,
     name: name,
   }
 
   return users[id]
 }
 
-const createRoom = (name:string): {[key: string]: Player} => {
-  if (!rooms[name]) {
-    rooms[name] = {}
-  }
-  return rooms[name]
+const createRoom = (name:string) => {
+  rooms[name] = {}
 }
 
 io.on('connection', (socket) => {
+  const sessionId = socket.request.session.id
 
+  
   socket.on('mynameis', ({ name }: {name: string}) => {
-    createNewUser(name || 'anon', socket.request.session.id)
+    createNewUser(name || 'anon', sessionId)
+  })
+
+  socket.on('reveal', () => {
+    socket.rooms.forEach((roomName) => {
+      if (rooms[roomName]) {
+        socket.broadcast.to(roomName).emit('reveal')
+      }
+    })
   })
 
 
   socket.on('join', ({ roomName }: {roomName: string}) => {
-    const sessionId = socket.request.session.id
     if (!users[sessionId]) {
       createNewUser('anon', sessionId)
     }
 
-    const room = createRoom(roomName)
+    if (!rooms[roomName]) {
+      createRoom(roomName)
+    }
+    const room = rooms[roomName] 
     room[sessionId] = users[sessionId]
 
     socket.join(roomName)
@@ -100,26 +104,38 @@ io.on('connection', (socket) => {
   })
 
   socket.on('vote', ({ voteValue }: {voteValue: string}) => {
-    const sessionId = socket.request.session.id
     socket.rooms.forEach((roomName) => {
       if (rooms[roomName]) {
-        rooms[roomName][sessionId].card.value = voteValue
+        rooms[roomName][sessionId].value = voteValue
       }
       socket.broadcast.to(roomName).emit('player_voted', { value: voteValue, playerId: sessionId })
     })
-
   })
 
-  socket.on('disconnecting', (reason) => {
-    const sessionId = socket.request.session.id
+  socket.on('show_all', () => {
+    socket.rooms.forEach((roomName) => {
+      io.in(roomName).emit('show_all')
+    })
+  })
+
+  socket.on('reset', () => {
+    socket.rooms.forEach((roomName) => {
+      Object.keys(rooms[roomName]).forEach((id) => {
+        rooms[roomName][id].value = null
+      })
+      io.in(roomName).emit('reset')
+    })
+  })
+
+  socket.on('disconnecting', () => {
     if (users[sessionId]) {
       socket.rooms.forEach((roomName) => {
         if (rooms[roomName]){
           delete rooms[roomName][sessionId]
-
           socket.broadcast.to(roomName).emit('player_disconnect', { playerId: sessionId })
         }
       })
+      delete users[sessionId]
     }
   })
 })

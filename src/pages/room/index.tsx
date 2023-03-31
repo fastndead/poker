@@ -4,7 +4,7 @@ import { DEFAULT_CARD_SYSTEM } from './constants'
 import PlayingCardsInput from './features/PlayingCardsInput.tsx'
 import PlayingDesk from './features/PlayingDesk'
 import Button from '../../components/Button'
-import { Card, Player } from './types'
+import { Player, PlayerSeialized } from './types'
 import { socket } from '../../sockets/socket'
 import { useParams } from 'react-router-dom'
 
@@ -13,8 +13,7 @@ const testPlayers = [
     id: 1,
     name: 'Liyanamahadug',
     card: {
-      isRevealed: false,
-      value: '3'
+      value: 'M'
     }
   },
 ]
@@ -27,15 +26,23 @@ function getCookie(name: string) {
 export function Room() {
   const { roomName } = useParams<{roomName: string}>()
   const [players, setPlayers] = useState<Player[]>([])
+  const [isRevealed, setIsRevealed] = useState<boolean>(false)
 
   useEffect(() => {
     socket.emit('join', { roomName })
-    socket.on('initial_state', ({ players }: {players: Player[]}) => {
-      setPlayers([...players] )
+    socket.on('initial_state', ({ players }: {players: PlayerSeialized[]}) => {
+      const deserializedPlayers = players.map((player) => ({
+        name: player.name,
+        id: player.id,
+        value: player.value
+      }))
+      setPlayers([...deserializedPlayers] )
     })
 
     socket.on('new_player', ({ player }: {player: Player}) => {
-      setPlayers((prev) => [...prev, player])
+      
+      setPlayers((prev) => {
+        return [...prev, player]})
     })
 
     socket.on('player_disconnect', ({ playerId }: {playerId: string}) => {
@@ -44,18 +51,26 @@ export function Room() {
 
     socket.on('player_voted', ({ value, playerId }: {value: string, playerId: string}) => {
       setPlayers((prev) => {
-        debugger
-        return [...prev].map((player)=> player.id === playerId ? { ...player, card: { ...player.card, value } } : player)
+        return [...prev].map((player)=> player.id === playerId ? { ...player, value } : player)
       })
     })
+
+    socket.on('show_all', () => {
+      setIsRevealed(true)
+    })
+
   }, [])
 
-  const [userCard, setUserCard] = useState<Card | null>(null)
+  const [userValue, setUserValue] = useState<Player['value']>(null)
 
-  const handleUserCardChange = useCallback((card: Card) => {
-    socket.emit('vote', { voteValue: card.value })
-    setUserCard(card)
-  }, [setUserCard])
+  const handleUserCardChange = useCallback((value: Player['value']) => {
+    socket.emit('vote', { voteValue: value })
+    setUserValue(value)
+  }, [setUserValue])
+
+  const handleShowAll = useCallback(() => {
+    socket.emit('show_all')
+  }, [])
 
   return (
     <div
@@ -72,10 +87,7 @@ export function Room() {
             const id = prev[prev.length - 1] ? prev[prev.length - 1]?.id + 1 : 0
             return prev.length < 7 ? [...prev, {
               id: String(id),
-              card: {
-                value: String(Math.floor(Math.random() * 10)),
-                isRevealed: false,
-              },
+              value: 'M',
               name: Number(id) % 2 === 0 ? 'Настёна' : 'Ксюша',
             }] : prev})}
         />
@@ -90,17 +102,7 @@ export function Room() {
           label='Reveal cards'
           className='mt-2 text-xs p-3'
           onClick={() => {
-            setPlayers((prev) => prev.map((player) => ({
-              ...player,
-              card: {
-                ...player.card,
-                isRevealed: !player.card.isRevealed
-              }
-            })))
-            setUserCard((card)=>{
-              return { ...card, isRevealed: !card?.isRevealed }
-
-            })
+            setIsRevealed((prev) => !prev)
           }
           }
         />
@@ -111,8 +113,10 @@ export function Room() {
         className='container h-screen flex flex-col items-center justify-between relative w-full m-auto'
       >
         <PlayingDesk
+          isRevealed={isRevealed}
           players={players}
-          userCard={userCard}
+          userValue={userValue}
+          onShowAll={handleShowAll}
         />
         <PlayingCardsInput
           onChange={handleUserCardChange}

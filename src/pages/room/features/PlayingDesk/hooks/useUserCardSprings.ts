@@ -1,12 +1,13 @@
 import { useSpring } from '@react-spring/web'
+import { Player } from 'pages/room/types'
 import { useEffect, useRef } from 'react'
-import { Card } from '../../../types'
 import { getUserCardStyle } from '../utils'
 
 type Props = {
-  userCard: Card | null,
+  userCard: Player['value'],
   containerWidth?: number,
   containerHeight?: number
+  isRevealed: boolean
 }
 
 const USER_CARD_CONFIG = {
@@ -15,10 +16,43 @@ const USER_CARD_CONFIG = {
   friction: 20
 }
 
-export function useUserCardSpring({ userCard, containerHeight, containerWidth }: Props) {
+export function useUserCardSpring({ userCard, isRevealed, containerHeight, containerWidth }: Props) {
   const firstAppearance = useRef(!userCard)
 
   const [userCardSpring, userCardSpringApi] = useSpring(() => {
+    const style = getUserCardStyle({
+      containerHeight,
+      containerWidth,
+    })
+
+    if (isRevealed) {
+      return
+    }
+
+    if (userCard && firstAppearance.current){
+      firstAppearance.current = false
+      return { 
+        ...style,
+        config: USER_CARD_CONFIG
+      }
+    } 
+
+    if (userCard && !firstAppearance.current) {
+      return {
+        from: { ...style.to },
+        to: [
+          {
+            opacity: 0,
+            x: 0,
+            y: 0
+          },
+          {
+            ...style.to,
+          }
+        ],
+        config: USER_CARD_CONFIG
+      }
+    }
 
     return {
       to: {
@@ -29,41 +63,7 @@ export function useUserCardSpring({ userCard, containerHeight, containerWidth }:
       config: USER_CARD_CONFIG
     }
 
-  }, [userCard, containerWidth, containerHeight])
-
-  useEffect(() => {
-    if (userCard && firstAppearance.current){
-      firstAppearance.current = false
-      userCardSpringApi.start(() => ({ ...getUserCardStyle({
-        containerHeight,
-        containerWidth,
-      }),
-      config: USER_CARD_CONFIG
-      }))
-    } else if (userCard && !firstAppearance.current) {
-
-      const style = getUserCardStyle({
-        containerHeight,
-        containerWidth,
-      }).to
-
-      userCardSpringApi.start(() => ({
-        from: { ...style },
-        to: [
-          {
-            opacity: 0,
-            x: 0,
-            y: 600
-          },
-          {
-            ...style,
-          }
-        ],
-        config: USER_CARD_CONFIG
-      }))
-    }
-  }, 
-  [userCard, containerHeight, containerWidth])
+  }, [userCard, containerWidth, containerHeight, isRevealed])
 
   return userCardSpring
 }

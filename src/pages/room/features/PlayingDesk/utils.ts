@@ -79,25 +79,33 @@ export function getCardStyle({
   containerHeight,
   containerWidth,
   index,
-  players
+  players,
+  isRevealed
 }: {
   containerWidth: number | undefined,
   containerHeight: number | undefined,
   index: number
   players: Player[]
+  isRevealed: boolean
 }): UseSpringProps {
   const amountOfPlayers = players.length
-  const id = players[index].id
+  const { id } = players[index]
+  
 
   if (!containerWidth || !containerHeight){
     return  { ...DEFAULT_INIT_STYLE }
   }
 
-  return {
+  const rotateConfig = isRevealed ? {
+    rotate: 0
+  } : {}
+
+  return  {
     from: getFrom(id, renderedPlayerCards),
     to: {
       opacity: 1,
       ...AMOUNT_OF_PLAYERS_TO_INDEX_TO_CARD_STYLE_MAP[amountOfPlayers][index](containerHeight, containerWidth),
+      ...rotateConfig
     }
   }
 }
@@ -118,7 +126,7 @@ export function getUserCardStyle({
     from: {
       opacity: 0,
       x: 0,
-      y: 600
+      y: 0, 
     },
     to: {
       opacity: 1,

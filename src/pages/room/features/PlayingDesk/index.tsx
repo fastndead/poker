@@ -1,16 +1,19 @@
-import { animated, useSprings } from '@react-spring/web'
-import React, { CSSProperties, useCallback, useEffect, useRef } from 'react'
-import type { Player, Card as CardType } from '../../types'
+import { animated, useSpring, useSprings } from '@react-spring/web'
+import Button from 'components/Button'
+import React, { CSSProperties, useEffect, useMemo, useRef } from 'react'
+import type { Player } from '../../types'
 import Card from './components/Card'
 import { useUserCardSpring } from './hooks/useUserCardSprings'
 import { getCardStyle, getPlayerStyle, recalculateFromStateForPlayer } from './utils'
 
 type Props = {
   players: Player[]
-  userCard: CardType | null 
+  userValue: Player['value']
+  isRevealed: boolean
+  onShowAll(): void
 }
 
-export default function PlayingDesk({ players, userCard }: Props) {
+export default function PlayingDesk({ players, userValue, onShowAll, isRevealed }: Props) {
   const ref = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
@@ -18,9 +21,10 @@ export default function PlayingDesk({ players, userCard }: Props) {
   }, [players])
 
   const userCardSpring = useUserCardSpring({
-    userCard,
+    userCard: userValue,
     containerHeight: ref.current?.offsetHeight,
     containerWidth: ref.current?.offsetWidth,
+    isRevealed
   })
 
   const [cardsSprings, cardSpringApi] = useSprings(
@@ -30,11 +34,12 @@ export default function PlayingDesk({ players, userCard }: Props) {
       containerWidth: ref.current?.offsetWidth,
       index,
       players,
+      isRevealed
     }),
-    [players.length]
+    [players.length, players, isRevealed]
   )
 
-  const [playersSprings, playersSpringApi] = useSprings(
+  const [playersSprings] = useSprings(
     players.length,
     (index: number) => getPlayerStyle({
       containerHeight: ref.current?.offsetHeight,
@@ -42,37 +47,29 @@ export default function PlayingDesk({ players, userCard }: Props) {
       index,
       players,
     }),
+    [cardSpringApi, ref.current, players.length]
   )
 
-  const refreshAnimation = useCallback(() => {
-    cardSpringApi.start(
-      (index) => getCardStyle({
-        containerHeight: ref.current?.offsetHeight,
-        containerWidth: ref.current?.offsetWidth,
-        index,
-        players,
-      }),
-    )
-
-    playersSpringApi.start(
-      (index) => getPlayerStyle({
-        containerHeight: ref.current?.offsetHeight,
-        containerWidth: ref.current?.offsetWidth,
-        index,
-        players,
-      }),
-    )
-  }, [cardSpringApi, playersSpringApi, ref, players.length])
-
-  useEffect(() => {
-    refreshAnimation()
-  }, [players.length, refreshAnimation])
-
-  // we need to refresh animation when we get the ref's dimansions
-  useEffect(() => {
-    refreshAnimation()
-  }, [ref.current])
-
+  const canShowAll = useMemo(() => Boolean(userValue && players.length && !players.find((player) => !player.value)) ,[players, userValue])
+  const [showResultsButtonSprings ] = useSpring(() => {
+    if (canShowAll){
+      return {
+        from: {
+          opacity: 0,
+          y: 10
+        },
+        to: {
+          opacity: 1,
+          y: 0
+        }
+      }
+    } 
+    return {
+      from: {
+        opacity: 0
+      }
+    }
+  }, [canShowAll])
 
   return (
     <div
@@ -80,16 +77,29 @@ export default function PlayingDesk({ players, userCard }: Props) {
     >
       <div
         ref={ref}
-        className='-mb-20 bg-light-grey rounded-3xl'
+        className='-mb-20 bg-light-grey rounded-3xl flex items-center justify-center'
         style={{
           width: 366,
           height: 199,
         }}
       >
-
+        {
+          <animated.div
+            style={{
+              ...showResultsButtonSprings
+            }}
+          >
+            <Button 
+              htmlType='button' 
+              type='primary'  
+              className='w-72'
+              onClick={onShowAll}
+              label='Show results'
+            />
+          </animated.div>
+        }
       </div>
-      {players.map(({ id, name, card }, index) => {
-        const { value, isRevealed } = card
+      {players.map(({ id, name, value }, index) => {
         return (
           <React.Fragment
             key={id}
@@ -116,8 +126,8 @@ export default function PlayingDesk({ players, userCard }: Props) {
       })}
 
       <Card
-        value={userCard?.value || ''}
-        isRevealed={userCard?.isRevealed}
+        value={userValue || ''}
+        isRevealed={isRevealed}
         animationProp={{
           ...userCardSpring as unknown as CSSProperties
         }}

@@ -1,10 +1,10 @@
 import React, { useCallback, useState } from 'react'
 import { animated, useSprings } from '@react-spring/web'
-import { Card } from '../../types'
+import { Player } from 'pages/room/types'
 
 type Props = {
   cards: string[]
-  onChange(card: Card): void
+  onChange(value: Player['value']): void
 }
 
 // todo i really wish i would refactor this shit, but for now it works
@@ -111,10 +111,7 @@ export default function PlayingCardsInput({ onChange, cards }: Props) {
   }, [api, cards, cardSize, chosenCardIndex])
 
   const handleClick = useCallback((index: number) => () => {
-    onChange({
-      isRevealed: false,
-      value: cards[index]
-    })
+    onChange(cards[index])
     setChosenCardIndex(index)
   }, [api, cards, cardSize])
 

@@ -1,8 +1,10 @@
 import React, { CSSProperties, useState } from 'react'
 import { animated, useSpring } from '@react-spring/web'
+import classNames from 'classnames'
+import { ReactComponent as ArrowSvg } from 'assets/arrow.svg'
 
 type Props = {
-  value?: string
+  value?: string | null
   isRevealed?: boolean
   animationProp: CSSProperties 
 }
@@ -23,8 +25,17 @@ export default function Card({ isRevealed, animationProp, value }: Props) {
         ...animationProp
       }}
     >
+      {
+        value && !isRevealed && (
+          <ArrowSvg 
+            className='absolute -top-6 left-1/2 -translate-x-2/4'
+          />
+        ) 
+      }
       <animated.div 
-        className='absolute card'
+        className={classNames('absolute card', {
+          'bg-primary-emphasis': value
+        })}
         style={{ 
           perspective: 400,
           opacity: opacity.to(o => 1 - o),
