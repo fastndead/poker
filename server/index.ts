@@ -120,9 +120,13 @@ io.on('connection', (socket) => {
 
   socket.on('reset', () => {
     socket.rooms.forEach((roomName) => {
-      Object.keys(rooms[roomName]).forEach((id) => {
-        rooms[roomName][id].value = null
-      })
+      if (rooms[roomName]) {
+        console.log(roomName)
+        console.log(rooms)
+        Object.keys(rooms[roomName]).forEach((id) => {
+          rooms[roomName][id].value = null
+        })
+      }
       io.in(roomName).emit('reset')
     })
   })

@@ -11,9 +11,10 @@ type Props = {
   userValue: Player['value']
   isRevealed: boolean
   onShowAll(): void
+  onReset(): void
 }
 
-export default function PlayingDesk({ players, userValue, onShowAll, isRevealed }: Props) {
+export default function PlayingDesk({ players, userValue, onShowAll, onReset, isRevealed }: Props) {
   const ref = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
@@ -93,8 +94,8 @@ export default function PlayingDesk({ players, userValue, onShowAll, isRevealed 
               htmlType='button' 
               type='primary'  
               className='w-72'
-              onClick={onShowAll}
-              label='Show results'
+              onClick={isRevealed ? onReset : onShowAll}
+              label={isRevealed ? 'Next round' : 'Show results'}
             />
           </animated.div>
         }

@@ -59,6 +59,14 @@ export function Room() {
       setIsRevealed(true)
     })
 
+    socket.on('reset', () => {
+      setIsRevealed(false)
+      setPlayers((prev) => {
+        return [...prev].map((player) => ({ ...player, value: null }))
+      })
+      setUserValue(null)
+    })
+
   }, [])
 
   const [userValue, setUserValue] = useState<Player['value']>(null)
@@ -70,6 +78,10 @@ export function Room() {
 
   const handleShowAll = useCallback(() => {
     socket.emit('show_all')
+  }, [])
+
+  const handleReset = useCallback(() => {
+    socket.emit('reset')
   }, [])
 
   return (
@@ -117,6 +129,7 @@ export function Room() {
           players={players}
           userValue={userValue}
           onShowAll={handleShowAll}
+          onReset={handleReset}
         />
         <PlayingCardsInput
           onChange={handleUserCardChange}
