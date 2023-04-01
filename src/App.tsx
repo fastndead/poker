@@ -23,10 +23,6 @@ const router = createBrowserRouter([
 ])
 
 function App()  {
-  useEffect(() => {
-    document.getElementById('spinner')?.remove()
-  }, [])
-
   return (
     <div
       className='w-screen min-h-screen'
