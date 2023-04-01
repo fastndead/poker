@@ -72,13 +72,12 @@ export default function Modal({ className, isVisible, children, title, onClose }
       style={{
         ...modalOverlaySpring,
       }}
-      className={classNames('fixed top-0 right-0 w-screen h-screen flex justify-center items-center', className)}
+      className={classNames('fixed top-0 right-0 w-screen h-screen flex justify-center items-center')}
     >
 
       <animated.div 
-        className='relative w-3/6 bg-white z-50 rounded-3xl p-6 shadow-modal'
+        className={classNames('relative bg-white z-50 rounded-3xl p-6 shadow-modal', className)}
         style={{
-          width: modalOverlaySpring.width.to(() => (window.innerWidth / 2)),
           ...modalSpring
         }}
       >
