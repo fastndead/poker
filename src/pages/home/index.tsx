@@ -1,17 +1,30 @@
+import { useSpring, animated } from '@react-spring/web'
 import Button from 'components/Button'
 import Modal from 'components/Modal'
 import TextInput from 'components/TextInput'
 import React, { useState } from 'react'
-import CardsSpread from './features/CardsSpread'
+import CardsSpread, { springConfigRigid } from './features/CardsSpread'
 import JoinRoomModal from './features/JoinRoomModal'
 
 export function Home() {
   const [modalVisible, setModalVisible] = useState(false)
   const [validationError, setValidationError] = useState<string | null>(null)
+
+  const spring = useSpring({
+    from: { opacity: 0 },
+    to: { opacity: 1 },
+    config: {
+      ...springConfigRigid
+    }
+  })
+
   return (
     <>
-      <div
+      <animated.div
         className='container mx-auto w-screen min-h-screen'
+        style={{
+          ...spring
+        }}
       >
         <div
           className='w-80 m-auto min-h-full'
@@ -38,7 +51,7 @@ export function Home() {
           isVisible={modalVisible}
           onClose={() => setModalVisible(false)}
         />
-      </div>
+      </animated.div>
     </>
 
   )

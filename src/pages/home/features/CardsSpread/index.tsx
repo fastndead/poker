@@ -1,13 +1,7 @@
 import React, { useCallback, useEffect } from 'react'
 import { animated, useSpring } from '@react-spring/web'
 
-const springConfig = {
-  mass: 10,
-  tension: 200,
-  friction: 20
-}
-
-const springConfigRigid = {
+export const springConfigRigid = {
   mass: 10,
   tension: 60,
   friction: 40
@@ -43,7 +37,7 @@ function getToState(toX: number, toY: number, rotate: number) {
     x: toX,
     y: toY,
     rotate: rotate,
-    config: springConfig,
+    config: springConfigRigid,
   }
 }
 
