@@ -1,6 +1,5 @@
 import { useSpring, animated } from '@react-spring/web'
 import Button from 'components/Button'
-import Modal from 'components/Modal'
 import TextInput from 'components/TextInput'
 import React, { useState } from 'react'
 import CardsSpread, { springConfigRigid } from './features/CardsSpread'

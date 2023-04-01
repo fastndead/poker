@@ -26,6 +26,113 @@
     <title>Planning Poker</title>
   </head>
   <body>
+    <div id='spinner'>
+
+    <style>
+      .spinner-container {
+        position: relative;
+        margin-top: 8rem;
+      }
+
+      @media screen and (min-width: 1536px) {
+
+        .spinner-container {
+          margin-top: 18rem;
+        }
+      }
+      .card {
+        /* positioning */
+        position: absolute;
+        top: 0;
+        right: 50%;
+        transform: translate(50%, 0);
+
+        /* appearance */
+        width: 103px;
+        height: 166px;
+        background: #ccdaff;
+        border: 1px solid #7893dc;
+        border-radius: 8px;
+      }
+
+      .skewed {
+        transform: translate(calc(50% + 15px), 0) rotate(10deg);
+        z-index: -10;
+      }
+
+      .skewed-2 {
+        transform: translate(calc(50% - 15px), 0) rotate(-10deg);
+        z-index: -10;
+      }
+      .skewed-3 {
+        transform: translate(calc(50% - 35px), 0) rotate(-25deg);
+        z-index: -1000;
+      }
+      .skewed-4 {
+        transform: translate(calc(50% + 35px), 0) rotate(25deg);
+        z-index: -1000;
+      }
+
+      .animated {
+        animation: 1s ease-in-out 0s infinite shuffle;
+        z-index: 1000;
+      }
+      .animated-alternate {
+        animation: 1s ease-in-out 0.5s infinite shuffle-alternate;
+        z-index: 1000;
+      }
+
+      @keyframes shuffle-alternate {
+        0% {
+          transform: translate(50%, 0);
+        }
+
+        50% {
+          transform: translate(calc(50% - 220px), -135px)
+            rotate(-45deg);
+          z-index: 1000;
+        }
+        60% {
+          z-index: -1000;
+        }
+
+        100% {
+          transform: translate(50%, 0);
+          z-index: -1000;
+        }
+      }
+
+      @keyframes shuffle {
+        0% {
+          transform: translate(50%, 0);
+        }
+
+        50% {
+          transform: translate(calc(50% + 220px), -135px)
+            rotate(45deg);
+          z-index: 1000;
+        }
+        60% {
+          z-index: -1000;
+        }
+
+        100% {
+          transform: translate(50%, 0);
+          z-index: -1000;
+        }
+      }
+    </style>
+      <div class='spinner-container'>
+        <div class="card animated"></div>
+        <div class="card animated-alternate"></div>
+        <div class="card"></div>
+        <div class="card"></div>
+        <div class="card skewed"></div>
+        <div class="card skewed-2"></div>
+        <div class="card skewed-3"></div>
+        <div class="card skewed-4"></div>
+      </div>
+    </div>
     <noscript>You need to enable JavaScript to run this app.</noscript>
     <div id="root"></div>
     <!--

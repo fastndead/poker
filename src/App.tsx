@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import {
   createBrowserRouter,
   RouterProvider,
@@ -23,6 +23,10 @@ const router = createBrowserRouter([
 ])
 
 function App()  {
+  useEffect(() => {
+    document.getElementById('spinner')?.remove()
+  }, [])
+
   return (
     <div
       className='w-screen min-h-screen'
