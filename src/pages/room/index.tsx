@@ -17,11 +17,6 @@ const testPlayers = [
     }
   },
 ]
-function getCookie(name: string) {
-  const value = `; ${document.cookie}`
-  const parts = value.split(`; ${name}=`)
-  if (parts.length === 2) return parts.pop()?.split(';').shift()
-}
 
 export function Room() {
   const { roomName } = useParams<{roomName: string}>()
@@ -47,6 +42,7 @@ export function Room() {
 
     socket.on('player_disconnect', ({ playerId }: {playerId: string}) => {
       setPlayers((prev) => [...prev].filter((player)=> player.id !== playerId))
+      setIsRevealed(false)
     })
 
     socket.on('player_voted', ({ value, playerId }: {value: string, playerId: string}) => {
@@ -67,7 +63,10 @@ export function Room() {
       setUserValue(null)
     })
 
-  }, [])
+    return () => {
+      socket.emit('leave', { roomId: roomName })
+    }
+  }, [roomName])
 
   const [userValue, setUserValue] = useState<Player['value']>(null)
 

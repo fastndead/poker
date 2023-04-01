@@ -85,19 +85,21 @@ export default function PlayingDesk({ players, userValue, onShowAll, onReset, is
         }}
       >
         {
-          <animated.div
-            style={{
-              ...showResultsButtonSprings
-            }}
-          >
-            <Button 
-              htmlType='button' 
-              type='primary'  
-              className='w-72'
-              onClick={isRevealed ? onReset : onShowAll}
-              label={isRevealed ? 'Next round' : 'Show results'}
-            />
-          </animated.div>
+          canShowAll && (
+            <animated.div
+              style={{
+                ...showResultsButtonSprings
+              }}
+            >
+              <Button 
+                htmlType='button' 
+                type='primary'  
+                className='w-72'
+                onClick={isRevealed ? onReset : onShowAll}
+                label={isRevealed ? 'Next round' : 'Show results'}
+              />
+            </animated.div>
+          )
         }
       </div>
       {players.map(({ id, name, value }, index) => {
@@ -126,13 +128,17 @@ export default function PlayingDesk({ players, userValue, onShowAll, onReset, is
         )
       })}
 
-      <Card
-        value={userValue || ''}
-        isRevealed={isRevealed}
-        animationProp={{
-          ...userCardSpring as unknown as CSSProperties
-        }}
-      />
+      {
+        userValue && (
+          <Card
+            value={userValue || ''}
+            isRevealed={isRevealed}
+            animationProp={{
+              ...userCardSpring as unknown as CSSProperties
+            }}
+          />
+        )
+      }
     </div>
   )
 }

@@ -40,4 +40,8 @@ code {
   .text-input {
     @apply shadow-input-border shadow-grey text-2xl px-14 py-4 rounded-3xl block w-full p-2.5 box-border text-center border-none outline-none focus:shadow-primary-emphasis focus:shadow-input-border-hover hover:shadow-input-border-hover hover:shadow-primary-emphasis transition-all;
   }
+  
+    .text-input-danger {
+    @apply shadow-input-border shadow-danger text-2xl px-14 py-4 rounded-3xl block w-full p-2.5 box-border text-center border-none outline-none placeholder-danger focus:shadow-danger focus:shadow-input-border-hover hover:shadow-input-border-hover hover:shadow-danger transition-all;
+    }
 }

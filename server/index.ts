@@ -99,7 +99,6 @@ io.on('connection', (socket) => {
     const serializedRoom = Object.keys(room).filter((key) => key !== sessionId).map((key) => room[key])
     socket.emit('initial_state', { players: [...serializedRoom] })
 
-
     socket.broadcast.to(roomName).emit('new_player', { player: users[sessionId] })
   })
 
@@ -118,17 +117,30 @@ io.on('connection', (socket) => {
     })
   })
 
+  socket.on('does_room_exist', ({ roomId }) => {
+    if (rooms[roomId]) {
+      socket.emit('does_room_exist', { doesRoomExist: true })
+    } else {
+      socket.emit('does_room_exist', { doesRoomExist: false })
+    }
+  })
+
   socket.on('reset', () => {
     socket.rooms.forEach((roomName) => {
       if (rooms[roomName]) {
-        console.log(roomName)
-        console.log(rooms)
         Object.keys(rooms[roomName]).forEach((id) => {
           rooms[roomName][id].value = null
         })
       }
       io.in(roomName).emit('reset')
     })
+  })
+
+  socket.on('leave', ({ roomId }: {roomId: string}) => {
+    if (rooms[roomId]){
+      delete rooms[roomId][sessionId]
+      socket.broadcast.to(roomId).emit('player_disconnect', { playerId: sessionId })
+    }
   })
 
   socket.on('disconnecting', () => {

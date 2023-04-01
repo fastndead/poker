@@ -1,9 +1,13 @@
 import Button from 'components/Button'
+import Modal from 'components/Modal'
 import TextInput from 'components/TextInput'
-import React from 'react'
+import React, { useState } from 'react'
 import CardsSpread from './features/CardsSpread'
+import JoinRoomModal from './features/JoinRoomModal'
 
 export function Home() {
+  const [modalVisible, setModalVisible] = useState(false)
+  const [validationError, setValidationError] = useState<string | null>(null)
   return (
     <>
       <div
@@ -14,6 +18,7 @@ export function Home() {
         >
           <CardsSpread />
           <TextInput
+            validationError={validationError}
             className='mt-6'
             placeholder='User name'
           />
@@ -26,8 +31,13 @@ export function Home() {
             className='mt-2.5'
             label='Join the room'
             type='secondary'
+            onClick={() => setModalVisible(true)}
           />
         </div>
+        <JoinRoomModal
+          isVisible={modalVisible}
+          onClose={() => setModalVisible(false)}
+        />
       </div>
     </>
 

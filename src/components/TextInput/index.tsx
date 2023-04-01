@@ -1,19 +1,48 @@
+import { useSpring, animated } from '@react-spring/web'
 import classNames from 'classnames'
-import React from 'react'
+import React, { ReactEventHandler } from 'react'
 
 type Props = {
   placeholder: string
-  onChange?(): void
+  onChange?: ReactEventHandler<HTMLInputElement>
+  value?: string
   className?: string
+  validationError?: string | null
 }
 
-export default function TextInput({ placeholder, onChange, className }:Props) {
+export default function TextInput({ validationError, value, placeholder, onChange, className }:Props) {
+  const [validationErrorSpring] = useSpring(() => {
+    return validationError 
+      ? {
+        from: { opacity: 0, height: 0 },
+        to: { opacity: 1, height: 30 }
+      }
+      : {
+        from: { opacity: 1, height: 30 },
+        to: { opacity: 0, height: 0 }
+      }
+  }, [validationError])
   return (
-    <input
-      placeholder={placeholder}
-      onChange={onChange}
-      className={classNames(className, 'text-input', 'border-none', 'outline-none')}
-      tabIndex={0}
-    />
+    <div
+      className={className}
+    >
+      <animated.div
+        className='text-danger w-full text-center text-sm'
+        style={{
+          ...validationErrorSpring
+        }}
+      >
+        {validationError || ''}
+      </animated.div>
+      <input
+        placeholder={placeholder}
+        onChange={onChange}
+        value={value}
+        className={classNames('text-input', 'border-none', 'outline-none', {
+          'text-input-danger': validationError
+        })}
+        tabIndex={0}
+      />
+    </div>
   )
 }

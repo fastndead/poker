@@ -6,6 +6,7 @@ import { ReactComponent as LinkIcon } from 'assets/copyLink.svg'
 import { ReactComponent as LinkHoverIcon } from 'assets/copyLinkHover.svg'
 import { ReactComponent as SettingsIcon } from 'assets/settings.svg'
 import { ReactComponent as SettingsHoverIcon } from 'assets/settingsHover.svg'
+import { Link } from 'react-router-dom'
 
 export default function Sidebar() {
   return (
@@ -15,11 +16,15 @@ export default function Sidebar() {
       <div
         className='mt-20 w-full flex flex-col items-center'
       >
-        <IconButton
-          icon={<HomeIcon/>}
-          hoverIcon={<HomeHoverIcon/>}
-          label='home'
-        />
+        <Link
+          to='/'
+        >
+          <IconButton
+            icon={<HomeIcon/>}
+            hoverIcon={<HomeHoverIcon/>}
+            label='home'
+          />
+        </Link>
         <IconButton
           icon={<SettingsIcon/>}
           hoverIcon={<SettingsHoverIcon/>}
