@@ -5,6 +5,7 @@ import path from 'path'
 import cors from 'cors'
 import { Server, Socket } from 'socket.io'
 
+const isDev = process.env.NODE_ENV !== 'production'
 const port = 8080
 
 const app: Express = express()

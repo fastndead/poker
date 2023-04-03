@@ -4,7 +4,7 @@ import { NotFound } from 'pages/404'
 import { Room } from 'pages/room'
 import NotificationContextProvider from 'contexts/NotificationContextProvider'
 import SocketIoErrorCatcher from 'components/SocketIoErrorCatcher'
-import { useTransition, a } from '@react-spring/web'
+import { useTransition, a, config } from '@react-spring/web'
 import { useLocation, Routes, Route } from 'react-router-dom'
 
 function App()  {
@@ -13,6 +13,7 @@ function App()  {
     from: { opacity: 0 },
     enter: { opacity: 1, position: 'fixed', top: 0 },
     leave: { opacity: 0 },
+    config: config.gentle
   })
 
   return (
