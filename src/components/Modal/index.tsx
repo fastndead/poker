@@ -8,7 +8,7 @@ type Props = {
   children: ReactNode
   title?: string
   className?: string
-  onClose(): void
+  onClose?(): void
 }
 
 export default function Modal({ className, isVisible, children, title, onClose }: Props) {
@@ -35,7 +35,7 @@ export default function Modal({ className, isVisible, children, title, onClose }
     return {
       ...styles,
       config: {
-        tension: 280, friction: 60
+        tension: 310, friction: 20, mass: 2 
       }
     }
   }, [isVisible])
@@ -61,12 +61,6 @@ export default function Modal({ className, isVisible, children, title, onClose }
     }
   }, [isVisible, modalOverlaySpringApi])
 
-  const handleClose = useCallback(() => {
-
-    onClose()
-
-  }, [onClose])
-
   return (
     <animated.div
       style={{
@@ -89,10 +83,14 @@ export default function Modal({ className, isVisible, children, title, onClose }
           >
             {title || ''}
           </h3>
-          <CloseModalSvg
-            onClick={handleClose}
-            className='cursor-pointer'
-          />
+          {
+            onClose && (
+              <CloseModalSvg
+                onClick={onClose}
+                className='cursor-pointer'
+              />
+            )
+          }
         </div>
         {children}
       </animated.div>

@@ -1,4 +1,5 @@
 import { useSpring, animated } from '@react-spring/web'
+import { config } from '@react-spring/web'
 import classNames from 'classnames'
 import React, { ReactEventHandler } from 'react'
 
@@ -15,11 +16,13 @@ export default function TextInput({ validationError, value, placeholder, onChang
     return validationError 
       ? {
         from: { opacity: 0, height: 0 },
-        to: { opacity: 1, height: 30 }
+        to: { opacity: 1, height: 30 },
+        config: config.stiff
       }
       : {
         from: { opacity: 1, height: 30 },
-        to: { opacity: 0, height: 0 }
+        to: { opacity: 0, height: 0 },
+        config: config.stiff
       }
   }, [validationError])
   return (

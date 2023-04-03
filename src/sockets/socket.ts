@@ -1,8 +1,6 @@
 import io from 'socket.io-client'
+import { apiBaseUrl } from '../constants'
 
-const isDev = process.env.NODE_ENV !== 'production'
-const socketUrl = isDev ? 'http://localhost:8080' : '/'
-
-export const socket = io(socketUrl, {
+export const socket = io(apiBaseUrl, {
   withCredentials: true, 
 })

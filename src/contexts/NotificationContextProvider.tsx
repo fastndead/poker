@@ -8,17 +8,21 @@ export type Notification = {
 }
 
 export default function NotificationContextProvider({ children }: {children: ReactNode}) {
-  const [notifications, setNotifications] = useState<Notification[]>([])
+  const [notifications, setNotifications] = useState<Map<string, 'success' | 'error'>>(new Map())
 
   const addNotification = useCallback((notification: Notification) => {
-    if (notifications.find((notif) => notif.text === notification.text)){
-      return
-    }
-    setNotifications((prev: Notification[]) => [...prev, notification]) 
+    setNotifications((prev) => new Map([...prev, [notification.text, notification.type]])) 
   }, [setNotifications])
 
-  const [transitions, api] = useTransition(notifications, () => {
+  const formattedNotificatoins = useMemo(() => Array.from(notifications).map(item => ({ text: item[0], type: item[1] })), [notifications])
+
+
+  console.log({ formattedNotificatoins })
+  console.log({ notifications })
+
+  const [transitions, api] = useTransition(formattedNotificatoins, () => {
     return {
+      key: (item: Notification) => item.text,
       from: { opacity: 0, y: -30 },
       enter: { opacity: 1, y: 0 },
       leave: { opacity: 0, y: -30 },
@@ -26,13 +30,16 @@ export default function NotificationContextProvider({ children }: {children: Rea
     } 
   })
 
-  const handleDissmiss = useCallback((index: number) => () => {
-    setNotifications((prev) => prev.filter((_, i) => index !== i))
+  const handleDismiss = useCallback((key: string) => () => {
+    setNotifications((prev) => {
+      prev.delete(key)
+      return new Map(prev)
+    })
   }, [setNotifications])
 
   useEffect(() => {
     api.start()
-  }, [notifications.length])
+  }, [notifications])
 
   return (
     <NotificatoinsContext.Provider
@@ -42,13 +49,13 @@ export default function NotificationContextProvider({ children }: {children: Rea
     >
       {children}
       <div
-        className='fixed top-4 w-96 left-2/4 -translate-x-2/4'
+        className='fixed top-0 w-96 left-2/4 -translate-x-2/4'
       >
         {transitions((notifStyles, notif, state, index) => {
           console.log({ notifStyles, notif, state, index })
           return (
             <Notification  
-              onDismiss={handleDissmiss(index)}
+              onDismiss={handleDismiss(notif.text)}
               key={state.key}
               text={notif.text}
               type={notif.type}

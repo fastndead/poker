@@ -4,7 +4,6 @@ import TextInput from 'components/TextInput'
 import React, { ReactEventHandler, useCallback, useEffect, useState } from 'react'
 import { socket } from 'sockets/socket'
 import { useNavigate } from 'react-router-dom'
-import { useNotifications } from 'hooks/useNotifications'
 
 type Props = {
   isVisible: boolean 
@@ -19,8 +18,6 @@ export default function JoinRoomModal({ isVisible, onClose }: Props) {
   }, [setRoomId])
   const [validationError, setValidationError] = useState<string | null>(null)
 
-  const { addNotification } = useNotifications()
-
   const handleSubmit = useCallback<ReactEventHandler<HTMLFormElement>>((e) => {
     e.preventDefault()
 
@@ -33,11 +30,9 @@ export default function JoinRoomModal({ isVisible, onClose }: Props) {
 
   const redirectToRoom = useCallback(({ doesRoomExist }: {doesRoomExist: boolean}) => {
     if (doesRoomExist) {
-      console.log(roomId)
       navigate(`/room/${roomId}`)
     } else {
       setValidationError('The room with given ID does not exist')
-      addNotification({ type: 'success', text: 'The room with given ID does not exist' })
     }
   }, [roomId])
 

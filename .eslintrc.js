@@ -18,9 +18,12 @@ module.exports = {
   },
   'plugins': [
     'react',
+    'eslint-plugin-react-hooks',
     '@typescript-eslint',
   ],
   'rules': {
+    'react-hooks/rules-of-hooks': 'error',
+    'react-hooks/exhaustive-deps': 'warn',
     'no-debugger':'off',
     'keyword-spacing': ['error'],
     'space-infix-ops': ['error'],

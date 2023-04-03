@@ -13,7 +13,7 @@ export default function SocketIoErrorCatcher({ children }: Props) {
       addNotification({ type: 'error', text: 'Opps, seems like our server is down, try reloading the page or come back later' })
     })
     socket.on('connect_failed', () => addNotification({ type: 'error', text: 'Opps, seems like our server is down, try reloading the page or come back later' }))
-  }, []) 
+  }, [addNotification]) 
   return (
     <>
       {children}

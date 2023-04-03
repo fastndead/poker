@@ -9,7 +9,33 @@ const port = 8080
 
 const app: Express = express()
 
-app.use(cors())
+const users: Record<string, Player> = {}
+
+const rooms: Record<string, {[key: string]: Player}> = {}
+
+const createNewUser = (name: string, id: string) => {
+  users[id] = {
+    id: id,
+    value: null,
+    name: name,
+  }
+
+  return users[id]
+}
+
+const createRoom = (name:string) => {
+  rooms[name] = {}
+}
+
+app.use(cors(
+  {
+    // todo добавить развилку:
+    // origin в проде будет отличася от локалхоста
+    origin: 'http://localhost:3000',
+    methods: ['GET', 'POST'],
+    credentials: true
+  }
+))
 app.use(express.static(path.join(__dirname, '..')))
 const sessionMiddleware = session({
   secret: 'changeit',
@@ -18,9 +44,18 @@ const sessionMiddleware = session({
 })
 
 app.use(sessionMiddleware)
-
+app.use(express.json()) 
 app.get('/*', (_req: Request, res: Response) => {
   res.sendFile(path.join(__dirname, '..', 'index.html'))
+})
+
+app.post('/mynameis', (req: Request, res: Response) => {
+  const name = req.body.name
+  const sessionId = req.session.id
+
+  createNewUser(name, sessionId)
+
+  res.send(200)
 })
 
 const server = app.listen(port, () => {
@@ -49,30 +84,13 @@ export type Player = {
   name: string,
 }
 
-const users: Record<string, Player> = {}
-
-const rooms: Record<string, {[key: string]: Player}> = {}
-
-const createNewUser = (name: string, id: string) => {
-  users[id] = {
-    id: id,
-    value: null,
-    name: name,
-  }
-
-  return users[id]
-}
-
-const createRoom = (name:string) => {
-  rooms[name] = {}
-}
-
 io.on('connection', (socket) => {
   const sessionId = socket.request.session.id
 
   
   socket.on('mynameis', ({ name }: {name: string}) => {
-    createNewUser(name || 'anon', sessionId)
+    createNewUser(name, sessionId)
+    socket.emit('mynameis', { name })
   })
 
   socket.on('reveal', () => {
