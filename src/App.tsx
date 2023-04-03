@@ -6,6 +6,8 @@ import {
 import { Home } from 'pages/home'
 import { NotFound } from 'pages/404'
 import { Room } from 'pages/room'
+import NotificationContextProvider from 'contexts/NotificationContextProvider'
+import SocketIoErrorCatcher from 'components/SocketIoErrorCatcher'
 
 const router = createBrowserRouter([
   {
@@ -24,13 +26,18 @@ const router = createBrowserRouter([
 
 function App()  {
   return (
-    <div
-      className='w-screen min-h-screen'
-    >
-      <RouterProvider
-        router={router}
-      />
-    </div>
+    <NotificationContextProvider>
+      <SocketIoErrorCatcher>
+        <div
+          className='w-screen min-h-screen'
+        >
+          <RouterProvider
+            router={router}
+          />
+        </div>
+      </SocketIoErrorCatcher>
+
+    </NotificationContextProvider>
   )
 }
 
