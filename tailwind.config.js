@@ -18,6 +18,9 @@ module.exports = {
       borderRadius: {
         '3xl': '30px'
       },
+      backgroundSize: {
+        '200%': '200%',
+      },
       boxShadow: {
         'button-primary-emphasis': '0px 2px 2px 1px',
         'input-border': '0px 0px 0px 1px',

@@ -3,6 +3,7 @@ import Button from 'components/Button'
 import React, { CSSProperties, useEffect, useMemo, useRef } from 'react'
 import type { Player } from '../../types'
 import Card from './components/Card'
+import EmptyRoomBanner from './components/EmptyRoomBanner'
 import { useUserCardSpring } from './hooks/useUserCardSprings'
 import { getCardStyle, getPlayerStyle, recalculateFromStateForPlayer } from './utils'
 
@@ -16,6 +17,16 @@ type Props = {
 
 export default function PlayingDesk({ players, userValue, onShowAll, onReset, isRevealed }: Props) {
   const ref = useRef<HTMLDivElement>(null)
+
+  const waitForOthersSpring = useSpring({
+    from: {
+      backgroundPosition: 0
+    },
+    to: {
+      backgroundPosition: 200
+    },
+    loop: true
+  })
 
   useEffect(() => {
     recalculateFromStateForPlayer(players)
@@ -84,6 +95,11 @@ export default function PlayingDesk({ players, userValue, onShowAll, onReset, is
           height: 199,
         }}
       >
+        {
+          !players.length && (
+            <EmptyRoomBanner />
+          )
+        }
         {
           canShowAll && (
             <animated.div

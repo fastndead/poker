@@ -93,6 +93,7 @@ export function Room() {
         />
         <PlayingCardsInput
           onChange={handleUserCardChange}
+          userValue={userValue}
           cards={DEFAULT_CARD_SYSTEM}
         />
       </div>

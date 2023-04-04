@@ -1,9 +1,11 @@
-import React, { useCallback, useState } from 'react'
+import React, { useCallback, useMemo, useState } from 'react'
 import { animated, useSprings } from '@react-spring/web'
 import { Player } from 'pages/room/types'
+import { useWindowSize } from 'hooks/useWindowSize'
 
 type Props = {
   cards: string[]
+  userValue: string | null
   onChange(value: Player['value']): void
 }
 
@@ -87,13 +89,20 @@ function getCardConfigFactory(selectedIndex: number | number[], cardsAmount: num
   }
 }
 
-export default function PlayingCardsInput({ onChange, cards }: Props) {
-  const matchMedia = window.matchMedia('(max-width: 1300px)')
-  const cardSize = {
+export default function PlayingCardsInput({ onChange, cards, userValue }: Props) {
+  const [width] = useWindowSize()
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  const matchMedia = useMemo(() => window.matchMedia('(max-width: 1300px)'), [width])
+  const cardSize = useMemo(() => ({
     width: matchMedia.matches ? 66 : 100,
     height: matchMedia.matches ? 106 : 160,
-  }
-  const [chosenCardIndex, setChosenCardIndex] = useState<number>(-1)
+  }), [matchMedia])
+  const chosenCardIndex = useMemo(() => {
+    if (userValue) {
+      return cards.findIndex((value) => value === userValue)
+    }
+    return -1
+  }, [cards, userValue])
 
   const [springs, api] = useSprings(
     cards.length,
@@ -104,16 +113,19 @@ export default function PlayingCardsInput({ onChange, cards }: Props) {
 
   const handleHover = useCallback((index: number) => () => {
     api.start(getCardConfigFactory([index, chosenCardIndex], cards.length, cardSize))
-  }, [api, cards, cardSize])
+  }, [api, chosenCardIndex, cards.length, cardSize])
 
   const handleHoverEnd = useCallback(() => () => {
     api.start(getCardConfigFactory(chosenCardIndex, cards.length, cardSize))
   }, [api, cards, cardSize, chosenCardIndex])
 
   const handleClick = useCallback((index: number) => () => {
+    if (cards[index] === userValue) {
+      onChange(null)
+      return 
+    }
     onChange(cards[index])
-    setChosenCardIndex(index)
-  }, [api, cards, cardSize])
+  }, [cards, userValue, onChange])
 
 
   return (

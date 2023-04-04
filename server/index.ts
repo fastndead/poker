@@ -30,9 +30,7 @@ const createRoom = (name:string) => {
 
 app.use(cors(
   {
-    // todo добавить развилку:
-    // origin в проде будет отличася от локалхоста
-    origin: 'http://localhost:3000',
+    origin: isDev && 'http://localhost:3000',
     methods: ['GET', 'POST'],
     credentials: true
   }
@@ -65,9 +63,7 @@ const server = app.listen(port, () => {
 
 const io = new Server(server, {
   cors: {
-    // todo добавить развилку:
-    // origin в проде будет отличася от локалхоста
-    origin: 'http://localhost:3000',
+    origin: isDev && 'http://localhost:3000',
     methods: ['GET', 'POST'],
     credentials: true
   }
@@ -123,10 +119,14 @@ io.on('connection', (socket) => {
 
   socket.on('vote', ({ voteValue }: {voteValue: string}) => {
     socket.rooms.forEach((roomName) => {
-      if (rooms[roomName]) {
-        rooms[roomName][sessionId].value = voteValue
+      try {
+        if (rooms[roomName]) {
+          rooms[roomName][sessionId].value = voteValue
+        }
+        socket.broadcast.to(roomName).emit('player_voted', { value: voteValue, playerId: sessionId })
+      } catch {
+        socket.emit('business_error', { error: 'Internal server error. Your vote was not counted, Please reload the page' })
       }
-      socket.broadcast.to(roomName).emit('player_voted', { value: voteValue, playerId: sessionId })
     })
   })
 
@@ -159,6 +159,10 @@ io.on('connection', (socket) => {
     if (rooms[roomId]){
       delete rooms[roomId][sessionId]
       socket.broadcast.to(roomId).emit('player_disconnect', { playerId: sessionId })
+
+      if (Object.keys(rooms[roomId]).length === 0) {
+        delete rooms[roomId]
+      }
     }
   })
 
