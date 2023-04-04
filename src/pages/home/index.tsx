@@ -30,8 +30,9 @@ export function Home() {
       return
     }
     try {
+      console.log(apiBaseUrl)
 
-      const response = await fetch(`${apiBaseUrl}mynameis`, {
+      const response = await fetch(`${apiBaseUrl}/mynameis`, {
         method: 'POST',
         mode: 'cors',
         credentials: 'include',

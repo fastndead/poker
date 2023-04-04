@@ -13,7 +13,11 @@ function App()  {
     from: { opacity: 0 },
     enter: { opacity: 1, position: 'fixed', top: 0 },
     leave: { opacity: 0 },
-    config: config.gentle
+    config:{
+      ...config.gentle,
+      duration: 400
+    } ,
+    trail: 400
   })
 
   return (
