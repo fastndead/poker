@@ -1,13 +1,12 @@
-import { useSpring, animated } from '@react-spring/web'
 import Button from 'components/Button'
 import TextInput from 'components/TextInput'
 import { useLocalStorage } from 'hooks/useLocalStorage'
 import React, { useCallback, useState, ReactEventHandler } from 'react'
 import { useNavigate } from 'react-router-dom'
-import CardsSpread, { springConfigRigid } from './features/CardsSpread'
+import CardsSpread from './features/CardsSpread'
 import { useNotifications } from 'hooks/useNotifications'
 import JoinRoomModal from './features/JoinRoomModal'
-import { apiBaseUrl } from '../../constants'
+import { apiBaseUrl } from 'constants/constants'
 
 export function Home() {
   const [modalVisible, setModalVisible] = useState(false)
@@ -19,7 +18,6 @@ export function Home() {
 
   const handleSubmit = useCallback<ReactEventHandler<HTMLFormElement>>(async (e) => {
     e.preventDefault()
-    debugger
     if (!name) {
       setValidationError('Name cannot be empty')
       return
@@ -30,8 +28,6 @@ export function Home() {
       return
     }
     try {
-      console.log(apiBaseUrl)
-
       const response = await fetch(`${apiBaseUrl}/mynameis`, {
         method: 'POST',
         mode: 'cors',

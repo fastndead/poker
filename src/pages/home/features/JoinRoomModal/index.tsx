@@ -34,7 +34,7 @@ export default function JoinRoomModal({ isVisible, onClose }: Props) {
     } else {
       setValidationError('The room with given ID does not exist')
     }
-  }, [roomId])
+  }, [navigate, roomId])
 
   useEffect(() => {
     socket.on('does_room_exist', redirectToRoom)

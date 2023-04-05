@@ -101,7 +101,7 @@ io.on('connection', (socket) => {
 
   socket.on('join', ({ roomName }: {roomName: string}) => {
     if (!users[sessionId]) {
-      createNewUser('anon', sessionId)
+      createNewUser('Anonimous', sessionId)
     }
 
     if (!rooms[roomName]) {

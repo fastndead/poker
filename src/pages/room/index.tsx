@@ -3,62 +3,71 @@ import React, { useCallback, useEffect, useState } from 'react'
 import { DEFAULT_CARD_SYSTEM } from './constants'
 import PlayingCardsInput from './features/PlayingCardsInput.tsx'
 import PlayingDesk from './features/PlayingDesk'
-import Button from 'components/Button'
 import { Player, PlayerSeialized } from './types'
 import { socket } from 'sockets/socket'
 import { useParams } from 'react-router-dom'
 import EnterNameModal from 'components/EnterNameModal'
+import { useLocalStorage } from 'hooks/useLocalStorage'
 
 export function Room() {
   const { roomName } = useParams<{roomName: string}>()
   const [players, setPlayers] = useState<Player[]>([])
   const [isRevealed, setIsRevealed] = useState<boolean>(false)
 
+  const [name, setName] = useLocalStorage<string | null>('userName', null)
+  const [isNameModalVisible, setIsNameModalVisible] = useState(false)
+
   useEffect(() => {
-    socket.emit('join', { roomName })
+    if (!name) {
+      setIsNameModalVisible(true)
+    } else {
+      socket.emit('mynameis', { name })
+      socket.emit('join', { roomName })
 
-    socket.on('initial_state', ({ players }: {players: PlayerSeialized[]}) => {
-      const deserializedPlayers = players.map((player) => ({
-        name: player.name,
-        id: player.id,
-        value: player.value
-      }))
-      setPlayers([...deserializedPlayers] )
-    })
+      socket.on('initial_state', ({ players }: {players: PlayerSeialized[]}) => {
+        const deserializedPlayers = players.map((player) => ({
+          name: player.name,
+          id: player.id,
+          value: player.value
+        }))
+        setPlayers([...deserializedPlayers] )
+      })
 
-    socket.on('new_player', ({ player }: {player: Player}) => {
+      socket.on('new_player', ({ player }: {player: Player}) => {
       
-      setPlayers((prev) => {
-        return [...prev, player]})
-    })
-
-    socket.on('player_disconnect', ({ playerId }: {playerId: string}) => {
-      setPlayers((prev) => [...prev].filter((player)=> player.id !== playerId))
-      setIsRevealed(false)
-    })
-
-    socket.on('player_voted', ({ value, playerId }: {value: string, playerId: string}) => {
-      setPlayers((prev) => {
-        return [...prev].map((player)=> player.id === playerId ? { ...player, value } : player)
+        setPlayers((prev) => {
+          return [...prev, player]})
       })
-    })
 
-    socket.on('show_all', () => {
-      setIsRevealed(true)
-    })
-
-    socket.on('reset', () => {
-      setIsRevealed(false)
-      setPlayers((prev) => {
-        return [...prev].map((player) => ({ ...player, value: null }))
+      socket.on('player_disconnect', ({ playerId }: {playerId: string}) => {
+        setPlayers((prev) => [...prev].filter((player)=> player.id !== playerId))
+        setIsRevealed(false)
       })
-      setUserValue(null)
-    })
+
+      socket.on('player_voted', ({ value, playerId }: {value: string, playerId: string}) => {
+        setPlayers((prev) => {
+          return [...prev].map((player)=> player.id === playerId ? { ...player, value } : player)
+        })
+      })
+
+      socket.on('show_all', () => {
+        setIsRevealed(true)
+      })
+
+      socket.on('reset', () => {
+        setIsRevealed(false)
+        setPlayers((prev) => {
+          return [...prev].map((player) => ({ ...player, value: null }))
+        })
+        setUserValue(null)
+      })
+    } 
+
 
     return () => {
       socket.emit('leave', { roomId: roomName })
     }
-  }, [roomName])
+  }, [name, roomName, isNameModalVisible])
 
   const [userValue, setUserValue] = useState<Player['value']>(null)
 
@@ -82,7 +91,7 @@ export function Room() {
     >
       <Sidebar />
       <div
-        className='container h-screen flex flex-col items-center justify-between relative w-full m-auto'
+        className='container h-screen flex flex-col items-center justify-between relative m-auto'
       >
         <PlayingDesk
           isRevealed={isRevealed}
@@ -97,6 +106,13 @@ export function Room() {
           cards={DEFAULT_CARD_SYSTEM}
         />
       </div>
+      <EnterNameModal 
+        isVisible={isNameModalVisible}
+        onClose={(inputName: string) => {
+          setIsNameModalVisible(false)
+          setName(inputName)
+        }}
+      />
     </div>
   )
 

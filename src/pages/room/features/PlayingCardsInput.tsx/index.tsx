@@ -137,7 +137,7 @@ export default function PlayingCardsInput({ onChange, cards, userValue }: Props)
       }}
     >
       <div
-        className='absolute inset-x-2/4 w-28 -translate-x-1/2 md:top-8'
+        className='absolute inset-x-2/4 w-28 -translate-x-1/2 md:top-0'
       >
         {springs.map((springProps, index) => {
           const card = cards[index]
