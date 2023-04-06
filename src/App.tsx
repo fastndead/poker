@@ -26,7 +26,6 @@ function App()  {
         {transitions((styles, location) => (
           <a.div
             className='w-screen min-h-screen'
-
             style={styles}
           >
             <Routes
