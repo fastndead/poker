@@ -1,7 +1,5 @@
 # Poker
 
-# 🚧 This project currently is a Work In Progress 🚧
-
 ![localhost_3000_ (2)](https://user-images.githubusercontent.com/33729448/227790128-51b170a2-5f13-4de0-a51c-80470d310ed2.png)
 
 # Planning Poker Web Application
