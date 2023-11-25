@@ -1,12 +1,12 @@
 import React, { CSSProperties, useState } from 'react'
 import { animated, useSpring } from '@react-spring/web'
 import classNames from 'classnames'
-import { ReactComponent as ArrowSvg } from 'assets/arrow.svg'
+import ArrowSvg from 'assets/arrow.svg'
 
 type Props = {
   value?: string | null
   isRevealed?: boolean
-  animationProp: CSSProperties 
+  animationProp: CSSProperties
 }
 
 export default function Card({ isRevealed, animationProp, value }: Props) {
@@ -22,28 +22,20 @@ export default function Card({ isRevealed, animationProp, value }: Props) {
       style={{
         height: 80,
         width: 50,
-        ...animationProp
+        ...animationProp,
       }}
     >
-      {
-        value && !isRevealed && (
-          <ArrowSvg 
-            className='absolute -top-6 left-1/2 -translate-x-2/4'
-          />
-        ) 
-      }
-      <animated.div 
+      {value && !isRevealed && <ArrowSvg className='absolute -top-6 left-1/2 -translate-x-2/4' />}
+      <animated.div
         className={classNames('absolute card', {
-          'bg-primary-emphasis': value
+          'bg-primary-emphasis': value,
         })}
-        style={{ 
+        style={{
           perspective: 400,
-          opacity: opacity.to(o => 1 - o),
-          rotateY
+          opacity: opacity.to((o) => 1 - o),
+          rotateY,
         }}
-      >
-
-      </animated.div>
+      ></animated.div>
 
       <animated.div
         className='absolute border cursor-pointer bg-white border-primary-emphasis rounded-lg shadow-card z-1'
@@ -53,17 +45,14 @@ export default function Card({ isRevealed, animationProp, value }: Props) {
           perspective: 400,
           height: 80,
           width: 50,
-          opacity: opacity.to(o => o > 0.5 ? o : 0),
+          opacity: opacity.to((o) => (o > 0.5 ? o : 0)),
           rotateY,
         }}
       >
-        <div
-          className='absolute inset-2/4 w-6 h-6 flex items-center justify-center font-normal -translate-x-1/2 -translate-y-1/2 text-2xl'
-        >
+        <div className='absolute inset-2/4 w-6 h-6 flex items-center justify-center font-normal -translate-x-1/2 -translate-y-1/2 text-2xl'>
           {value}
         </div>
       </animated.div>
-    
     </animated.div>
   )
 }

@@ -20,12 +20,12 @@ export default function PlayingDesk({ players, userValue, onShowAll, onReset, is
 
   const waitForOthersSpring = useSpring({
     from: {
-      backgroundPosition: 0
+      backgroundPosition: 0,
     },
     to: {
-      backgroundPosition: 200
+      backgroundPosition: 200,
     },
-    loop: true
+    loop: true,
   })
 
   useEffect(() => {
@@ -36,57 +36,60 @@ export default function PlayingDesk({ players, userValue, onShowAll, onReset, is
     userCard: userValue,
     containerHeight: ref.current?.offsetHeight,
     containerWidth: ref.current?.offsetWidth,
-    isRevealed
+    isRevealed,
   })
 
   const [cardsSprings, cardSpringApi] = useSprings(
     players.length,
-    (index: number) => getCardStyle({
-      containerHeight: ref.current?.offsetHeight,
-      containerWidth: ref.current?.offsetWidth,
-      index,
-      players,
-      isRevealed
-    }),
+    (index: number) =>
+      getCardStyle({
+        containerHeight: ref.current?.offsetHeight,
+        containerWidth: ref.current?.offsetWidth,
+        index,
+        players,
+        isRevealed,
+      }),
     [players.length, players, isRevealed]
   )
 
   const [playersSprings] = useSprings(
     players.length,
-    (index: number) => getPlayerStyle({
-      containerHeight: ref.current?.offsetHeight,
-      containerWidth: ref.current?.offsetWidth,
-      index,
-      players,
-    }),
+    (index: number) =>
+      getPlayerStyle({
+        containerHeight: ref.current?.offsetHeight,
+        containerWidth: ref.current?.offsetWidth,
+        index,
+        players,
+      }),
     [cardSpringApi, ref.current, players.length]
   )
 
-  const canShowAll = useMemo(() => Boolean(userValue && players.length && !players.find((player) => !player.value)) ,[players, userValue])
-  const [showResultsButtonSprings ] = useSpring(() => {
-    if (canShowAll){
+  const canShowAll = useMemo(
+    () => Boolean(userValue && players.length && !players.find((player) => !player.value)),
+    [players, userValue]
+  )
+  const [showResultsButtonSprings] = useSpring(() => {
+    if (canShowAll) {
       return {
         from: {
           opacity: 0,
-          y: 10
+          y: 10,
         },
         to: {
           opacity: 1,
-          y: 0
-        }
+          y: 0,
+        },
       }
-    } 
+    }
     return {
       from: {
-        opacity: 0
-      }
+        opacity: 0,
+      },
     }
   }, [canShowAll])
 
   return (
-    <div
-      className='h-full w-full flex relative justify-center items-center'
-    >
+    <div className='h-full w-full flex relative justify-center items-center'>
       <div
         ref={ref}
         className='-mb-20 bg-light-grey rounded-3xl flex items-center justify-center'
@@ -95,66 +98,54 @@ export default function PlayingDesk({ players, userValue, onShowAll, onReset, is
           height: 199,
         }}
       >
-        {
-          !players.length && (
-            <EmptyRoomBanner />
-          )
-        }
-        {
-          canShowAll && (
-            <animated.div
-              style={{
-                ...showResultsButtonSprings
-              }}
-            >
-              <Button 
-                htmlType='button' 
-                type='primary'  
-                className='w-72'
-                onClick={isRevealed ? onReset : onShowAll}
-                label={isRevealed ? 'Next round' : 'Show results'}
-              />
-            </animated.div>
-          )
-        }
+        {!players.length && <EmptyRoomBanner />}
+        {canShowAll && (
+          <animated.div
+            style={{
+              ...showResultsButtonSprings,
+            }}
+          >
+            <Button
+              htmlType='button'
+              type='primary'
+              className='w-72'
+              onClick={isRevealed ? onReset : onShowAll}
+              label={isRevealed ? 'Next round' : 'Show results'}
+            />
+          </animated.div>
+        )}
       </div>
       {players.map(({ id, name, value }, index) => {
         return (
-          <React.Fragment
-            key={id}
-          >
+          <React.Fragment key={id}>
             <Card
               value={value}
               isRevealed={isRevealed}
               animationProp={{
-                ...cardsSprings[index]
+                ...cardsSprings[index],
               }}
             />
             <animated.div
               className='absolute rounded-full w-36 bg-light-grey py-4 flex items-center justify-center'
               style={{
-                ...playersSprings[index]
+                ...playersSprings[index],
               }}
             >
-              <span >
-                {name}
-              </span>
+              <span>{name}</span>
             </animated.div>
           </React.Fragment>
         )
       })}
 
-      {
-        userValue && (
-          <Card
-            value={userValue || ''}
-            isRevealed={isRevealed}
-            animationProp={{
-              ...userCardSpring as unknown as CSSProperties
-            }}
-          />
-        )
-      }
+      {userValue && (
+        <Card
+          value={userValue || ''}
+          isRevealed={isRevealed}
+          animationProp={{
+            ...(userCardSpring as unknown as CSSProperties),
+          }}
+        />
+      )}
     </div>
   )
 }

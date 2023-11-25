@@ -98,13 +98,9 @@ export function Room() {
   }, [])
 
   return (
-    <div
-      className='width-screen flex flex-row overflow-hidden'
-    >
+    <div className='width-screen flex flex-row overflow-hidden'>
       <Sidebar />
-      <div
-        className='container h-screen flex flex-col items-center justify-between relative m-auto'
-      >
+      <div className='container h-screen flex flex-col items-center justify-between relative m-auto'>
         <PlayingDesk
           isRevealed={isRevealed}
           players={players}

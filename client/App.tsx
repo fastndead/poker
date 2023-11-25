@@ -7,17 +7,17 @@ import SocketIoErrorCatcher from 'components/SocketIoErrorCatcher'
 import { useTransition, a, config } from '@react-spring/web'
 import { useLocation, Routes, Route } from 'react-router-dom'
 
-function App()  {
+function App() {
   const location = useLocation()
   const transitions = useTransition(location.pathname, {
     from: { opacity: 0 },
     enter: { opacity: 1, position: 'fixed', top: 0 },
     leave: { opacity: 0 },
-    config:{
+    config: {
       ...config.gentle,
-      duration: 400
-    } ,
-    trail: 400
+      duration: 400,
+    },
+    trail: 400,
   })
 
   return (
@@ -47,7 +47,6 @@ function App()  {
           </a.div>
         ))}
       </SocketIoErrorCatcher>
-
     </NotificationContextProvider>
   )
 }
