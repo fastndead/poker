@@ -17,7 +17,7 @@ const config = {
     ],
   ],
   repositoryUrl: 'https://github.com/fastndead/poker',
-  dryRun: true,
+  dryRun: false,
   debug: false, // Set to "true" for debugging purposes
 }
 
