@@ -14,7 +14,8 @@
     "format": "prettier --write src/**/*.{ts,tsx}",
     "eject": "react-scripts eject",
     "prepare": "husky install",
-    "commit": "cz"
+    "commit": "cz",
+    "semantic-release": "semantic-release"
   },
   "dependencies": {
     "@react-spring/web": "^9.7.1",
@@ -40,6 +41,9 @@
     "web-vitals": "^2.1.4"
   },
   "devDependencies": {
+    "@semantic-release/commit-analyzer": "^11.1.0",
+    "@semantic-release/git": "^10.0.1",
+    "@semantic-release/release-notes-generator": "^12.1.0",
     "@types/express-session": "^1.17.6",
     "@typescript-eslint/eslint-plugin": "^5.52.0",
     "@typescript-eslint/parser": "^5.52.0",
@@ -51,6 +55,7 @@
     "husky": "^8.0.0",
     "nodemon": "^2.0.20",
     "prettier": "^3.1.0",
+    "semantic-release": "^22.0.8",
     "stylelint": "^15.2.0",
     "stylelint-config-standard": "^30.0.1",
     "tailwindcss": "^3.2.7"
