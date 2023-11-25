@@ -2,20 +2,33 @@ import Sidebar from 'components/Sidebar'
 import React, { useCallback, useEffect, useState } from 'react'
 import { DEFAULT_CARD_SYSTEM } from './constants'
 import PlayingCardsInput from './features/PlayingCardsInput.tsx'
+import { useNotifications } from 'hooks/useNotifications'
 import PlayingDesk from './features/PlayingDesk'
-import { Player, PlayerSeialized } from './types'
+import { Player } from './types'
 import { socket } from 'sockets/socket'
 import { useParams } from 'react-router-dom'
 import EnterNameModal from 'components/EnterNameModal'
 import { useLocalStorage } from 'hooks/useLocalStorage'
 
 export function Room() {
-  const { roomName } = useParams<{roomName: string}>()
+  const { roomName } = useParams<{ roomName: string }>()
   const [players, setPlayers] = useState<Player[]>([])
   const [isRevealed, setIsRevealed] = useState<boolean>(false)
+  const [spectatorMode, setSpectatorMode] = useState<boolean>(false)
+  const { addNotification } = useNotifications()
 
   const [name, setName] = useLocalStorage<string | null>('userName', null)
+  const [id, setId] = useLocalStorage<string | null>('userId', null)
   const [isNameModalVisible, setIsNameModalVisible] = useState(false)
+
+  useEffect(() => {
+    if (spectatorMode) {
+      addNotification({
+        type: 'error',
+        text: 'This room is full right now, you joined as a spectator',
+      })
+    }
+  }, [addNotification, spectatorMode])
 
   useEffect(() => {
     if (!name) {
@@ -24,29 +37,27 @@ export function Room() {
       socket.emit('mynameis', { name })
       socket.emit('join', { roomName })
 
-      socket.on('initial_state', ({ players }: {players: PlayerSeialized[]}) => {
-        const deserializedPlayers = players.map((player) => ({
-          name: player.name,
-          id: player.id,
-          value: player.value
-        }))
-        setPlayers([...deserializedPlayers] )
+      socket.on(
+        'initial_state',
+        ({ players, id, spectator }: { players: Player[]; spectator: boolean; id: string }) => {
+          setPlayers(players)
+          setSpectatorMode(spectator)
+          setId(id)
+        }
+      )
+
+      socket.on('update', ({ players }: { players: Player[] }) => {
+        setPlayers(players.filter((player) => player.id !== id))
       })
 
-      socket.on('new_player', ({ player }: {player: Player}) => {
-      
-        setPlayers((prev) => {
-          return [...prev, player]})
-      })
-
-      socket.on('player_disconnect', ({ playerId }: {playerId: string}) => {
-        setPlayers((prev) => [...prev].filter((player)=> player.id !== playerId))
+      socket.on('player_disconnect', ({ playerId }: { playerId: string }) => {
+        setPlayers((prev) => [...prev].filter((player) => player.id !== playerId))
         setIsRevealed(false)
       })
 
-      socket.on('player_voted', ({ value, playerId }: {value: string, playerId: string}) => {
+      socket.on('player_voted', ({ value, playerId }: { value: string; playerId: string }) => {
         setPlayers((prev) => {
-          return [...prev].map((player)=> player.id === playerId ? { ...player, value } : player)
+          return [...prev].map((player) => (player.id === playerId ? { ...player, value } : player))
         })
       })
 
@@ -61,8 +72,7 @@ export function Room() {
         })
         setUserValue(null)
       })
-    } 
-
+    }
 
     return () => {
       socket.emit('leave', { roomId: roomName })
@@ -71,10 +81,13 @@ export function Room() {
 
   const [userValue, setUserValue] = useState<Player['value']>(null)
 
-  const handleUserCardChange = useCallback((value: Player['value']) => {
-    socket.emit('vote', { voteValue: value })
-    setUserValue(value)
-  }, [setUserValue])
+  const handleUserCardChange = useCallback(
+    (value: Player['value']) => {
+      socket.emit('vote', { voteValue: value })
+      setUserValue(value)
+    },
+    [setUserValue]
+  )
 
   const handleShowAll = useCallback(() => {
     socket.emit('show_all')
@@ -83,7 +96,6 @@ export function Room() {
   const handleReset = useCallback(() => {
     socket.emit('reset')
   }, [])
-
 
   return (
     <div
@@ -100,13 +112,15 @@ export function Room() {
           onShowAll={handleShowAll}
           onReset={handleReset}
         />
-        <PlayingCardsInput
-          onChange={handleUserCardChange}
-          userValue={userValue}
-          cards={DEFAULT_CARD_SYSTEM}
-        />
+        {!spectatorMode && (
+          <PlayingCardsInput
+            onChange={handleUserCardChange}
+            userValue={userValue}
+            cards={DEFAULT_CARD_SYSTEM}
+          />
+        )}
       </div>
-      <EnterNameModal 
+      <EnterNameModal
         isVisible={isNameModalVisible}
         onClose={(inputName: string) => {
           setIsNameModalVisible(false)
@@ -115,5 +129,4 @@ export function Room() {
       />
     </div>
   )
-
 }
