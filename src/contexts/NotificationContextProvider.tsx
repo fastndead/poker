@@ -8,23 +8,38 @@ export type Notification = {
   timer?: ReturnType<typeof setTimeout>
 }
 
-export default function NotificationContextProvider({ children }: {children: ReactNode}) {
-  const [notifications, setNotifications] = useState<Map<string, Omit<Notification,'text'>>>(new Map())
+export default function NotificationContextProvider({ children }: { children: ReactNode }) {
+  const [notifications, setNotifications] = useState<Map<string, Omit<Notification, 'text'>>>(
+    new Map()
+  )
 
-  const handleDismissFactory = useCallback((key: string) => () => {
-    setNotifications((prev) => {
-      prev.delete(key)
-      return new Map(prev)
-    })
-  }, [setNotifications])
+  const handleDismissFactory = useCallback(
+    (key: string) => () => {
+      setNotifications((prev) => {
+        prev.delete(key)
+        return new Map(prev)
+      })
+    },
+    [setNotifications]
+  )
 
-  const addNotification = useCallback((notification: Notification) => {
-    const timer = setTimeout(() => {handleDismissFactory(notification.text)()}, 2000)
+  const addNotification = useCallback(
+    (notification: Notification) => {
+      const timer = setTimeout(() => {
+        handleDismissFactory(notification.text)()
+      }, 2000)
 
-    setNotifications((prev) => new Map([...prev, [notification.text, { type: notification.type, timer }]])) 
-  }, [setNotifications, handleDismissFactory])
+      setNotifications(
+        (prev) => new Map([...prev, [notification.text, { type: notification.type, timer }]])
+      )
+    },
+    [setNotifications, handleDismissFactory]
+  )
 
-  const formattedNotificatoins = useMemo(() => Array.from(notifications).map(item => ({ text: item[0], ...item[1] })), [notifications])
+  const formattedNotificatoins = useMemo(
+    () => Array.from(notifications).map((item) => ({ text: item[0], ...item[1] })),
+    [notifications]
+  )
 
   const [transitions, api] = useTransition(formattedNotificatoins, () => {
     return {
@@ -32,20 +47,27 @@ export default function NotificationContextProvider({ children }: {children: Rea
       from: { opacity: 0, y: -30 },
       enter: { opacity: 1, y: 0 },
       leave: { opacity: 0, y: -30 },
-      config: { tension: 310, friction: 20, mass: 2 }, 
-    } 
+      config: { tension: 310, friction: 20, mass: 2 },
+    }
   })
 
-  const handleMouseEnter = useCallback((key: string) => {
-    clearTimeout(notifications.get(key)?.timer)
-  }, [notifications])
+  const handleMouseEnter = useCallback(
+    (key: string) => {
+      clearTimeout(notifications.get(key)?.timer)
+    },
+    [notifications]
+  )
 
-  const handleMouseLeave = useCallback((key: string) => {
-    const timer = setTimeout(() => {handleDismissFactory(key)()}, 2000)
-    const notification = notifications.get(key) || {} as Notification
-    notifications.set(key, { ...notification, timer } )
-
-  }, [handleDismissFactory, notifications])
+  const handleMouseLeave = useCallback(
+    (key: string) => {
+      const timer = setTimeout(() => {
+        handleDismissFactory(key)()
+      }, 2000)
+      const notification = notifications.get(key) || ({} as Notification)
+      notifications.set(key, { ...notification, timer })
+    },
+    [handleDismissFactory, notifications]
+  )
 
   useEffect(() => {
     api.start()
@@ -54,7 +76,7 @@ export default function NotificationContextProvider({ children }: {children: Rea
   return (
     <NotificatoinsContext.Provider
       value={{
-        addNotification
+        addNotification,
       }}
     >
       {children}
@@ -63,7 +85,7 @@ export default function NotificationContextProvider({ children }: {children: Rea
       >
         {transitions((notifStyles, notif, state) => {
           return (
-            <Notification  
+            <Notification
               onDismiss={handleDismissFactory(notif.text)}
               key={state.key}
               text={notif.text}
@@ -79,7 +101,6 @@ export default function NotificationContextProvider({ children }: {children: Rea
   )
 }
 
-
 type NotificationProps = Notification & {
   style: CSSProperties
   onDismiss(): void
@@ -91,18 +112,16 @@ function Notification({ text, style, onDismiss, onMouseLeave, onMouseEnter }: No
   const [isHovered, setIsHovered] = useState<boolean>(false)
 
   const [spring] = useSpring(() => {
-    return isHovered
-      ? { scale: 1.1 }
-      : { scale: 1 }
+    return isHovered ? { scale: 1.1 } : { scale: 1 }
   }, [isHovered])
 
   const handleMouseEnter = useCallback(() => {
-    onMouseEnter && onMouseEnter() 
+    onMouseEnter && onMouseEnter()
     setIsHovered(true)
   }, [onMouseEnter, setIsHovered])
 
   const handleMouseLeave = useCallback(() => {
-    onMouseLeave && onMouseLeave() 
+    onMouseLeave && onMouseLeave()
     setIsHovered(false)
   }, [onMouseLeave, setIsHovered])
 

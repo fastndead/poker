@@ -5,4 +5,8 @@ type NotificationContextValue = {
   addNotification(notif: Notification): void
 }
 
-export const NotificatoinsContext = createContext<NotificationContextValue>({ addNotification: () => {/* */} })
+export const NotificatoinsContext = createContext<NotificationContextValue>({
+  addNotification: () => {
+    /* */
+  },
+})
