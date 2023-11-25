@@ -1,13 +1,14 @@
 const config = {
   branches: [{ name: 'master' }],
   plugins: [
+    '@semantic-release/commit-analyzer',
+    '@semantic-release/release-notes-generator',
     [
-      '@semantic-release/commit-analyzer',
+      '@semantic-release/npm',
       {
-        preset: 'conventionalcommits',
+        npmPublish: false,
       },
     ],
-    '@semantic-release/release-notes-generator',
     [
       '@semantic-release/git',
       {
@@ -15,9 +16,10 @@ const config = {
         message: 'chore(release): ${nextRelease.version} [skip ci]\n\n${nextRelease.notes}',
       },
     ],
+    '@semantic-release/github',
   ],
-  repositoryUrl: 'https://github.com/fastndead/poker',
-  dryRun: true,
+  repositoryUrl: 'https://github.com/fastndead/poker.git',
+  dryRun: false,
   debug: false, // Set to "true" for debugging purposes
 }
 
