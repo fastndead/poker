@@ -1,22 +1,20 @@
 /** @type {import('tailwindcss').Config} */
 module.exports = {
-  content: [
-    './src/**/*.{js,jsx,ts,tsx}',
-  ],
+  content: ['./index.html', './client/**/*.{js,jsx,ts,tsx}'],
   theme: {
     extend: {
       colors: {
-        'primary-emphasis':'#7893DC',
-        'secondary-emphasis':'#CCDAFF',
-        'primary-idle':'#AEC1F7',
-        'secondary-idle':'#E7ECFC',
+        'primary-emphasis': '#7893DC',
+        'secondary-emphasis': '#CCDAFF',
+        'primary-idle': '#AEC1F7',
+        'secondary-idle': '#E7ECFC',
         'danger': '#BF4949',
         'grey': '#B3BACD',
         'modal-grey': '#BDBDBD',
         'light-grey': '#D9D9D9',
       },
       borderRadius: {
-        '3xl': '30px'
+        '3xl': '30px',
       },
       backgroundSize: {
         '200%': '200%',
@@ -28,9 +26,8 @@ module.exports = {
         'card': '-2px 4px 2px rgba(0, 0, 0, 0.25)',
         'modal': '-2px 4px 2px #7893DC',
       },
-      spacing: {
-      }
-    }
+      spacing: {},
+    },
   },
   plugins: [],
 }

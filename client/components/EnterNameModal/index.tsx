@@ -12,45 +12,50 @@ type Props = {
 
 export default function EnterNameModal({ isVisible, onClose }: Props) {
   const [name, setName] = useState<string>('')
-  const [validationError, setValidationError] = useState<string| null>(null)
+  const [validationError, setValidationError] = useState<string | null>(null)
   const { addNotification } = useNotifications()
 
   const handleChangeName = useCallback<ReactEventHandler<HTMLInputElement>>((e) => {
     setName(e.currentTarget.value)
   }, [])
 
-  const handleSubmit = useCallback<ReactEventHandler<HTMLFormElement>>(async (e) => {
-    e.preventDefault()
-    if (!name) {
-      setValidationError('Name cannot be empty')
-      return
-    }
-
-    if (name.length > 13) {
-      setValidationError('Name cannot be longer than 13 characters')
-      return
-    }
-    try {
-      const response = await fetch(`${apiBaseUrl}/mynameis`, {
-        method: 'POST',
-        mode: 'cors',
-        credentials: 'include',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ name }), // body data type must match "Content-Type" header
-      })
-
-      if (!response.ok) {
-        throw new Error('Server error')
+  const handleSubmit = useCallback<ReactEventHandler<HTMLFormElement>>(
+    async (e) => {
+      e.preventDefault()
+      if (!name) {
+        setValidationError('Name cannot be empty')
+        return
       }
 
-      onClose(name)
-    } catch {
-      addNotification({ type: 'error', text: 'Something is wrong on the server, refresh the page or try again later' })
-    }
-    
-  }, [name, onClose, addNotification])
+      if (name.length > 13) {
+        setValidationError('Name cannot be longer than 13 characters')
+        return
+      }
+      try {
+        const response = await fetch(`${apiBaseUrl}/mynameis`, {
+          method: 'POST',
+          mode: 'cors',
+          credentials: 'include',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ name }), // body data type must match "Content-Type" header
+        })
+
+        if (!response.ok) {
+          throw new Error('Server error')
+        }
+
+        onClose(name)
+      } catch {
+        addNotification({
+          type: 'error',
+          text: 'Something is wrong on the server, refresh the page or try again later',
+        })
+      }
+    },
+    [name, onClose, addNotification]
+  )
 
   return (
     <Modal
