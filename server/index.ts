@@ -1,4 +1,3 @@
-
 import express, { Express, NextFunction, Request, Response } from 'express'
 import session from 'express-session'
 import path from 'path'
@@ -12,7 +11,7 @@ const app: Express = express()
 
 const users: Record<string, Player> = {}
 
-const rooms: Record<string, {[key: string]: Player}> = {}
+const rooms: Record<string, { [key: string]: Player }> = {}
 
 const createNewUser = (name: string, id: string) => {
   users[id] = {
@@ -24,17 +23,23 @@ const createNewUser = (name: string, id: string) => {
   return users[id]
 }
 
-const createRoom = (name:string) => {
+const createRoom = (name: string) => {
   rooms[name] = {}
 }
 
-app.use(cors(
-  {
+const broadcastUpdate = (socket: Socket, roomName: string) => {
+  const room = rooms[roomName]
+  const serializedRoom = Object.keys(room).map((key) => room[key])
+  socket.broadcast.to(roomName).emit('update', { players: serializedRoom })
+}
+
+app.use(
+  cors({
     origin: isDev && 'http://localhost:3000',
     methods: ['GET', 'POST'],
-    credentials: true
-  }
-))
+    credentials: true,
+  })
+)
 app.use(express.static(path.join(__dirname, '..')))
 const sessionMiddleware = session({
   secret: 'changeit',
@@ -43,7 +48,7 @@ const sessionMiddleware = session({
 })
 
 app.use(sessionMiddleware)
-app.use(express.json()) 
+app.use(express.json())
 app.get('/*', (_req: Request, res: Response) => {
   res.sendFile(path.join(__dirname, '..', 'index.html'))
 })
@@ -65,27 +70,26 @@ const io = new Server(server, {
   cors: {
     origin: isDev && 'http://localhost:3000',
     methods: ['GET', 'POST'],
-    credentials: true
-  }
+    credentials: true,
+  },
 })
 
 io.engine.use(sessionMiddleware)
 
 export type Card = {
-  value?: string,
+  value?: string
 }
 
 export type Player = {
-  id: string,
-  value: string | null 
-  name: string,
+  id: string
+  value: string | null
+  name: string
 }
 
 io.on('connection', (socket) => {
   const sessionId = socket.request.session.id
 
-  
-  socket.on('mynameis', ({ name }: {name: string}) => {
+  socket.on('mynameis', ({ name }: { name: string }) => {
     createNewUser(name, sessionId)
     socket.emit('mynameis', { name })
   })
@@ -98,8 +102,7 @@ io.on('connection', (socket) => {
     })
   })
 
-
-  socket.on('join', ({ roomName }: {roomName: string}) => {
+  socket.on('join', ({ roomName }: { roomName: string }) => {
     if (!users[sessionId]) {
       createNewUser('Anonimous', sessionId)
     }
@@ -107,25 +110,39 @@ io.on('connection', (socket) => {
     if (!rooms[roomName]) {
       createRoom(roomName)
     }
-    const room = rooms[roomName] 
-    room[sessionId] = users[sessionId]
+
+    const room = rooms[roomName]
+
+    const isRoomFull = Object.keys(room).length >= 8
+
+    if (!isRoomFull) {
+      room[sessionId] = users[sessionId]
+    }
 
     socket.join(roomName)
-    const serializedRoom = Object.keys(room).filter((key) => key !== sessionId).map((key) => room[key])
-    socket.emit('initial_state', { players: [...serializedRoom] })
+    const serializedRoom = Object.keys(room)
+      .filter((key) => key !== sessionId)
+      .map((key) => room[key])
 
-    socket.broadcast.to(roomName).emit('new_player', { player: users[sessionId] })
+    socket.emit('initial_state', { players: serializedRoom, spectator: isRoomFull, id: sessionId })
+
+    broadcastUpdate(socket, roomName)
   })
 
-  socket.on('vote', ({ voteValue }: {voteValue: string}) => {
+  socket.on('vote', ({ voteValue }: { voteValue: string }) => {
     socket.rooms.forEach((roomName) => {
       try {
         if (rooms[roomName]) {
           rooms[roomName][sessionId].value = voteValue
         }
-        socket.broadcast.to(roomName).emit('player_voted', { value: voteValue, playerId: sessionId })
-      } catch {
-        socket.emit('business_error', { error: 'Internal server error. Your vote was not counted, Please reload the page' })
+        socket.broadcast
+          .to(roomName)
+          .emit('player_voted', { value: voteValue, playerId: sessionId })
+      } catch (e) {
+        console.log(e)
+        socket.emit('business_error', {
+          error: 'Internal server error. Your vote was not counted, Please reload the page',
+        })
       }
     })
   })
@@ -155,13 +172,13 @@ io.on('connection', (socket) => {
     })
   })
 
-  socket.on('leave', ({ roomId }: {roomId: string}) => {
-    if (rooms[roomId]){
+  socket.on('leave', ({ roomId }: { roomId: string }) => {
+    if (rooms[roomId]) {
       delete rooms[roomId][sessionId]
-      socket.broadcast.to(roomId).emit('player_disconnect', { playerId: sessionId })
-
       if (Object.keys(rooms[roomId]).length === 0) {
         delete rooms[roomId]
+      } else {
+        broadcastUpdate(socket, roomId)
       }
     }
   })
@@ -169,7 +186,7 @@ io.on('connection', (socket) => {
   socket.on('disconnecting', () => {
     if (users[sessionId]) {
       socket.rooms.forEach((roomName) => {
-        if (rooms[roomName]){
+        if (rooms[roomName]) {
           delete rooms[roomName][sessionId]
           socket.broadcast.to(roomName).emit('player_disconnect', { playerId: sessionId })
         }
