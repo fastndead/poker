@@ -9,6 +9,7 @@ module.exports = {
         'primary-idle': '#AEC1F7',
         'secondary-idle': '#E7ECFC',
         'danger': '#BF4949',
+        'black': '#3F3D56',
         'grey': '#B3BACD',
         'modal-grey': '#BDBDBD',
         'light-grey': '#D9D9D9',

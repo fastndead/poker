@@ -25,9 +25,11 @@ export default function Card({ isRevealed, animationProp, value }: Props) {
         ...animationProp,
       }}
     >
-      {value && !isRevealed && <ArrowSvg className='absolute -top-6 left-1/2 -translate-x-2/4' />}
+      {value && !isRevealed && <ArrowSvg
+        className='absolute -top-6 left-1/2 -translate-x-2/4'
+                               />}
       <animated.div
-        className={classNames('absolute card', {
+        className={classNames('card absolute', {
           'bg-primary-emphasis': value,
         })}
         style={{
@@ -35,10 +37,11 @@ export default function Card({ isRevealed, animationProp, value }: Props) {
           opacity: opacity.to((o) => 1 - o),
           rotateY,
         }}
-      ></animated.div>
+      >
+      </animated.div>
 
       <animated.div
-        className='absolute border cursor-pointer bg-white border-primary-emphasis rounded-lg shadow-card z-1'
+        className='z-1 absolute cursor-pointer rounded-lg border border-primary-emphasis bg-white shadow-card'
         style={{
           scaleX: -1,
           scaleY: 1,
@@ -49,7 +52,9 @@ export default function Card({ isRevealed, animationProp, value }: Props) {
           rotateY,
         }}
       >
-        <div className='absolute inset-2/4 w-6 h-6 flex items-center justify-center font-normal -translate-x-1/2 -translate-y-1/2 text-2xl'>
+        <div
+          className='absolute inset-2/4 flex h-6 w-6 -translate-x-1/2 -translate-y-1/2 items-center justify-center text-2xl font-normal'
+        >
           {value}
         </div>
       </animated.div>
