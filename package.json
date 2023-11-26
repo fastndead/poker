@@ -4,7 +4,7 @@
   "license": "MIT",
   "scripts": {
     "start": "NODE_ENV=production node build/server/index.js",
-    "build": "npm install && npm build:client && npm build:server",
+    "build": "npm install && npm run build:client && npm run build:server",
     "build:client": "vite build",
     "build:server": "npx tsc",
     "dev:client": "vite",
