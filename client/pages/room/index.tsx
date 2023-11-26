@@ -114,7 +114,7 @@ export function Room() {
         />
         {!spectatorMode && (
           <PlayingCardsInput
-            name={name}
+            name={name as string}
             onChange={handleUserCardChange}
             userValue={userValue}
             cards={DEFAULT_CARD_SYSTEM}
