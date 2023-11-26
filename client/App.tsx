@@ -25,7 +25,7 @@ function App() {
       <SocketIoErrorCatcher>
         {transitions((styles, location) => (
           <a.div
-            className='w-screen min-h-screen'
+            className='min-h-screen w-screen'
             style={styles}
           >
             <Routes

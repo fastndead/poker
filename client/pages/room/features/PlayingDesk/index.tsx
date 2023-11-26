@@ -89,10 +89,12 @@ export default function PlayingDesk({ players, userValue, onShowAll, onReset, is
   }, [canShowAll])
 
   return (
-    <div className='h-full w-full flex relative justify-center items-center'>
+    <div
+      className='relative flex h-full w-full items-center justify-center'
+    >
       <div
         ref={ref}
-        className='-mb-20 bg-light-grey rounded-3xl flex items-center justify-center'
+        className='-mb-20 flex items-center justify-center rounded-3xl bg-light-grey'
         style={{
           width: 366,
           height: 199,
@@ -117,7 +119,9 @@ export default function PlayingDesk({ players, userValue, onShowAll, onReset, is
       </div>
       {players.map(({ id, name, value }, index) => {
         return (
-          <React.Fragment key={id}>
+          <React.Fragment
+            key={id}
+          >
             <Card
               value={value}
               isRevealed={isRevealed}
@@ -126,7 +130,7 @@ export default function PlayingDesk({ players, userValue, onShowAll, onReset, is
               }}
             />
             <animated.div
-              className='absolute rounded-full w-36 bg-light-grey py-4 flex items-center justify-center'
+              className='absolute flex w-36 items-center justify-center rounded-full bg-light-grey py-4 text-black'
               style={{
                 ...playersSprings[index],
               }}
