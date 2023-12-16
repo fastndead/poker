@@ -1,7 +1,9 @@
 import React, { useCallback, useMemo, useState } from 'react'
+import cn from 'classnames'
 import { animated, useSprings } from '@react-spring/web'
 import { Player } from 'pages/room/types'
 import { useWindowSize } from 'hooks/useWindowSize'
+import styles from './PlayingCardsInput.module.css'
 
 type Props = {
   cards: string[]
@@ -174,9 +176,8 @@ export default function PlayingCardsInput({ onChange, cards, userValue, name }: 
   return (
     <>
       {name && (
-        <div
-          className='rounded-tr-xl rounded-tl-xl bg-light-grey px-5 py-2 text-black'
-        >{name}
+        <div className='rounded-tl-xl rounded-tr-xl border border-b-0 border-solid border-black bg-light-grey px-5 py-2 text-black'>
+          {name}
         </div>
       )}
       <div
@@ -187,7 +188,10 @@ export default function PlayingCardsInput({ onChange, cards, userValue, name }: 
         }}
       >
         <div
-          className='absolute h-full w-full  rounded-lg rounded-tl-full rounded-tr-full bg-light-grey'
+          className={
+            'playing-cards-input-background absolute h-full  w-full rounded-lg rounded-tl-full rounded-tr-full border-4 border-solid border-primary-idle bg-light-grey ' +
+            styles.background
+          }
         />
         <div
           className='absolute inset-x-2/4 -translate-x-1/2 scale-90 md:top-0'
@@ -204,16 +208,15 @@ export default function PlayingCardsInput({ onChange, cards, userValue, name }: 
                 onClick={handleClick(index)}
                 key={index}
                 className={
-                  'z-1 absolute cursor-pointer rounded-lg border border-primary-emphasis bg-white shadow-card'
+                  'z-1 absolute cursor-pointer rounded-lg border border-primary-emphasis bg-white shadow-card ' +
+                  styles.card
                 }
                 style={{
                   ...cardSize,
                   ...springProps,
                 }}
               >
-                <div
-                  className='absolute inset-2/4 flex h-6 w-6 -translate-x-1/2 -translate-y-1/2 items-center justify-center text-2xl font-normal text-black'
-                >
+                <div className='absolute inset-2/4 flex h-6 w-6 -translate-x-1/2 -translate-y-1/2 items-center justify-center text-2xl font-normal'>
                   {card}
                 </div>
               </animated.div>

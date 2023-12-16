@@ -11,18 +11,24 @@ type Props = {
   validationError?: string | null
 }
 
-export default function TextInput({ validationError, value, placeholder, onChange, className }:Props) {
+export default function TextInput({
+  validationError,
+  value,
+  placeholder,
+  onChange,
+  className,
+}: Props) {
   const [validationErrorSpring] = useSpring(() => {
-    return validationError 
+    return validationError
       ? {
         from: { opacity: 0, height: 0 },
         to: { opacity: 1, height: 30 },
-        config: config.stiff
+        config: config.stiff,
       }
       : {
         from: { opacity: 1, height: 30 },
         to: { opacity: 0, height: 0 },
-        config: config.stiff
+        config: config.stiff,
       }
   }, [validationError])
   return (
@@ -30,9 +36,9 @@ export default function TextInput({ validationError, value, placeholder, onChang
       className={className}
     >
       <animated.div
-        className='text-danger w-full text-center text-sm'
+        className='w-full text-center text-sm text-danger'
         style={{
-          ...validationErrorSpring
+          ...validationErrorSpring,
         }}
       >
         {validationError || ''}
@@ -41,8 +47,8 @@ export default function TextInput({ validationError, value, placeholder, onChang
         placeholder={placeholder}
         onChange={onChange}
         value={value}
-        className={classNames('text-input', 'border-none', 'outline-none', {
-          'text-input-danger': validationError
+        className={classNames('text-input', 'border-none', 'outline-none', 'text-black', {
+          'text-input-danger': validationError,
         })}
         tabIndex={0}
       />

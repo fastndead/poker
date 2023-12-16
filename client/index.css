@@ -17,6 +17,11 @@ code {
     src: url('../public/Inter/Inter-VariableFont_slnt,wght.ttf') format("truetype");
 }
 
+@font-face {
+    font-family: Bangers;
+    src: url('../public/Bangers/Bangers-Regular.ttf') format("truetype");
+}
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -45,3 +50,4 @@ code {
     @apply shadow-input-border shadow-danger text-2xl px-14 py-4 rounded-3xl block w-full p-2.5 box-border text-center border-none outline-none placeholder-danger focus:shadow-danger focus:shadow-input-border-hover hover:shadow-input-border-hover hover:shadow-danger transition-all;
     }
 }
+

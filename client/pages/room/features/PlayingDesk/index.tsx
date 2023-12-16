@@ -18,16 +18,6 @@ type Props = {
 export default function PlayingDesk({ players, userValue, onShowAll, onReset, isRevealed }: Props) {
   const ref = useRef<HTMLDivElement>(null)
 
-  const waitForOthersSpring = useSpring({
-    from: {
-      backgroundPosition: 0,
-    },
-    to: {
-      backgroundPosition: 200,
-    },
-    loop: true,
-  })
-
   useEffect(() => {
     recalculateFromStateForPlayer(players)
   }, [players])
@@ -89,9 +79,7 @@ export default function PlayingDesk({ players, userValue, onShowAll, onReset, is
   }, [canShowAll])
 
   return (
-    <div
-      className='relative flex h-full w-full items-center justify-center'
-    >
+    <div className='relative flex h-full w-full items-center justify-center'>
       <div
         ref={ref}
         className='-mb-20 flex items-center justify-center rounded-3xl bg-light-grey'
@@ -119,9 +107,7 @@ export default function PlayingDesk({ players, userValue, onShowAll, onReset, is
       </div>
       {players.map(({ id, name, value }, index) => {
         return (
-          <React.Fragment
-            key={id}
-          >
+          <React.Fragment key={id}>
             <Card
               value={value}
               isRevealed={isRevealed}
@@ -130,7 +116,7 @@ export default function PlayingDesk({ players, userValue, onShowAll, onReset, is
               }}
             />
             <animated.div
-              className='absolute flex w-36 items-center justify-center rounded-full bg-light-grey py-4 text-black'
+              className='absolute flex w-36 items-center justify-center rounded-full border border-solid border-black bg-light-grey py-4 text-black'
               style={{
                 ...playersSprings[index],
               }}
