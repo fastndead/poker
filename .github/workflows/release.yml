@@ -6,7 +6,27 @@ on:
       - master
 
 jobs:
+  build:
+    name: Build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+      - name: Cache node_modules
+        uses: actions/cache@v2
+        with:
+          path: node_modules
+          key: ${{ runner.os }}-node-${{ hashFiles('package-lock.json') }}
+      - name: Install Node.js
+        uses: actions/setup-node@v1
+        with:
+          node-version: '18'
+      - name: Install NPM dependencies
+        run: npm install
+      - name: Build
+        run: npm run build
   semantic_release:
+    needs: [build]
     name: Release
     runs-on: ubuntu-latest
     steps:

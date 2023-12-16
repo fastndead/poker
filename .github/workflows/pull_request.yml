@@ -1,0 +1,53 @@
+name: Pull Request
+
+on:
+  pull_request:
+    branches:
+      - master
+
+jobs:
+  install-dependencies:
+    name: Install Dependencies
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+      - name: Cache node_modules
+        uses: actions/cache@v2
+        with:
+          path: node_modules
+          key: ${{ runner.os }}-node-${{ hashFiles('package-lock.json') }}
+      - name: Install Node.js
+        uses: actions/setup-node@v1
+        with:
+          node-version: '18'
+      - name: Install NPM dependencies
+        run: npm install
+  lint:
+    needs: install-dependencies
+    name: Lint
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+      - name: Restore node_modules from cache
+        uses: actions/cache@v2
+        with:
+          path: node_modules
+          key: ${{ runner.os }}-node-${{ hashFiles('package-lock.json') }}
+      - name: Lint code
+        run: npm run lint
+  build:
+    needs: install-dependencies
+    name: Build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+      - name: Restore node_modules from cache
+        uses: actions/cache@v2
+        with:
+          path: node_modules
+          key: ${{ runner.os }}-node-${{ hashFiles('package-lock.json') }}
+      - name: Build project
+        run: npm run build

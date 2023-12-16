@@ -19,10 +19,20 @@ export default function Sidebar() {
   const areSettingsImplemented = false
 
   return (
-    <div className='fixed top-0 left-0 z-50 h-screen w-20 inset-0 bg-primary-idle overflow-hidden'>
-      <div className='mt-20 w-full flex flex-col items-center'>
-        <Link to='/'>
-          <IconButton icon={<HomeIcon />} hoverIcon={<HomeHoverIcon />} label='home' />
+    <div
+      className='fixed inset-0 left-0 top-0 z-50 h-screen w-20 overflow-hidden bg-primary-idle'
+    >
+      <div
+        className='mt-20 flex w-full flex-col items-center'
+      >
+        <Link
+          to='/'
+        >
+          <IconButton
+            icon={<HomeIcon />}
+            hoverIcon={<HomeHoverIcon />}
+            label='home'
+          />
         </Link>
         {areSettingsImplemented && (
           <IconButton

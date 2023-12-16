@@ -28,9 +28,7 @@ function App() {
             className='min-h-screen w-screen'
             style={styles}
           >
-            <Routes
-              location={location}
-            >
+            <Routes location={location}>
               <Route
                 path='/'
                 element={<Home />}
