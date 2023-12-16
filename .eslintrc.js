@@ -31,15 +31,20 @@ module.exports = {
       },
     ],
     'jsx-quotes': ['error', 'prefer-single'],
-    'react/jsx-first-prop-new-line': ['error', 'always'],
+    'react/jsx-first-prop-new-line': 0,
     'object-curly-spacing': ['error', 'always'],
     'react/jsx-max-props-per-line': ['error', { maximum: 1, when: 'always' }],
     'react/jsx-closing-bracket-location': ['error', 'tag-aligned'],
     'react/jsx-closing-tag-location': ['error'],
     'react/jsx-child-element-spacing': ['error'],
-    'indent': ['error', 2],
+    'indent': 0,
     'linebreak-style': ['error', 'unix'],
     'quotes': ['error', 'single'],
     'semi': ['error', 'never'],
+  },
+  settings: {
+    react: {
+      version: 'detect',
+    },
   },
 }

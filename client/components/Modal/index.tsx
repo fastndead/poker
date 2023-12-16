@@ -1,6 +1,6 @@
-import React, { ReactNode, useCallback, useEffect } from 'react'
+import React, { ReactNode } from 'react'
 import CloseModalSvg from 'assets/closeModal.svg'
-import { animated, useSpring, useTransition } from '@react-spring/web'
+import { animated, useTransition } from '@react-spring/web'
 import classNames from 'classnames'
 
 type Props = {
@@ -35,25 +35,30 @@ export default function Modal({ className, isVisible, children, title, onClose }
         ...modalOverlaySpring,
       }}
       className={classNames(
-        'fixed top-0 left-0 w-screen h-screen flex justify-center items-center'
+        'fixed left-0 top-0 flex h-screen w-screen items-center justify-center'
       )}
     >
       {modalTransition((springs) => (
         <animated.div
-          className={classNames('absolute bg-white z-50 rounded-3xl p-6 shadow-modal', className)}
+          className={classNames('absolute z-50 rounded-3xl bg-white p-6 shadow-modal', className)}
           style={{
             ...springs,
           }}
         >
-          <div className='w-full h-11 flex justify-between'>
-            <h3 className='font-normal text-2xl'>{title || ''}</h3>
-            {onClose && <CloseModalSvg onClick={onClose} className='cursor-pointer' />}
+          <div className='flex h-11 w-full justify-between'>
+            <h3 className='text-2xl font-normal'>{title || ''}</h3>
+            {onClose && (
+              <CloseModalSvg
+                onClick={onClose}
+                className='cursor-pointer'
+              />
+            )}
           </div>
           {children}
         </animated.div>
       ))}
 
-      <animated.div className='fixed top-0 left-0 opacity-70 w-screen h-screen bg-modal-grey z-40 ' />
+      <animated.div className='fixed left-0 top-0 z-40 h-screen w-screen bg-modal-grey opacity-70 ' />
     </animated.div>
   ))
 }
