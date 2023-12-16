@@ -16,53 +16,52 @@ export function Home() {
   const navigate = useNavigate()
   const { addNotification } = useNotifications()
 
-  const handleSubmit = useCallback<ReactEventHandler<HTMLFormElement>>(async (e) => {
-    e.preventDefault()
-    if (!name) {
-      setValidationError('Name cannot be empty')
-      return
-    }
-
-    if (name.length > 13) {
-      setValidationError('Name cannot be longer than 13 characters')
-      return
-    }
-    try {
-      const response = await fetch(`${apiBaseUrl}/mynameis`, {
-        method: 'POST',
-        mode: 'cors',
-        credentials: 'include',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ name }), // body data type must match "Content-Type" header
-      })
-
-      if (!response.ok) {
-        throw new Error('Server error')
+  const handleSubmit = useCallback<ReactEventHandler<HTMLFormElement>>(
+    async (e) => {
+      e.preventDefault()
+      if (!name) {
+        setValidationError('Name cannot be empty')
+        return
       }
 
-      const roomId = (Math.random() + 1).toString(36).substring(2).toUpperCase()
-      setNameLocalStorage(name)
-      navigate(`/room/${roomId}`)
-    } catch {
-      addNotification({ type: 'error', text: 'Something is wrong on the server, refresh the page or try again later' })
-    }
-    
-  }, [name, navigate, setValidationError, setNameLocalStorage, addNotification])
+      if (name.length > 13) {
+        setValidationError('Name cannot be longer than 13 characters')
+        return
+      }
+      try {
+        const response = await fetch(`${apiBaseUrl}/mynameis`, {
+          method: 'POST',
+          mode: 'cors',
+          credentials: 'include',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ name }), // body data type must match "Content-Type" header
+        })
+
+        if (!response.ok) {
+          throw new Error('Server error')
+        }
+
+        const roomId = (Math.random() + 1).toString(36).substring(2, 6).toUpperCase()
+        setNameLocalStorage(name)
+        navigate(`/room/${roomId}`)
+      } catch {
+        addNotification({
+          type: 'error',
+          text: 'Something is wrong on the server, refresh the page or try again later',
+        })
+      }
+    },
+    [name, navigate, setValidationError, setNameLocalStorage, addNotification]
+  )
 
   return (
     <>
-      <div
-        className='container mx-auto w-screen h-screen '
-      >
-        <div
-          className='w-80 m-auto min-h-full pt-32 2xl:pt-44'
-        >
+      <div className='container mx-auto h-screen w-screen '>
+        <div className='m-auto min-h-full w-80 pt-32 2xl:pt-44'>
           <CardsSpread />
-          <form
-            onSubmit={handleSubmit}
-          >
+          <form onSubmit={handleSubmit}>
             <TextInput
               validationError={validationError}
               value={name}
@@ -90,6 +89,5 @@ export function Home() {
         />
       </div>
     </>
-
   )
 }

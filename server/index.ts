@@ -24,7 +24,10 @@ const createNewUser = (name: string, id: string) => {
 }
 
 const createRoom = (name: string) => {
-  rooms[name] = {}
+  if (name.length !== 4) {
+    throw 'Error: room name is incorrect. It should be 4 letters/digits'
+  }
+  rooms[name.toUpperCase()] = {}
 }
 
 const broadcastUpdate = (socket: Socket, roomName: string) => {
@@ -108,7 +111,12 @@ io.on('connection', (socket) => {
     }
 
     if (!rooms[roomName]) {
-      createRoom(roomName)
+      try {
+        createRoom(roomName)
+      } catch (e) {
+        socket.emit('business_error', { error: e })
+        return
+      }
     }
 
     const room = rooms[roomName]
