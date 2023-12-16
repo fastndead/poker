@@ -1,4 +1,4 @@
-import React, { CSSProperties, useState } from 'react'
+import React, { CSSProperties } from 'react'
 import { animated, useSpring } from '@react-spring/web'
 import classNames from 'classnames'
 import ArrowSvg from 'assets/arrow.svg'
@@ -25,9 +25,7 @@ export default function Card({ isRevealed, animationProp, value }: Props) {
         ...animationProp,
       }}
     >
-      {value && !isRevealed && <ArrowSvg
-        className='absolute -top-6 left-1/2 -translate-x-2/4'
-                               />}
+      {value && !isRevealed && <ArrowSvg className='absolute -top-6 left-1/2 -translate-x-2/4' />}
       <animated.div
         className={classNames('card absolute', {
           'bg-primary-emphasis': value,
@@ -52,9 +50,7 @@ export default function Card({ isRevealed, animationProp, value }: Props) {
           rotateY,
         }}
       >
-        <div
-          className='absolute inset-2/4 flex h-6 w-6 -translate-x-1/2 -translate-y-1/2 items-center justify-center text-2xl font-normal'
-        >
+        <div className='absolute inset-2/4 flex h-6 w-6 -translate-x-1/2 -translate-y-1/2 items-center justify-center text-2xl font-normal'>
           {value}
         </div>
       </animated.div>

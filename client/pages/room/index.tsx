@@ -9,6 +9,7 @@ import { socket } from 'sockets/socket'
 import { useParams } from 'react-router-dom'
 import EnterNameModal from 'components/EnterNameModal'
 import { useLocalStorage } from 'hooks/useLocalStorage'
+import styles from './Room.module.css'
 
 export function Room() {
   const { roomName } = useParams<{ roomName: string }>()
@@ -98,12 +99,12 @@ export function Room() {
   }, [])
 
   return (
-    <div
-      className='width-screen flex flex-row overflow-hidden'
-    >
+    <div className={'width-screen flex flex-row overflow-hidden'}>
       <Sidebar />
       <div
-        className='container relative m-auto flex h-screen flex-col items-center justify-between'
+        className={
+          'relative flex h-screen w-full flex-col items-center justify-between ' + styles.background
+        }
       >
         <PlayingDesk
           isRevealed={isRevealed}

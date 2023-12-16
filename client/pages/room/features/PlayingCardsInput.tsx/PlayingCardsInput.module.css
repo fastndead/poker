@@ -1,0 +1,20 @@
+.background {
+  background: repeating-linear-gradient(
+    -45deg,
+    #E4E9F8,
+    #E4E9F8 6px,
+    #6076B0 1px,
+    #6076B0 7px
+  )
+}
+
+.card {
+  background: url('../../../../assets/cardBackground.svg');
+  background-size: cover;
+  background-color: #E7ECFC;
+  font-family: Bangers;
+  color: white;
+  text-shadow: 2px 1px 1px #2C4DA8;
+  -webkit-text-stroke-width: 1px;
+  -webkit-text-stroke-color: #7893DC;
+}

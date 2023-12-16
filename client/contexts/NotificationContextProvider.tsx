@@ -81,7 +81,7 @@ export default function NotificationContextProvider({ children }: { children: Re
     >
       {children}
       <div
-        className='fixed top-0 w-96 left-2/4 -translate-x-2/4'
+        className='fixed left-2/4 top-0 w-96 -translate-x-2/4'
       >
         {transitions((notifStyles, notif, state) => {
           return (
@@ -134,7 +134,7 @@ function Notification({ text, style, onDismiss, onMouseLeave, onMouseEnter }: No
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
       onClick={onDismiss}
-      className='cursor-pointer bg-white relative w-96 mt-4 rounded-xl border border-primary-emphasis p-4 shadow-modal text-center'
+      className='relative mt-4 w-96 cursor-pointer rounded-xl border border-primary-emphasis bg-white p-4 text-center text-black shadow-modal'
     >
       {text}
     </animated.div>
