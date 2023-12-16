@@ -2,6 +2,10 @@
 module.exports = {
   content: ['./index.html', './client/**/*.{js,jsx,ts,tsx}'],
   theme: {
+    fontFamily: {
+      barriecito: ['Barriecito'],
+      bangers: ['Bangers'],
+    },
     extend: {
       colors: {
         'primary-emphasis': '#7893DC',

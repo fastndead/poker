@@ -6,7 +6,7 @@ import { useNotifications } from 'hooks/useNotifications'
 import PlayingDesk from './features/PlayingDesk'
 import { Player } from './types'
 import { socket } from 'sockets/socket'
-import { useParams } from 'react-router-dom'
+import { useParams, useNavigate } from 'react-router-dom'
 import EnterNameModal from 'components/EnterNameModal'
 import { useLocalStorage } from 'hooks/useLocalStorage'
 import styles from './Room.module.css'
@@ -17,6 +17,7 @@ export function Room() {
   const [isRevealed, setIsRevealed] = useState<boolean>(false)
   const [spectatorMode, setSpectatorMode] = useState<boolean>(false)
   const { addNotification } = useNotifications()
+  const navigate = useNavigate()
 
   const [name, setName] = useLocalStorage<string | null>('userName', null)
   const [id, setId] = useLocalStorage<string | null>('userId', null)
@@ -36,7 +37,7 @@ export function Room() {
       setIsNameModalVisible(true)
     } else {
       socket.emit('mynameis', { name })
-      socket.emit('join', { roomName })
+      socket.emit('join', { roomName }).on('business_error', () => navigate('/'))
 
       socket.on(
         'initial_state',
@@ -106,6 +107,12 @@ export function Room() {
           'relative flex h-screen w-full flex-col items-center justify-between ' + styles.background
         }
       >
+        <div className='mt-7 flex w-full justify-between px-24'>
+          <h2 className='inline font-barriecito text-3xl text-primary-emphasis'>Planning poker</h2>
+          <h3 className='inline font-barriecito text-3xl text-primary-emphasis'>
+            Room: <span className='emphasis-text font-bangers'>{roomName}</span>
+          </h3>
+        </div>
         <PlayingDesk
           isRevealed={isRevealed}
           players={players}
