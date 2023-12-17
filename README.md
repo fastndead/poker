@@ -1,6 +1,7 @@
 # Poker
 
-![localhost_3000_ (2)](https://user-images.githubusercontent.com/33729448/227790128-51b170a2-5f13-4de0-a51c-80470d310ed2.png)
+<img width="755" alt="image" src="https://github.com/fastndead/poker/assets/33729448/f18b59a9-00e1-4969-a454-5ea251193fe2">
+
 
 # Planning Poker Web Application
 
