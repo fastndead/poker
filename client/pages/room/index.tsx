@@ -104,7 +104,7 @@ export function Room() {
       <Sidebar />
       <div
         className={
-          'relative flex h-screen w-full flex-col items-center justify-between ' + styles.background
+          'base-background relative flex h-screen w-full flex-col items-center justify-between'
         }
       >
         <div className='mt-7 flex w-full justify-between px-24'>

@@ -4,7 +4,7 @@ import { animated, useSpring } from '@react-spring/web'
 export const springConfigRigid = {
   mass: 10,
   tension: 60,
-  friction: 40
+  friction: 40,
 }
 
 const cardsSize = {
@@ -22,7 +22,7 @@ const rotateHalfway = 10
 const from = {
   x: 0,
   y: 0,
-  rotate: 0
+  rotate: 0,
 }
 
 function getCardsSpreadSpringConfig(toX: number, toY: number, rotate: number) {
@@ -33,7 +33,7 @@ function getCardsSpreadSpringConfig(toX: number, toY: number, rotate: number) {
 }
 
 function getToState(toX: number, toY: number, rotate: number) {
-  return  {
+  return {
     x: toX,
     y: toY,
     rotate: rotate,
@@ -42,107 +42,98 @@ function getToState(toX: number, toY: number, rotate: number) {
 }
 
 export default function CardsSpread() {
-  const [springsToLeft, springsToLeftApi] = useSpring(() => getCardsSpreadSpringConfig(xOffset, yOffset, rotate))
-  const [springsToRight, springsToRightApi] = useSpring(() => getCardsSpreadSpringConfig(-xOffset, yOffset, -rotate))
-  const [springsToRightHalfway, springsToRightHalfwayApi] = useSpring(() => getCardsSpreadSpringConfig(-xOffsetHalfway, yOffsetHalfway, -rotateHalfway))
-  const [springsToLeftHalfway, springsToLeftHalfwayApi] = useSpring(() => getCardsSpreadSpringConfig(xOffsetHalfway, yOffsetHalfway, rotateHalfway))
-
-  const startAnimation = useCallback(
-    () => {
-      springsToLeftApi.start(getToState(xOffset, yOffset, rotate))
-      springsToRightApi.start(getToState(-xOffset, yOffset, -rotate))
-      springsToRightHalfwayApi.start(getToState(-xOffsetHalfway, yOffsetHalfway, -rotateHalfway))
-      springsToLeftHalfwayApi.start(getToState(xOffsetHalfway, yOffsetHalfway, rotateHalfway))
-    },
-    [
-      springsToLeftApi,
-      springsToRightApi,
-      springsToRightHalfwayApi,
-      springsToLeftHalfwayApi,
-    ]
+  const [springsToLeft, springsToLeftApi] = useSpring(() =>
+    getCardsSpreadSpringConfig(xOffset, yOffset, rotate)
   )
+  const [springsToRight, springsToRightApi] = useSpring(() =>
+    getCardsSpreadSpringConfig(-xOffset, yOffset, -rotate)
+  )
+  const [springsToRightHalfway, springsToRightHalfwayApi] = useSpring(() =>
+    getCardsSpreadSpringConfig(-xOffsetHalfway, yOffsetHalfway, -rotateHalfway)
+  )
+  const [springsToLeftHalfway, springsToLeftHalfwayApi] = useSpring(() =>
+    getCardsSpreadSpringConfig(xOffsetHalfway, yOffsetHalfway, rotateHalfway)
+  )
+
+  const startAnimation = useCallback(() => {
+    springsToLeftApi.start(getToState(xOffset, yOffset, rotate))
+    springsToRightApi.start(getToState(-xOffset, yOffset, -rotate))
+    springsToRightHalfwayApi.start(getToState(-xOffsetHalfway, yOffsetHalfway, -rotateHalfway))
+    springsToLeftHalfwayApi.start(getToState(xOffsetHalfway, yOffsetHalfway, rotateHalfway))
+  }, [springsToLeftApi, springsToRightApi, springsToRightHalfwayApi, springsToLeftHalfwayApi])
 
   useEffect(() => {
     startAnimation()
-  },[])
+  }, [])
 
-  const handleHover = useCallback(
-    () => {
-      springsToLeftApi.start({
-        ...from,
-        config: springConfigRigid
-      })
-      springsToRightApi.start({
-        ...from,
-        config: springConfigRigid
-      })
-      springsToRightHalfwayApi.start({
-        ...from,
-        config: springConfigRigid
-      })
-      springsToLeftHalfwayApi.start({
-        ...from,
-        config: springConfigRigid
-      })
-    },
-    [
-      springsToLeftApi,
-      springsToRightApi,
-      springsToRightHalfwayApi,
-      springsToLeftHalfwayApi,
-    ]
-  )
-
+  const handleHover = useCallback(() => {
+    springsToLeftApi.start({
+      ...from,
+      config: springConfigRigid,
+    })
+    springsToRightApi.start({
+      ...from,
+      config: springConfigRigid,
+    })
+    springsToRightHalfwayApi.start({
+      ...from,
+      config: springConfigRigid,
+    })
+    springsToLeftHalfwayApi.start({
+      ...from,
+      config: springConfigRigid,
+    })
+  }, [springsToLeftApi, springsToRightApi, springsToRightHalfwayApi, springsToLeftHalfwayApi])
 
   return (
-    <div
-      className='relative h-48'
-    >
+    <div className='relative h-48'>
       <div
         className='absolute inset-x-2/4 w-28 -translate-x-1/2'
         onMouseOver={handleHover}
         onMouseLeave={startAnimation}
       >
         <animated.div
-          className='absolute border border-primary-emphasis rounded-lg bg-secondary-emphasis'
+          className='card-secondary-background absolute rounded-lg border border-primary-emphasis bg-secondary-emphasis'
           style={{
             ...cardsSize,
             zIndex: 2,
-            ...springsToRightHalfway
+            ...springsToRightHalfway,
           }}
         />
         <animated.div
-          className='absolute border border-primary-emphasis rounded-lg bg-secondary-emphasis'
+          className='card-secondary-background absolute rounded-lg border border-primary-emphasis bg-secondary-emphasis'
           style={{
             ...cardsSize,
             zIndex: 2,
-            ...springsToLeftHalfway
+            ...springsToLeftHalfway,
           }}
         />
         <animated.div
-          className='absolute border border-primary-emphasis rounded-lg bg-secondary-emphasis'
+          className='card-secondary-background absolute rounded-lg border border-primary-emphasis bg-secondary-emphasis'
           style={{
             ...cardsSize,
             zIndex: 1,
-            ...springsToLeft
+            ...springsToLeft,
           }}
         />
         <animated.div
-          className='absolute border border-primary-emphasis rounded-lg bg-secondary-emphasis'
+          className='card-secondary-background absolute rounded-lg border border-primary-emphasis bg-secondary-emphasis'
           style={{
             ...cardsSize,
             zIndex: 1,
-            ...springsToRight
+            ...springsToRight,
           }}
         />
         <animated.div
-          className='absolute border border-primary-emphasis rounded-lg bg-secondary-emphasis'
+          className='card-background emphasis-text absolute flex items-center justify-center rounded-lg border border-primary-emphasis bg-secondary-emphasis text-7xl'
           style={{
             ...cardsSize,
-            zIndex: 3
+            zIndex: 3,
           }}
-        />
-
+        >
+          ?
+        </animated.div>
       </div>
     </div>
-  )}
+  )
+}

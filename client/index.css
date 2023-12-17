@@ -32,14 +32,6 @@ code {
 @tailwind utilities;
 
 @layer components {
-  .btn-primary {
-    @apply bg-primary-idle placeholder-white outline-0 text-white text-2xl px-14 py-4 rounded-3xl hover:shadow-button-primary-emphasis hover:shadow-primary-emphasis transition-shadow block w-full p-2.5;
-  }
-
-  .btn-secondary {
-    @apply bg-secondary-idle placeholder-white outline-0 text-primary-emphasis text-2xl px-14 py-4 rounded-3xl hover:shadow-button-primary-emphasis hover:shadow-primary-emphasis transition-shadow block w-full p-2.5;
-  }
-
   .card {
     @apply rounded-lg bg-secondary-emphasis border border-solid border-primary-emphasis;
 
@@ -47,20 +39,29 @@ code {
     width: 50px;
   }
 
-  .text-input {
-    @apply shadow-input-border shadow-grey text-2xl px-14 py-4 rounded-3xl block w-full p-2.5 box-border text-center border-none outline-none focus:shadow-primary-emphasis focus:shadow-input-border-hover hover:shadow-input-border-hover hover:shadow-primary-emphasis transition-all;
-  }
-  
-    .text-input-danger {
-    @apply shadow-input-border shadow-danger text-2xl px-14 py-4 rounded-3xl block w-full p-2.5 box-border text-center border-none outline-none placeholder-danger focus:shadow-danger focus:shadow-input-border-hover hover:shadow-input-border-hover hover:shadow-danger transition-all;
-    }
-
   .emphasis-text {
     font-family: Bangers;
     color: white;
     text-shadow: 2px 1px 1px #2C4DA8;
     -webkit-text-stroke-width: 1px;
     -webkit-text-stroke-color: #7893DC;
+  }
+
+  .card-background {
+    background: url('./assets/cardBackground.svg');
+    background-size: cover;
+    background-color: #E7ECFC;
+  }
+
+  .card-secondary-background {
+    background: url('./assets/cardSecondaryBackground.svg');
+    background-size: cover;
+    background-color: #E7ECFC;
+  }
+
+  .base-background {
+    background: url('./assets/background.svg');
+    background-size: cover;
   }
 }
 

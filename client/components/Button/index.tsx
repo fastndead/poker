@@ -1,4 +1,5 @@
 import classNames from 'classnames'
+import './Button.css'
 import React from 'react'
 
 type Props = {
@@ -8,18 +9,29 @@ type Props = {
   onClick?(): void
   className?: string
 }
-export default function Button({ htmlType, type, label, onClick, className }:Props) {
+export default function Button({ htmlType, type, label, onClick, className }: Props) {
   return (
-    <button
-      onClick={onClick}
-      type={htmlType || 'button'}
-      className={classNames({
-        'btn-primary': type === 'primary',
-        'btn-secondary': type === 'secondary',
-      }) + ' ' + className}
-      tabIndex={0}
+    <div
+      className={
+        classNames({
+          'btn-primary': type === 'primary',
+          'btn-secondary': type === 'secondary',
+        }) +
+        ' btn-base ' +
+        className
+      }
     >
-      {label}
-    </button>
+      <div className='upper-side'></div>
+      <div className='right-side-container'>
+        <button
+          onClick={onClick}
+          type={htmlType || 'button'}
+          tabIndex={0}
+        >
+          {label}
+        </button>
+        <div className='right-side'></div>
+      </div>
+    </div>
   )
 }

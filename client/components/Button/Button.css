@@ -1,0 +1,48 @@
+@tailwind components;
+
+@layer components {
+  .btn-primary {
+    & button {
+      @apply bg-primary-emphasis text-white;
+    }
+    &:hover {
+      & .upper-side, .right-side {
+        @apply bg-secondary-dark transition-all;
+      }
+    }
+  }
+
+  .btn-secondary {
+    & button {
+      @apply bg-secondary-light text-primary-emphasis;
+    }
+    &:hover {
+      & .upper-side, .right-side {
+        @apply bg-primary-emphasis transition-all;
+      }
+    }
+  }
+
+  .btn-base {
+    & > .upper-side {
+      @apply border border-black border-solid border-b-0 border-r-0;
+      transform: skewX(135deg) translateX(11px);
+      height: 22px;
+      width: calc(100% - 22px);
+    }
+
+    & .right-side-container {
+      @apply flex flex-row; 
+    }
+
+    & .right-side {
+      @apply border border-black border-solid border-l-0;
+      transform: skewY(135deg) translateY(-11px);
+      width: 24px;
+    }
+
+    & button {
+      @apply outline-0 text-2xl px-6 py-3 block w-full p-2.5 border border-solid border-black;
+    }
+  }
+}
