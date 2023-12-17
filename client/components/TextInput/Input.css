@@ -1,0 +1,34 @@
+
+@tailwind components;
+
+@layer components {
+  .text-input {
+    & > .upper-side {
+      @apply border border-solid border-grey;
+      transform: skewX(135deg) translateX(12px) translateY(1px);
+      height: 22px;
+      width: calc(100% - 22px);
+    }
+
+    & .right-side-container {
+      @apply flex flex-row; 
+    }
+
+    & .right-side {
+      @apply border border-solid border-grey;
+      transform: skewY(135deg) translateY(-11px) translateX(-1px);
+      width: 23px;
+    }
+
+    & input {
+      @apply border border-solid border-grey text-2xl px-6 py-3 block w-full p-2.5 box-border text-center outline-none transition-all;
+    }
+  }
+  
+    .text-input-danger {
+    & input {
+      @apply shadow-danger placeholder-danger focus:shadow-danger;
+    }
+    }
+
+}

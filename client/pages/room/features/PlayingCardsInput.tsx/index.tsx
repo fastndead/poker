@@ -208,7 +208,7 @@ export default function PlayingCardsInput({ onChange, cards, userValue, name }: 
                 onClick={handleClick(index)}
                 key={index}
                 className={
-                  'z-1 emphasis-text absolute cursor-pointer rounded-lg border border-primary-emphasis bg-white shadow-card ' +
+                  'z-1 emphasis-text card-background absolute cursor-pointer rounded-lg border border-primary-emphasis bg-white shadow-card' +
                   styles.card
                 }
                 style={{

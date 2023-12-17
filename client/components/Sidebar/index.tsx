@@ -19,7 +19,7 @@ export default function Sidebar() {
   const areSettingsImplemented = false
 
   return (
-    <div className='inset-0 left-0 top-0 z-50 h-screen w-20 overflow-hidden bg-primary-idle'>
+    <div className='fixed inset-0 left-0 top-0 z-50 h-screen w-20 overflow-hidden bg-primary-idle'>
       <div className='mt-20 flex w-full flex-col items-center'>
         <Link to='/'>
           <IconButton

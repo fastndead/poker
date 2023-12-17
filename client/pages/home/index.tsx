@@ -1,5 +1,6 @@
 import Button from 'components/Button'
 import TextInput from 'components/TextInput'
+import LogoSvg from 'assets/logo.svg'
 import { useLocalStorage } from 'hooks/useLocalStorage'
 import React, { useCallback, useState, ReactEventHandler } from 'react'
 import { useNavigate } from 'react-router-dom'
@@ -58,30 +59,35 @@ export function Home() {
 
   return (
     <>
-      <div className='container mx-auto h-screen w-screen '>
-        <div className='m-auto min-h-full w-80 pt-32 2xl:pt-44'>
-          <CardsSpread />
-          <form onSubmit={handleSubmit}>
-            <TextInput
-              validationError={validationError}
-              value={name}
-              onChange={(e) => setName(e.currentTarget.value)}
-              className='mt-6'
-              placeholder='User name'
-            />
-            <Button
-              className='mt-2.5'
-              label='Start a new game'
-              type='primary'
-              htmlType='submit'
-            />
-            <Button
-              className='mt-2.5'
-              label='Join the room'
-              type='secondary'
-              onClick={() => setModalVisible(true)}
-            />
-          </form>
+      <div className='base-background  mx-auto h-screen w-screen'>
+        <div>
+          <h1 className='flex items-center pl-16 pt-12 font-barriecito text-3xl text-primary-emphasis'>
+            <LogoSvg /> Planning poker
+          </h1>
+          <div className='m-auto min-h-full w-80 pt-28 2xl:pt-44'>
+            <CardsSpread />
+            <form onSubmit={handleSubmit}>
+              <TextInput
+                validationError={validationError}
+                value={name}
+                onChange={(e) => setName(e.currentTarget.value)}
+                className='mt-6'
+                placeholder='User name'
+              />
+              <Button
+                className='mt-2.5'
+                label='Start a new game'
+                type='primary'
+                htmlType='submit'
+              />
+              <Button
+                className='mt-2.5'
+                label='Join the room'
+                type='secondary'
+                onClick={() => setModalVisible(true)}
+              />
+            </form>
+          </div>
         </div>
         <JoinRoomModal
           isVisible={modalVisible}
