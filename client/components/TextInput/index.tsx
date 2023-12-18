@@ -1,10 +1,10 @@
 import { useSpring, animated } from '@react-spring/web'
 import { config } from '@react-spring/web'
 import classNames from 'classnames'
-import React, { ReactEventHandler } from 'react'
+import React, { HTMLAttributes, ReactEventHandler } from 'react'
 import './Input.css'
 
-type Props = {
+export interface InputProps extends HTMLAttributes<HTMLDivElement> {
   placeholder: string
   onChange?: ReactEventHandler<HTMLInputElement>
   value?: string
@@ -18,7 +18,8 @@ export default function TextInput({
   placeholder,
   onChange,
   className,
-}: Props) {
+  ...props
+}: InputProps) {
   const [validationErrorSpring] = useSpring(() => {
     return validationError
       ? {
@@ -33,7 +34,10 @@ export default function TextInput({
         }
   }, [validationError])
   return (
-    <div className={classNames('text-input', className)}>
+    <div
+      className={classNames('text-input', className)}
+      {...props}
+    >
       <animated.div
         className='w-full text-center text-sm text-danger'
         style={{

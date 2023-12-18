@@ -1,4 +1,5 @@
 import classNames from 'classnames'
+import './IconButton.css'
 import React, { ReactElement, useId, useState, useMemo } from 'react'
 
 type Props = {
@@ -8,7 +9,7 @@ type Props = {
   hoverIcon?: ReactElement
   label?: string
 }
-export default function IconButton({ icon, hoverIcon, onClick, className, label }:Props) {
+export default function IconButton({ icon, hoverIcon, onClick, className, label }: Props) {
   const id = useId()
   const [isHovered, setHover] = useState(false)
 
@@ -21,21 +22,31 @@ export default function IconButton({ icon, hoverIcon, onClick, className, label 
   }, [isHovered])
   return (
     <div
-      className={classNames(className, 'flex', 'flex-col', 'items-center')}
+      className={classNames(className, 'btn-icon', 'flex', 'flex-col', 'items-center')}
       onMouseEnter={() => setHover(true)}
       onMouseLeave={() => setHover(false)}
     >
-      <button
-        id={id}
-        onClick={onClick}
-        className={classNames('rounded-full', 'bg-secondary-idle', 'p-2.5', 'hover:shadow-primary-emphasis', 'hover:shadow-button-primary-emphasis', 'transition-shadow', 'cursor-pointer')}
-        tabIndex={0}
-      >
-        {currentIcon}
-      </button>
+      <div className='upper-side'></div>
+      <div className='right-side-container'>
+        <button
+          id={id}
+          onClick={onClick}
+          className={classNames('bg-secondary-idle', 'p-2.5', 'transition-all', 'cursor-pointer')}
+          tabIndex={0}
+        >
+          {currentIcon}
+        </button>
+        <div className='right-side'></div>
+      </div>
       {label && (
         <label
-          className={classNames('text-sm', 'font-semibold', 'text-secondary-idle', 'mt-1', 'cursor-pointer')}
+          className={classNames(
+            'text-sm',
+            'font-semibold',
+            'text-secondary-idle',
+            'mt-1',
+            'cursor-pointer'
+          )}
           htmlFor={id}
         >
           {label}

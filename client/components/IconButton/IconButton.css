@@ -1,0 +1,31 @@
+@tailwind components;
+
+@layer components {
+  .btn-icon {
+    &:hover {
+      & .upper-side, .right-side {
+        @apply bg-secondary-dark transition-all;
+      }
+    }
+
+    & .upper-side {
+      @apply border border-black border-solid w-12;
+      transform: skewX(135deg) translateX(1px) translateY(1px);
+      height: 10px;
+    }
+
+    & .right-side-container {
+      @apply flex flex-row; 
+    }
+
+    & .right-side {
+      @apply border border-black border-solid;
+      transform: skewY(135deg) translateX(-1px) translateY(-5px);
+      width: 10px;
+    }
+
+    & button {
+      @apply outline-0 block w-12 h-12 p-0 flex justify-center items-center border border-solid border-black;
+    }
+  }
+}
