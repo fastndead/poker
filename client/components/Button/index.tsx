@@ -1,25 +1,26 @@
 import classNames from 'classnames'
 import './Button.css'
-import React from 'react'
+import React, { ReactNode } from 'react'
 
 type Props = {
   htmlType?: 'button' | 'submit' | 'reset'
   type?: 'primary' | 'secondary'
-  label: string
+  label?: ReactNode | string
   onClick?(): void
   className?: string
+  children?: ReactNode
 }
-export default function Button({ htmlType, type, label, onClick, className }: Props) {
+export default function Button({ htmlType, type, label, children, onClick, className }: Props) {
   return (
     <div
-      className={
-        classNames({
+      className={classNames(
+        {
           'btn-primary': type === 'primary',
           'btn-secondary': type === 'secondary',
-        }) +
-        ' btn-base ' +
+        },
+        'btn-base',
         className
-      }
+      )}
     >
       <div className='upper-side'></div>
       <div className='right-side-container'>
@@ -28,7 +29,7 @@ export default function Button({ htmlType, type, label, onClick, className }: Pr
           type={htmlType || 'button'}
           tabIndex={0}
         >
-          {label}
+          {label || children}
         </button>
         <div className='right-side'></div>
       </div>

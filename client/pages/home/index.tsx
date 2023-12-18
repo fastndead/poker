@@ -1,5 +1,4 @@
 import Button from 'components/Button'
-import TextInput from 'components/TextInput'
 import LogoSvg from 'assets/logo.svg'
 import { useLocalStorage } from 'hooks/useLocalStorage'
 import React, { useCallback, useState, ReactEventHandler } from 'react'
@@ -8,6 +7,7 @@ import CardsSpread from './features/CardsSpread'
 import { useNotifications } from 'hooks/useNotifications'
 import JoinRoomModal from './features/JoinRoomModal'
 import { apiBaseUrl } from 'constants/constants'
+import InputAnimated from './features/InputAnimated'
 
 export function Home() {
   const [modalVisible, setModalVisible] = useState(false)
@@ -67,7 +67,7 @@ export function Home() {
           <div className='m-auto min-h-full w-80 pt-28 2xl:pt-44'>
             <CardsSpread />
             <form onSubmit={handleSubmit}>
-              <TextInput
+              <InputAnimated
                 validationError={validationError}
                 value={name}
                 onChange={(e) => setName(e.currentTarget.value)}

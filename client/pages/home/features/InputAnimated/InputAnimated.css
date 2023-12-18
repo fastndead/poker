@@ -1,0 +1,10 @@
+@tailwind components;
+
+@layer components {
+  .input-animated {
+    & .upper-side, .right-side, input {
+      border-width: 2px;
+      border-image-slice: 1;
+    }
+  }
+}
