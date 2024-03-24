@@ -1,5 +1,5 @@
 import React from 'react'
-import { Home } from 'pages/home'
+import { Home } from 'pages/home/Home'
 import { NotFound } from 'pages/404'
 import { Room } from 'pages/room'
 import NotificationContextProvider from 'contexts/NotificationContextProvider'

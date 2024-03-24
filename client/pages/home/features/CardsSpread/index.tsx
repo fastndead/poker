@@ -86,53 +86,55 @@ export default function CardsSpread() {
   }, [springsToLeftApi, springsToRightApi, springsToRightHalfwayApi, springsToLeftHalfwayApi])
 
   return (
-    <div className='relative h-48'>
-      <div
-        className='absolute inset-x-2/4 w-28 -translate-x-1/2'
-        onMouseOver={handleHover}
-        onMouseLeave={startAnimation}
-      >
-        <animated.div
-          className='card-secondary-background absolute rounded-lg border border-primary-emphasis bg-secondary-emphasis'
-          style={{
-            ...cardsSize,
-            zIndex: 2,
-            ...springsToRightHalfway,
-          }}
-        />
-        <animated.div
-          className='card-secondary-background absolute rounded-lg border border-primary-emphasis bg-secondary-emphasis'
-          style={{
-            ...cardsSize,
-            zIndex: 2,
-            ...springsToLeftHalfway,
-          }}
-        />
-        <animated.div
-          className='card-secondary-background absolute rounded-lg border border-primary-emphasis bg-secondary-emphasis'
-          style={{
-            ...cardsSize,
-            zIndex: 1,
-            ...springsToLeft,
-          }}
-        />
-        <animated.div
-          className='card-secondary-background absolute rounded-lg border border-primary-emphasis bg-secondary-emphasis'
-          style={{
-            ...cardsSize,
-            zIndex: 1,
-            ...springsToRight,
-          }}
-        />
-        <animated.div
-          className='card-background emphasis-text absolute flex items-center justify-center rounded-lg border border-primary-emphasis bg-secondary-emphasis text-7xl'
-          style={{
-            ...cardsSize,
-            zIndex: 3,
-          }}
+    <div className='h-48 w-28'>
+      <div className='relative h-48'>
+        <div
+          className='absolute inset-x-2/4 w-28 -translate-x-1/2'
+          onMouseOver={handleHover}
+          onMouseLeave={startAnimation}
         >
-          ?
-        </animated.div>
+          <animated.div
+            className='card-secondary-background absolute rounded-lg border border-primary-emphasis bg-secondary-emphasis'
+            style={{
+              ...cardsSize,
+              zIndex: 2,
+              ...springsToRightHalfway,
+            }}
+          />
+          <animated.div
+            className='card-secondary-background absolute rounded-lg border border-primary-emphasis bg-secondary-emphasis'
+            style={{
+              ...cardsSize,
+              zIndex: 2,
+              ...springsToLeftHalfway,
+            }}
+          />
+          <animated.div
+            className='card-secondary-background absolute rounded-lg border border-primary-emphasis bg-secondary-emphasis'
+            style={{
+              ...cardsSize,
+              zIndex: 1,
+              ...springsToLeft,
+            }}
+          />
+          <animated.div
+            className='card-secondary-background absolute rounded-lg border border-primary-emphasis bg-secondary-emphasis'
+            style={{
+              ...cardsSize,
+              zIndex: 1,
+              ...springsToRight,
+            }}
+          />
+          <animated.div
+            className='card-background emphasis-text absolute flex items-center justify-center rounded-lg border border-primary-emphasis bg-secondary-emphasis text-7xl'
+            style={{
+              ...cardsSize,
+              zIndex: 3,
+            }}
+          >
+            ?
+          </animated.div>
+        </div>
       </div>
     </div>
   )
