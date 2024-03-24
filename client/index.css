@@ -63,5 +63,11 @@ code {
     background: url('./assets/background.svg');
     background-size: cover;
   }
+  .second-screen-home {
+    background: url('./assets/secondaryBackground.svg');
+    background-color: #AEC1F6;
+    background-size: cover;
+  }
+
 }
 

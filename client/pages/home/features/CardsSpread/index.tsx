@@ -94,7 +94,7 @@ export default function CardsSpread() {
           onMouseLeave={startAnimation}
         >
           <animated.div
-            className='card-secondary-background absolute rounded-lg border border-primary-emphasis bg-secondary-emphasis'
+            className='card-secondary-background absolute rounded-lg border border-primary-emphasis bg-secondary-emphasis shadow-card'
             style={{
               ...cardsSize,
               zIndex: 2,
@@ -102,7 +102,7 @@ export default function CardsSpread() {
             }}
           />
           <animated.div
-            className='card-secondary-background absolute rounded-lg border border-primary-emphasis bg-secondary-emphasis'
+            className='card-secondary-background absolute rounded-lg border border-primary-emphasis bg-secondary-emphasis shadow-card'
             style={{
               ...cardsSize,
               zIndex: 2,
@@ -110,7 +110,7 @@ export default function CardsSpread() {
             }}
           />
           <animated.div
-            className='card-secondary-background absolute rounded-lg border border-primary-emphasis bg-secondary-emphasis'
+            className='card-secondary-background absolute rounded-lg border border-primary-emphasis bg-secondary-emphasis shadow-card'
             style={{
               ...cardsSize,
               zIndex: 1,
@@ -118,7 +118,7 @@ export default function CardsSpread() {
             }}
           />
           <animated.div
-            className='card-secondary-background absolute rounded-lg border border-primary-emphasis bg-secondary-emphasis'
+            className='card-secondary-background absolute rounded-lg border border-primary-emphasis bg-secondary-emphasis shadow-card'
             style={{
               ...cardsSize,
               zIndex: 1,
@@ -126,7 +126,7 @@ export default function CardsSpread() {
             }}
           />
           <animated.div
-            className='card-background emphasis-text absolute flex items-center justify-center rounded-lg border border-primary-emphasis bg-secondary-emphasis text-7xl'
+            className='card-background emphasis-text absolute flex items-center justify-center rounded-lg border border-primary-emphasis bg-secondary-emphasis text-7xl shadow-card'
             style={{
               ...cardsSize,
               zIndex: 3,
