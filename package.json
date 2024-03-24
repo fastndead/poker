@@ -9,12 +9,11 @@
     "build:server": "npx tsc",
     "dev:client": "vite",
     "dev:server": "npx tsc --watch & nodemon -q build/server/index.js && fg",
-    "test": "react-scripts test",
+    "dev": "concurrently \"npm run dev:client\" \"npm run dev:server\" -c \"bgBlue.blackBright.bold,bgMagenta.blackBright.bold\" --n \"client,server\"",
     "lint": "npm run lint:client || npm run lint:server",
     "lint:client": "eslint ./client/. --ext .ts,.js,.tsx,.jsx --fix",
     "lint:server": "eslint ./server/. --ext .ts,.js,.tsx,.jsx --fix",
     "format": "prettier --write ./**/*.{ts,tsx}",
-    "eject": "react-scripts eject",
     "prepare": "husky install",
     "commit": "cz",
     "semantic-release": "semantic-release"

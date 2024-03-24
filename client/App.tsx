@@ -1,5 +1,5 @@
 import React from 'react'
-import { Home } from 'pages/home'
+import { Home } from 'pages/home/Home'
 import { NotFound } from 'pages/404'
 import { Room } from 'pages/room'
 import NotificationContextProvider from 'contexts/NotificationContextProvider'
@@ -11,7 +11,7 @@ function App() {
   const location = useLocation()
   const transitions = useTransition(location.pathname, {
     from: { opacity: 0 },
-    enter: { opacity: 1, position: 'fixed', top: 0 },
+    enter: { opacity: 1, top: 0 },
     leave: { opacity: 0 },
     config: {
       ...config.gentle,
@@ -25,7 +25,7 @@ function App() {
       <SocketIoErrorCatcher>
         {transitions((styles, location) => (
           <a.div
-            className='min-h-screen w-screen'
+            className='max-w-screen min-h-screen'
             style={styles}
           >
             <Routes location={location}>

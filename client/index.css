@@ -14,17 +14,17 @@ code {
 
 @font-face {
     font-family: Inter;
-    src: url('../public/Inter/Inter-VariableFont_slnt,wght.ttf') format("truetype");
+    src: url('../Inter/Inter-VariableFont_slnt,wght.ttf') format("truetype");
 }
 
 @font-face {
     font-family: Bangers;
-    src: url('../public/Bangers/Bangers-Regular.ttf') format("truetype");
+    src: url('../Bangers/Bangers-Regular.ttf') format("truetype");
 }
 
 @font-face {
     font-family: Barriecito;
-    src: url('../public/Barriecito/Barriecito-Regular.ttf') format("truetype");
+    src: url('../Barriecito/Barriecito-Regular.ttf') format("truetype");
 }
 
 @tailwind base;
@@ -63,5 +63,11 @@ code {
     background: url('./assets/background.svg');
     background-size: cover;
   }
+  .second-screen-home {
+    background: url('./assets/secondaryBackground.svg');
+    background-color: #AEC1F6;
+    background-size: cover;
+  }
+
 }
 
