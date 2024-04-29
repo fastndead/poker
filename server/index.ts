@@ -14,6 +14,8 @@ const users: Record<string, Player> = {}
 const rooms: Record<string, { [key: string]: Player }> = {}
 
 const createNewUser = (name: string, id: string) => {
+  console.log(`New user: ${name}`)
+
   users[id] = {
     id: id,
     value: null,
