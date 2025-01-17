@@ -24,7 +24,10 @@ export default function MainScreen() {
       </h1>
       <div className='z-50 m-auto -mt-16 flex min-h-screen w-80 flex-col items-center justify-center'>
         <CardsSpread />
-        <form onSubmit={handleSubmit}>
+        <form
+          className='mt-8'
+          onSubmit={handleSubmit}
+        >
           <InputAnimated
             validationError={validationError}
             value={name}
