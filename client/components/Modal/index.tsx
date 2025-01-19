@@ -3,6 +3,7 @@ import CloseModalSvg from 'assets/closeModal.svg'
 import { animated, useTransition } from '@react-spring/web'
 import classNames from 'classnames'
 
+import styles from './Modal.module.css'
 type Props = {
   isVisible: boolean
   children: ReactNode
@@ -35,7 +36,8 @@ export default function Modal({ className, isVisible, children, title, onClose }
         ...modalOverlaySpring,
       }}
       className={classNames(
-        'fixed left-0 top-0 flex h-screen w-screen items-center justify-center'
+        'fixed left-0 top-0 flex h-screen w-screen items-center justify-center',
+        styles.Modal
       )}
     >
       {modalTransition((springs) => (
