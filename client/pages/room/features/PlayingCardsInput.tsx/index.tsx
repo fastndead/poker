@@ -1,5 +1,4 @@
-import React, { useCallback, useMemo, useState } from 'react'
-import cn from 'classnames'
+import React, { useCallback, useMemo } from 'react'
 import { animated, useSprings } from '@react-spring/web'
 import { Player } from 'pages/room/types'
 import { useWindowSize } from 'hooks/useWindowSize'
@@ -126,7 +125,6 @@ function getCardConfigFactory(
 
 export default function PlayingCardsInput({ onChange, cards, userValue, name }: Props) {
   const [width] = useWindowSize()
-  // eslint-disable-next-line react-hooks/exhaustive-deps
   const matchMedia = useMemo(() => window.matchMedia('(max-width: 1300px)'), [width])
   const cardSize = useMemo(
     () => ({
@@ -181,15 +179,14 @@ export default function PlayingCardsInput({ onChange, cards, userValue, name }: 
         </div>
       )}
       <div
-        className='relative bottom-0'
+        className='relative bottom-0 w-full md:w-6/12'
         style={{
-          width: '50%',
           height: '23%',
         }}
       >
         <div
           className={
-            'playing-cards-input-background absolute h-full  w-full rounded-lg rounded-tl-full rounded-tr-full border-4 border-solid border-primary-idle bg-light-grey ' +
+            'playing-cards-input-background absolute h-full w-full border-4 border-solid border-primary-idle bg-light-grey md:rounded-lg md:rounded-tl-full md:rounded-tr-full ' +
             styles.background
           }
         />

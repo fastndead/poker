@@ -1,5 +1,6 @@
 body {
   margin: 0;
+  overflow: hidden;
   font-family: Inter, Roboto, Oxygen,
     Ubuntu, Cantarell, 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
     sans-serif;
@@ -8,23 +9,23 @@ body {
 }
 
 code {
-  font-family :source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
 
 @font-face {
-    font-family: Inter;
-    src: url('../Inter/Inter-VariableFont_slnt,wght.ttf') format("truetype");
+  font-family: Inter;
+  src: url('../Inter/Inter-VariableFont_slnt,wght.ttf') format("truetype");
 }
 
 @font-face {
-    font-family: Bangers;
-    src: url('../Bangers/Bangers-Regular.ttf') format("truetype");
+  font-family: Bangers;
+  src: url('../Bangers/Bangers-Regular.ttf') format("truetype");
 }
 
 @font-face {
-    font-family: Barriecito;
-    src: url('../Barriecito/Barriecito-Regular.ttf') format("truetype");
+  font-family: Barriecito;
+  src: url('../Barriecito/Barriecito-Regular.ttf') format("truetype");
 }
 
 @tailwind base;
@@ -63,6 +64,7 @@ code {
     background: url('./assets/background.svg');
     background-size: cover;
   }
+
   .second-screen-home {
     background: url('./assets/secondaryBackground.svg');
     background-color: #AEC1F6;
@@ -70,4 +72,3 @@ code {
   }
 
 }
-

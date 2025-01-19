@@ -1,4 +1,5 @@
 import { animated, useSpring } from '@react-spring/web'
+import { useIsMobile } from 'hooks/useIsMobile'
 import React, { HTMLAttributes, useEffect, useMemo, useRef, useState } from 'react'
 import { useFloating } from '../context/FloatingContext'
 
@@ -102,6 +103,17 @@ export default function CardWhite(props: HTMLAttributes<HTMLDivElement>) {
   const translateYStyles = initialTranslateYSpring.transform.isAnimating
     ? initialTranslateYSpring
     : translateYSpring
+
+  const isMobile = useIsMobile()
+
+  const scale = useMemo(() => {
+    const initialScale = props.style?.scale || 1
+    if (isMobile) {
+      return String(Number(initialScale) / 2)
+    }
+    return initialScale
+  }, [props.style?.scale, isMobile])
+
   return (
     <animated.div style={{ ...translateYStyles }}>
       <animated.div
@@ -113,6 +125,8 @@ export default function CardWhite(props: HTMLAttributes<HTMLDivElement>) {
           backgroundColor: 'white',
           ...props.style,
           ...springs,
+          scale,
+          zIndex: 10,
         }}
       />
     </animated.div>

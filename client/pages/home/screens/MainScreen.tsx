@@ -5,7 +5,6 @@ import InputAnimated from '../features/InputAnimated'
 import Button from 'components/Button'
 import { useHandleSubmit } from '../hooks/useHandleSubmit'
 import JoinRoomModal from '../features/JoinRoomModal'
-import CardWhite from '../components/CardWhite'
 import CardsDecorations from '../components/CardsDecorations'
 
 export default function MainScreen() {
@@ -16,9 +15,9 @@ export default function MainScreen() {
   const handleSubmit = useHandleSubmit({ name, setValidationError })
 
   return (
-    <div className='base-background relative overflow-hidden px-16 py-12'>
+    <div className='relative overflow-hidden px-0 py-12 md:px-16'>
       <CardsDecorations />
-      <h1 className='relative z-50 flex items-center font-barriecito text-3xl text-primary-emphasis'>
+      <h1 className='relative z-50 flex items-center justify-self-center font-barriecito text-3xl text-primary-emphasis md:justify-self-auto'>
         <LogoSvg />
         Planning poker
       </h1>
@@ -36,13 +35,13 @@ export default function MainScreen() {
             placeholder='User name'
           />
           <Button
-            className='mt-2.5'
+            className='relative z-10 mt-2.5'
             label='Start a new game'
             type='primary'
             htmlType='submit'
           />
           <Button
-            className='mt-2.5'
+            className='relative z-10 mt-2.5'
             label='Join the room'
             type='secondary'
             onClick={() => setModalVisible(true)}

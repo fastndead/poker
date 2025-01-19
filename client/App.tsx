@@ -7,42 +7,46 @@ import SocketIoErrorCatcher from 'components/SocketIoErrorCatcher'
 import { useTransition, a, config } from '@react-spring/web'
 import { useLocation, Routes, Route } from 'react-router-dom'
 
+const PAGE_TRANSITION_DURATION = 500
+
 function App() {
   const location = useLocation()
   const transitions = useTransition(location.pathname, {
     from: { opacity: 0 },
-    enter: { opacity: 1, top: 0 },
+    enter: { opacity: 1, top: 0, position: 'absolute' },
     leave: { opacity: 0 },
     config: {
       ...config.gentle,
-      duration: 400,
+      duration: PAGE_TRANSITION_DURATION,
     },
-    trail: 400,
+    trail: PAGE_TRANSITION_DURATION,
   })
 
   return (
     <NotificationContextProvider>
       <SocketIoErrorCatcher>
         {transitions((styles, location) => (
-          <a.div
-            className='max-w-screen min-h-screen'
-            style={styles}
-          >
-            <Routes location={location}>
-              <Route
-                path='/'
-                element={<Home />}
-              />
-              <Route
-                path='/room/:roomName'
-                element={<Room />}
-              />
-              <Route
-                path='*'
-                element={<NotFound />}
-              />
-            </Routes>
-          </a.div>
+          <div className='base-background max-w-screen border-box -z-50 min-h-screen w-full bg-repeat'>
+            <a.div
+              className=' max-w-screen border-box relative min-h-screen w-full'
+              style={styles}
+            >
+              <Routes location={location}>
+                <Route
+                  path='/'
+                  element={<Home />}
+                />
+                <Route
+                  path='/room/:roomName'
+                  element={<Room />}
+                />
+                <Route
+                  path='*'
+                  element={<NotFound />}
+                />
+              </Routes>
+            </a.div>
+          </div>
         ))}
       </SocketIoErrorCatcher>
     </NotificationContextProvider>

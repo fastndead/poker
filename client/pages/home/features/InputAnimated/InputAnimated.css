@@ -2,9 +2,15 @@
 
 @layer components {
   .input-animated {
-    & .upper-side, .right-side, input {
+
+    & .upper-side,
+    .right-side,
+    input {
       border-width: 2px;
       border-image-slice: 1;
     }
+
+    position: relative;
+    z-index: 0;
   }
 }

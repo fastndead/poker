@@ -6,8 +6,11 @@
     & button {
       @apply bg-primary-emphasis text-white;
     }
+
     &:hover {
-      & .upper-side, .right-side {
+
+      & .upper-side,
+      .right-side {
         @apply bg-secondary-dark transition-all;
       }
     }
@@ -17,15 +20,18 @@
     & button {
       @apply bg-secondary-light text-primary-emphasis;
     }
+
     &:hover {
-      & .upper-side, .right-side {
+
+      & .upper-side,
+      .right-side {
         @apply bg-primary-emphasis transition-all;
       }
     }
   }
 
   .btn-base {
-    & > .upper-side {
+    &>.upper-side {
       @apply border border-black border-solid border-b-0 border-r-0;
       transform: skewX(135deg) translateX(11px);
       height: 22px;
@@ -33,7 +39,7 @@
     }
 
     & .right-side-container {
-      @apply flex flex-row; 
+      @apply flex flex-row;
     }
 
     & .right-side {

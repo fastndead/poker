@@ -10,6 +10,7 @@ import { useParams, useNavigate } from 'react-router-dom'
 import EnterNameModal from 'components/EnterNameModal'
 import { useLocalStorage } from 'hooks/useLocalStorage'
 import styles from './Room.module.css'
+import { useIsMobile } from 'hooks/useIsMobile'
 
 export function Room() {
   const { roomName } = useParams<{ roomName: string }>()
@@ -99,16 +100,18 @@ export function Room() {
     socket.emit('reset')
   }, [])
 
+  const isMobile = useIsMobile()
+
   return (
     <div className={'width-screen flex flex-row overflow-hidden'}>
-      <Sidebar />
-      <div
-        className={
-          'base-background relative flex h-screen w-full flex-col items-center justify-between'
-        }
-      >
-        <div className='mt-7 flex w-full justify-between px-24'>
-          <h2 className='inline font-barriecito text-3xl text-primary-emphasis'>Planning poker</h2>
+      {!isMobile && <Sidebar />}
+      <div className={'relative flex h-screen w-full flex-col items-center justify-between'}>
+        <div className='mt-7 flex w-full justify-between px-2 md:px-24'>
+          <a href='/'>
+            <h2 className='inline font-barriecito text-3xl text-primary-emphasis'>
+              Planning poker
+            </h2>
+          </a>
           <h3 className='inline font-barriecito text-3xl text-primary-emphasis'>
             Room: <span className='emphasis-text font-bangers'>{roomName}</span>
           </h3>
