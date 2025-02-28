@@ -11,7 +11,7 @@ const app: Express = express()
 
 const users: Record<string, Player> = {}
 
-const rooms: Record<string, { [key: string]: Player }> = {}
+const rooms: Record<string, { [userId: string]: Player }> = {}
 
 const createNewUser = (name: string, id: string) => {
   console.log(`New user: ${name}`)
@@ -34,7 +34,9 @@ const createRoom = (name: string) => {
 
 const broadcastUpdate = (socket: Socket, roomName: string) => {
   const room = rooms[roomName]
-  const serializedRoom = Object.keys(room).map((key) => room[key])
+  const serializedRoom = Object.keys(room)
+    .filter((userId) => userId === socket.request.session.id)
+    .map((userId) => room[userId])
   socket.broadcast.to(roomName).emit('update', { players: serializedRoom })
 }
 
